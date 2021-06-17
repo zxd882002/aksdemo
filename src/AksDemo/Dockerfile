@@ -5,8 +5,8 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
-COPY ["*.crt", "/usr/local/share/ca-certificates/"]
-RUN /usr/sbin/update-ca-certificates
+#COPY ["*.crt", "/usr/local/share/ca-certificates/"]
+#RUN /usr/sbin/update-ca-certificates
 WORKDIR /src
 COPY ["src/AksDemo/AksDemo.csproj", "AksDemo/"]
 RUN dotnet restore "AksDemo/AksDemo.csproj"
