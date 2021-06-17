@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZQ8IIK8saOYUTZW8aJVPFNoXKuvhda13D/TEqBeIY17ITZFGgbQu/Q3jqAcyNFmxy5Hc0WrGzMRNuNpkK8cTmQ==",
+  "success": true,
+  "projectFilePath": "C:\\Xudong\\PersonalLearning\\AksDemo\\src\\AksDemo\\AksDemo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\xudong.zhang\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.10.13\\microsoft.visualstudio.azure.containers.tools.targets.1.10.13.nupkg.sha512"
+  ],
+  "logs": []
+}

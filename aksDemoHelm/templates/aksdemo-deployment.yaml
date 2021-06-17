@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.aksdemo.name }}-{{ .Values.aksdemo.version }}
+spec:
+  replicas: {{ .Values.aksdemo.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.aksdemo.name }}
+      version: {{ .Values.aksdemo.version }}
+  template:
+    metadata:      
+      labels:
+        app: {{ .Values.aksdemo.name }}
+        version: {{ .Values.aksdemo.version }}
+    spec:
+      containers:
+        - name: {{ .Values.aksdemo.name }}          
+          image: "{{ .Values.aksdemo.image.repository }}:{{ .Values.aksdemo.version }}"
+          imagePullPolicy: {{ .Values.aksdemo.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80         

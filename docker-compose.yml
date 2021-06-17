@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  aksdemo:
+    image: xudongacr.azurecr.io/aksdemo:v10
+    build:
+      context: .
+      dockerfile: src/AksDemo/Dockerfile
