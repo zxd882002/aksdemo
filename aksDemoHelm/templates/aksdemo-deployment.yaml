@@ -7,12 +7,12 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.aksdemo.name }}
-      version: {{ .Values.aksdemo.version }}
+      version: {{ .Values.aksdemo.version | quote }}
   template:
     metadata:      
       labels:
         app: {{ .Values.aksdemo.name }}
-        version: {{ .Values.aksdemo.version }}
+        version: {{ .Values.aksdemo.version | quote }}
     spec:
       containers:
         - name: {{ .Values.aksdemo.name }}          
