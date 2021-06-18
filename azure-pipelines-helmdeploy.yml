@@ -18,14 +18,14 @@ steps:
 - task: HelmDeploy@0
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscription: 'Visual Studio Enterprise(f3757d8c-c242-4598-816e-4d9c38bf927d)'
+    azureSubscription: 'connection'
     azureResourceGroup: 'myResourceGroup'
     kubernetesCluster: 'myAKSCluster'
     namespace: 'myaksdemo'
-    command: 'install'
+    command: 'upgrade'
     chartType: 'FilePath'
     chartPath: './aksDemoHelm'
     overrideValues: 'aksdemo.version=20'
-    azureSubscriptionForACR: 'Visual Studio Enterprise(f3757d8c-c242-4598-816e-4d9c38bf927d)'
+    azureSubscriptionForACR: 'connection'
     azureResourceGroupForACR: 'myResourceGroup'
     azureContainerRegistry: 'xudongacr.azurecr.io'
