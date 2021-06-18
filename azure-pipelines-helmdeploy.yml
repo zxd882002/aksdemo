@@ -25,7 +25,9 @@ steps:
     command: 'upgrade'
     chartType: 'FilePath'
     chartPath: './aksDemoHelm'
+    releaseName: aksdemo
     overrideValues: 'aksdemo.version=20'
     azureSubscriptionForACR: 'connection'
     azureResourceGroupForACR: 'myResourceGroup'
     azureContainerRegistry: 'xudongacr.azurecr.io'
+
