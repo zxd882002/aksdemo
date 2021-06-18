@@ -11,4 +11,4 @@ spec:
   - route:
     - destination:
         host: {{ .Values.aksdemo.name }}
-        subset: {{ .Values.aksdemo.version | quote}}
+        subset: subset-{{ .Values.aksdemo.version }}

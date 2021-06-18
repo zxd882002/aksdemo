@@ -5,6 +5,6 @@ metadata:
 spec:
   host: {{ .Values.aksdemo.name }}
   subsets:
-  - name: v10
+  - name: subset-{{ .Values.aksdemo.version }}
     labels:
-      version: v10
+      version: {{ .Values.aksdemo.version | quote }}
