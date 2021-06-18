@@ -24,7 +24,7 @@ stages:
 - stage: Build
   displayName: Build and push 
   jobs:
-  - job: Build-AksDemo
+  - job: Build_AksDemo
     displayName: Build AksDemo
     pool:
       vmImage: $(vmImageName)
@@ -41,7 +41,7 @@ stages:
 - stage: Deploy
   displayName: Deploy
   jobs:
-  - job: Deploy-AksDemo
+  - job: Deploy_AksDemo
     displayName: Deploy AksDemo
     pool:
       vmImage: $(vmImageName)
