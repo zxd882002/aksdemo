@@ -6,7 +6,7 @@ spec:
   hosts:
   - "*"
   gateways:
-  - {{ .Values.weatherForecastWeb.name }}
+  - {{ .Values.gateway.name }}
   http:
   - route:
     - destination:

@@ -1,5 +1,5 @@
 gateway:
-  name: aksdemo-gateway
+  name: weather-forecast-gateway
 
 weatherForecastWeb:
   name: weather-forecast-web
