@@ -1,8 +1,8 @@
 gateway:
   name: aksdemo-gateway
 
-weatherForecastWeb:
-  name: weatherForecastWeb
+weatherforecast-web:
+  name: weather-forecast-web
   version: v1
   replicas: 1
   image:

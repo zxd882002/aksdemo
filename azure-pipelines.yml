@@ -61,7 +61,7 @@ stages:
         chartType: 'FilePath'
         chartPath: './helm'
         releaseName: aksdemo
-        overrideValues: 'aksdemo.version=$(Build.BuildId)'
+        overrideValues: 'weather-forecast-web.version=$(Build.BuildId)'
         azureSubscriptionForACR: 'connection'
         azureResourceGroupForACR: $(resourceGroup)
         azureContainerRegistry: $(dockerRegistryServiceConnection)

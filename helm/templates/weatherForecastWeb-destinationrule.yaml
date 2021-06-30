@@ -1,10 +1,10 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: {{ .Values.weatherForecastWeb.name }}-destrule
+  name: {{ .Values.weather-forecast-web.name }}-destrule
 spec:
-  host: {{ .Values.weatherForecastWeb.name }}
+  host: {{ .Values.weather-forecast-web.name }}
   subsets:
-  - name: subset-{{ .Values.weatherForecastWeb.version }}
+  - name: subset-{{ .Values.weather-forecast-web.version }}
     labels:
-      version: {{ .Values.weatherForecastWeb.version | quote }}
+      version: {{ .Values.weather-forecast-web.version | quote }}
