@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: '295b2eae-9f75-4cc9-b9ec-c504cdef6bd8'  
   containerRegistry: 'xudongacr.azurecr.io'
   resourceGroup: 'myResourceGroup'
-  weatherForecaseWebDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecaseWeb/Dockerfile'
+  weatherForecaseWebDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecastWeb/Dockerfile'
   weatherForecaseWebImageRepository: 'WeatherForecastWeb'
   tag: '$(Build.BuildId)'
 
