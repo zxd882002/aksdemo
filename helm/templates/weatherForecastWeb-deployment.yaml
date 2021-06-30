@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.weather-forecast-web.name }}-{{ .Values.weather-forecast-web.version }}
+  name: {{ .Values.weatherForecastWeb.name }}-{{ .Values.weatherForecastWeb.version }}
 spec:
-  replicas: {{ .Values.weather-forecast-web.replicas }}
+  replicas: {{ .Values.weatherForecastWeb.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.weather-forecast-web.name }}
-      version: {{ .Values.weather-forecast-web.version | quote }}
+      app: {{ .Values.weatherForecastWeb.name }}
+      version: {{ .Values.weatherForecastWeb.version | quote }}
   template:
     metadata:      
       labels:
-        app: {{ .Values.weather-forecast-web.name }}
-        version: {{ .Values.weather-forecast-web.version | quote }}
+        app: {{ .Values.weatherForecastWeb.name }}
+        version: {{ .Values.weatherForecastWeb.version | quote }}
     spec:
       containers:
-        - name: {{ .Values.weather-forecast-web.name }}          
-          image: "{{ .Values.weather-forecast-web.image.repository }}:{{ .Values.weather-forecast-web.version }}"
-          imagePullPolicy: {{ .Values.weather-forecast-web.image.pullPolicy }}
+        - name: {{ .Values.weatherForecastWeb.name }}          
+          image: "{{ .Values.weatherForecastWeb.image.repository }}:{{ .Values.weatherForecastWeb.version }}"
+          imagePullPolicy: {{ .Values.weatherForecastWeb.image.pullPolicy }}
           ports:
             - containerPort: 80
               protocol: TCP

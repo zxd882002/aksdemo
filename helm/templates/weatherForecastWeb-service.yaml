@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.weather-forecast-web.name }}
+  name: {{ .Values.weatherForecastWeb.name }}
 spec:
   selector:
-    app: {{ .Values.weather-forecast-web.name }}
+    app: {{ .Values.weatherForecastWeb.name }}
   ports:
     - name: http
-      port: {{ .Values.weather-forecast-web.service.port }}
+      port: {{ .Values.weatherForecastWeb.service.port }}
       targetPort: 80
  
