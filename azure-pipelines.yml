@@ -10,11 +10,11 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '295b2eae-9f75-4cc9-b9ec-c504cdef6bd8'
-  imageRepository: 'aksdemo'
+  dockerRegistryServiceConnection: '295b2eae-9f75-4cc9-b9ec-c504cdef6bd8'  
   containerRegistry: 'xudongacr.azurecr.io'
   resourceGroup: 'myResourceGroup'
-  dockerfilePath: '$(Build.SourcesDirectory)/src/AksDemo/Dockerfile'
+  weatherForecaseWebDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecaseWeb/Dockerfile'
+  weatherForecaseWebImageRepository: 'WeatherForecastWeb'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -24,8 +24,8 @@ stages:
 - stage: Build
   displayName: Build and push 
   jobs:
-  - job: Build_AksDemo
-    displayName: Build AksDemo
+  - job: Build_WeatherForecastWeb
+    displayName: Build WeatherForecast Web
     pool:
       vmImage: $(vmImageName)
     steps:
@@ -33,16 +33,16 @@ stages:
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
+        repository: $(weatherForecaseWebImageRepository)
+        dockerfile: $(weatherForecaseWebDockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
 - stage: Deploy
   displayName: Deploy
   jobs:
-  - job: Deploy_AksDemo
-    displayName: Deploy AksDemo
+  - job: Deploy_By_Helm
+    displayName: Deploy By Helm
     pool:
       vmImage: $(vmImageName)
     steps:
@@ -59,7 +59,7 @@ stages:
         namespace: 'myaksdemo'
         command: 'upgrade'
         chartType: 'FilePath'
-        chartPath: './aksDemoHelm'
+        chartPath: './helm'
         releaseName: aksdemo
         overrideValues: 'aksdemo.version=$(Build.BuildId)'
         azureSubscriptionForACR: 'connection'
