@@ -15,7 +15,7 @@ variables:
   resourceGroup: 'myResourceGroup'
   weatherForecaseWebDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecastWeb/Dockerfile'
   weatherForecaseWebImageRepository: 'WeatherForecastWeb'
-  weatherForecaseApiDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecastApi/Dockerfile'
+  weatherForecaseApiDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecastAPI/Dockerfile'
   weatherForecaseApiImageRepository: 'WeatherForecastApi'
   tag: '$(Build.BuildId)'
 
