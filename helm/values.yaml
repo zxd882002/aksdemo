@@ -6,7 +6,7 @@ weatherForecastWeb:
   version: v1
   replicas: 1
   image:
-    repository: xudongacr.azurecr.io/weatherForecastWeb
+    repository: xudongacr.azurecr.io/weatherforecastweb
     pullPolicy: IfNotPresent
   service:
     port: 80
