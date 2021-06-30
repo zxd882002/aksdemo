@@ -15,6 +15,8 @@ variables:
   resourceGroup: 'myResourceGroup'
   weatherForecaseWebDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecastWeb/Dockerfile'
   weatherForecaseWebImageRepository: 'WeatherForecastWeb'
+  weatherForecaseApiDockerfilePath: '$(Build.SourcesDirectory)/src/WeatherForecastApi/Dockerfile'
+  weatherForecaseApiImageRepository: 'WeatherForecastApi'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -30,7 +32,7 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build and push a WeatherForecast Web image to container registry
       inputs:
         command: buildAndPush
         repository: $(weatherForecaseWebImageRepository)
@@ -38,6 +40,20 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+  - job: Build_WeatherForecastApi
+    displayName: Build WeatherForecast Api
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+      - task: Docker@2
+        displayName: Build and push a WeatherForecast Api image to container registry
+        inputs:
+          command: buildAndPush
+          repository: $(weatherForecaseApiImageRepository)
+          dockerfile: $(weatherForecaseApiDockerfilePath)
+          containerRegistry: $(dockerRegistryServiceConnection)
+          tags: |
+            $(tag)
 - stage: Deploy
   displayName: Deploy
   jobs:
