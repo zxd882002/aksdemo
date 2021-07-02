@@ -26,9 +26,9 @@ spec:
               value: http://+:80
           livenessProbe:
             httpGet:
-              path: /api/
+              path: /api/WeatherForecast
               port: 80
           readinessProbe:
             httpGet:
-              path: /api/
+              path: /api/WeatherForecast
               port: 80  
