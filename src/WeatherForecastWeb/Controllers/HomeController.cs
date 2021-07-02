@@ -1,29 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WeatherForecastWeb.Models;
+using WeatherForecastWeb.Repository;
 
 namespace WeatherForecastWeb.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IWeatherForecastRepository _repository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IWeatherForecastRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IList<WeatherForecast> weatherForecasts = new List<WeatherForecast>();
-            weatherForecasts.Add(new WeatherForecast { Date = DateTime.Today, Summary = "Cold", TemperatureC = 0 });
-            weatherForecasts.Add(new WeatherForecast { Date = DateTime.Today.AddDays(1), Summary = "Cool", TemperatureC = 10 });
-            weatherForecasts.Add(new WeatherForecast { Date = DateTime.Today.AddDays(2), Summary = "Warm", TemperatureC = 20 });
-            weatherForecasts.Add(new WeatherForecast { Date = DateTime.Today.AddDays(3), Summary = "Hot", TemperatureC = 30 });
-
-            return View(weatherForecasts);
+            try
+            {
+                IList<WeatherForecast> weatherForecasts = await _repository.GetWeatherForecastList();
+                return View(weatherForecasts);
+            }
+            catch
+            {
+                IList<WeatherForecast> weatherForecasts = new List<WeatherForecast>();
+                weatherForecasts.Add(new WeatherForecast
+                {
+                    Date = DateTime.Now,
+                    Summary = "Cooooooool",
+                    TemperatureC = 25
+                });
+                return View(weatherForecasts);
+            }
         }
     }
 }

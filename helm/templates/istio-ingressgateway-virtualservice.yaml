@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.weatherForecastWeb.name }}-virtualservice
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - {{ .Values.gateway.name }}
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: {{ .Values.weatherForecastWeb.name }}
+        subset: subset-{{ .Values.weatherForecastWeb.version }}
+  - match:
+    - uri:
+        prefix: /api/WeatherForecast
+    route:
+    - destination:
+        host: {{ .Values.weatherForecastApi.name }}
+        subset: subset-{{ .Values.weatherForecastApi.version }}

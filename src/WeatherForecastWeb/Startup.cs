@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WeatherForecastWeb.Repository;
 
 namespace WeatherForecastWeb
 {
@@ -22,6 +22,22 @@ namespace WeatherForecastWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var configuration = Configuration.GetSection("Options");
+            services.Configure<Options>(configuration);
+            Options options = configuration.Get<Options>();
+            List<ServiceConnection> serviceConnectionList = options.ServiceConnections;
+            foreach (ServiceConnection serviceConnection in serviceConnectionList)
+            {
+                services.AddHttpClient(serviceConnection.ServiceName, c =>
+                {
+                    c.BaseAddress = new Uri(serviceConnection.BaseUrl);
+                    c.Timeout = serviceConnection.Timeout;
+                });
+            }
+
+            services.AddScoped(x => new WeatherForecastRepository(x.GetRequiredService<IHttpClientFactory>()));
+
+            services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
             services.AddControllersWithViews();
         }
 
