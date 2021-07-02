@@ -21,4 +21,6 @@ spec:
     route:
     - destination:
         host: {{ .Values.weatherForecastApi.name }}
+        port:
+          number: {{.Values.weatherForecastApi.service.port}}
         subset: subset-{{ .Values.version }}
