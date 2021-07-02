@@ -1,9 +1,10 @@
 gateway:
   name: weather-forecast-gateway
 
+version: v1
+
 weatherForecastWeb:
   name: weather-forecast-web
-  version: v1
   replicas: 1
   image:
     repository: xudongacr.azurecr.io/weatherforecastweb
@@ -13,7 +14,6 @@ weatherForecastWeb:
 
 weatherForecastApi:
   name: weather-forecast-api
-  version: v1
   replicas: 1
   image:
     repository: xudongacr.azurecr.io/weatherforecastapi

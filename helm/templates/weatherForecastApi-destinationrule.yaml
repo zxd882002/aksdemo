@@ -5,6 +5,6 @@ metadata:
 spec:
   host: {{ .Values.weatherForecastApi.name }}
   subsets:
-  - name: subset-{{ .Values.weatherForecastApi.version }}
+  - name: subset-{{ .Values.version }}
     labels:
-      version: {{ .Values.weatherForecastApi.version | quote }}
+      version: {{ .Values.version | quote }}

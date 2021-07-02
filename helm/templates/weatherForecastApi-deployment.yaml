@@ -7,12 +7,12 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.weatherForecastApi.name }}
-      version: {{ .Values.weatherForecastApi.version | quote }}
+      version: {{ .Values.version | quote }}
   template:
     metadata:      
       labels:
         app: {{ .Values.weatherForecastApi.name }}
-        version: {{ .Values.weatherForecastApi.version | quote }}
+        version: {{ .Values.version | quote }}
     spec:
       containers:
         - name: {{ .Values.weatherForecastApi.name }}          

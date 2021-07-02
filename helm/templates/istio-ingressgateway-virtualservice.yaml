@@ -14,11 +14,11 @@ spec:
     route:
     - destination:
         host: {{ .Values.weatherForecastWeb.name }}
-        subset: subset-{{ .Values.weatherForecastWeb.version }}
+        subset: subset-{{ .Values.version }}
   - match:
     - uri:
         prefix: /api/WeatherForecast
     route:
     - destination:
         host: {{ .Values.weatherForecastApi.name }}
-        subset: subset-{{ .Values.weatherForecastApi.version }}
+        subset: subset-{{ .Values.version }}
