@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.weatherForecastApi.name }}          
-          image: "{{ .Values.weatherForecastApi.image.repository }}:{{ .Values.weatherForecastApi.version }}"
+          image: "{{ .Values.weatherForecastApi.image.repository }}:{{ .Values.version }}"
           imagePullPolicy: {{ .Values.weatherForecastApi.image.pullPolicy }}
           ports:
             - containerPort: 80
