@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.weatherForecastApi.name }}-{{ .Values.weatherForecastApi.version }}
+  name: {{ .Values.weatherForecastApi.name }}-{{ .Values.version }}
 spec:
   replicas: {{ .Values.weatherForecastApi.replicas }}
   selector:
