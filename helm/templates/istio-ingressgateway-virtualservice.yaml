@@ -20,8 +20,9 @@ spec:
         subset: subset-{{ .Values.version }}
   - match:
     - uri:
-        prefix: /
+        prefix: /web/WeatherForecast
       ignoreUriCase: true
+    rewrite: "/"
     route:
     - destination:
         host: {{ .Values.weatherForecastWeb.name }}
