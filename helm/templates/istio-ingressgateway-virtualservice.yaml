@@ -22,7 +22,8 @@ spec:
     - uri:
         prefix: /web/WeatherForecast
       ignoreUriCase: true
-    rewrite: /
+    rewrite: 
+      uri: "/"
     route:
     - destination:
         host: {{ .Values.weatherForecastWeb.name }}
