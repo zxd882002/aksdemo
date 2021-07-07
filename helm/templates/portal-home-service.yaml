@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.portalHome.name }}
+spec:
+  selector:
+    app: {{ .Values.portalHome.name }}
+  ports:
+    - name: http
+      port: {{ .Values.portalHome.service.port }}
+      targetPort: {{.Values.portalHome.service.port}}

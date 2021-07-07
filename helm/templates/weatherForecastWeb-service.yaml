@@ -8,5 +8,5 @@ spec:
   ports:
     - name: http
       port: {{ .Values.weatherForecastWeb.service.port }}
-      targetPort: 80
+      targetPort: {{.Values.weatherForecastWeb.service.port}}
  

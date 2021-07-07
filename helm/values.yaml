@@ -3,6 +3,15 @@ gateway:
 
 version: v1
 
+portalHome:
+  name: portal-home
+  replicas: 1
+  image:
+    repository: xudongacr.azurecr.io/portal-home
+    pullPolicy: IfNotPresent
+  service:
+    port: 80
+
 weatherForecastWeb:
   name: weather-forecast-web
   replicas: 1

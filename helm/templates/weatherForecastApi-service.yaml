@@ -8,4 +8,4 @@ spec:
   ports:
     - name: http
       port: {{ .Values.weatherForecastApi.service.port }}
-      targetPort: 80
+      targetPort: {{.Values.weatherForecastApi.service.port}}

@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ .Values.portalHome.name }}-destrule
+spec:
+  host: {{ .Values.portalHome.name }}
+  subsets:
+  - name: subset-{{ .Values.version }}
+    labels:
+      version: {{ .Values.version | quote }}
