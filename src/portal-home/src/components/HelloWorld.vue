@@ -26,9 +26,9 @@ onMounted(() => {
     .catch((error) => {
       console.log(error);
     });
-  console.log("test: http://20.89.82.173/web/WeatherForecast");
+  console.log("test: http://20.89.82.173/api/WeatherForecast");
   axios
-    .get("http://20.89.82.173/web/WeatherForecast")
+    .get("http://20.89.82.173/api/WeatherForecast")
     .then((res) => {
       console.log(res);
     })
