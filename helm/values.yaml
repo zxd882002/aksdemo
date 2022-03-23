@@ -12,15 +12,6 @@ portalHome:
   service:
     port: 80
 
-weatherForecastWeb:
-  name: weather-forecast-web
-  replicas: 1
-  image:
-    repository: xudongacr.azurecr.io/weatherforecastweb
-    pullPolicy: IfNotPresent
-  service:
-    port: 80
-
 weatherForecastApi:
   name: weather-forecast-api
   replicas: 1

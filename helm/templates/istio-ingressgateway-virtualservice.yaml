@@ -17,17 +17,7 @@ spec:
         host: {{ .Values.weatherForecastApi.name }}
         port:
           number: {{.Values.weatherForecastApi.service.port}}
-        subset: subset-{{ .Values.version }}
-  - match:
-    - uri:
-        prefix: /web/WeatherForecast
-      ignoreUriCase: true
-    rewrite: 
-      uri: "/"
-    route:
-    - destination:
-        host: {{ .Values.weatherForecastWeb.name }}
-        subset: subset-{{ .Values.version }}
+        subset: subset-{{ .Values.version }}  
   - match:
     - uri:
         prefix: /
