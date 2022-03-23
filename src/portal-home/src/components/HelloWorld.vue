@@ -2,7 +2,8 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>Weather Forcast</p>
-    <button @click="get">Get ..........</button>
+    <button @click="get1">Get /api/weatherforecast</button>
+    <button @click="get2">Get http://20.89.82.173/api/WeatherForecast</button>
   </div>
 </template>
 
@@ -15,16 +16,18 @@ export default {
     msg: String,
   },
   setup() {
-    var get = () => {
-      console.log("test: http://weather-forecast-api/api/weatherforecast");
+    var get1 = () => {
+      console.log("test: /api/weatherforecast");
       axios
-        .get("http://weather-forecast-api/api/weatherforecast")
+        .get("/api/weatherforecast")
         .then((res) => {
           console.log(res);
         })
         .catch((error) => {
           console.log(error);
         });
+    };
+    var get2 = () => {
       console.log("test: http://20.89.82.173/api/WeatherForecast");
       axios
         .get("http://20.89.82.173/api/WeatherForecast")
@@ -35,7 +38,7 @@ export default {
           console.log(error);
         });
     };
-    return { get };
+    return { get1, get2 };
   },
 };
 </script>
