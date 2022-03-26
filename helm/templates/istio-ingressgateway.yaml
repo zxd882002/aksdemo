@@ -6,6 +6,15 @@ spec:
   selector:
     istio: ingressgateway  # use istio default controller
   servers:
+   - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    tls:
+      httpsRedirect: true # redirect http request to https
+    hosts:
+    - zyxhome.top
+    - www.zyxhome.top
   - port:
       number: 443
       name: https
