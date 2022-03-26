@@ -7,8 +7,12 @@ spec:
     istio: ingressgateway # use istio default controller
   servers:
   - port:
-      number: 80
-      name: http
-      protocol: HTTP
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: zyxhome.top.cert
+      privateKey: zyxhome.top.key
     hosts:
-    - "*"
+    - zyxhome.top
