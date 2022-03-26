@@ -15,3 +15,4 @@ spec:
       credentialName: istio-ingressgateway-cert
     hosts:
     - zyxhome.top
+    - www.zyxhome.top
