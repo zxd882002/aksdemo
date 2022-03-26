@@ -12,7 +12,7 @@ spec:
       protocol: HTTPS
     tls:
       mode: SIMPLE
-      serverCertificate: zyxhome.top.cert
-      privateKey: zyxhome.top.key
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
     hosts:
     - zyxhome.top
