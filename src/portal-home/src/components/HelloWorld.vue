@@ -22,14 +22,13 @@ export default {
       try {
         const { data } = await axios.get("/api/weatherforecast");
         weatherforecastDatas = data;
+        console.log("data:");
+        console.log(weatherforecastDatas);
       } catch (error) {
         console.log("error:");
         console.log(error);
       }
     };
-
-    console.log("data:");
-    console.log(weatherforecastDatas);
 
     return { get };
   },
