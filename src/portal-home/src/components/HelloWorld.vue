@@ -16,7 +16,7 @@ export default {
     msg: String,
   },
   setup() {
-    let weatherforecastDatas: WeatherForecastData[] = null;
+    let weatherforecastDatas: WeatherForecastData[] | undefined = undefined;
 
     var get = async () => {
       try {
