@@ -2,13 +2,13 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>Weather Forcast</p>
-    <button @click="get1">Get /api/weatherforecast</button>
-    <button @click="get2">Get http://20.89.82.173/api/WeatherForecast</button>
+    <button @click="get">Get /api/weatherforecast</button>
   </div>
 </template>
 
 <script lang="ts">
 import axios from "axios";
+import WeatherForecastData from "../models/WeatherForecastData";
 
 export default {
   name: "HelloWorld",
@@ -16,29 +16,20 @@ export default {
     msg: String,
   },
   setup() {
-    var get1 = () => {
-      console.log("test: /api/weatherforecast");
-      axios
-        .get("/api/weatherforecast")
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    let weatherforecastDatas: WeatherForecastData[] = null;
+
+    var get = async () => {
+      try {
+        const { data } = await axios.get("/api/weatherforecast");
+        weatherforecastDatas = data;
+      } catch (error) {
+        console.log(error);
+      }
     };
-    var get2 = () => {
-      console.log("test: http://20.89.82.173/api/WeatherForecast");
-      axios
-        .get("http://20.89.82.173/api/WeatherForecast")
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    return { get1, get2 };
+
+    console.log(weatherforecastDatas);
+
+    return { get };
   },
 };
 </script>
