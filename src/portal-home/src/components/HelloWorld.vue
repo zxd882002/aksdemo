@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <p>Weather Forcast</p>
     <button @click="get">Get /api/weatherforecast</button>
-    <table>
+    <!-- <table>
       <thead>
         <tr>
           <th>Date</th>
@@ -18,7 +18,7 @@
           <td>{{ item.tmperatureC }}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>
 </template>
 
