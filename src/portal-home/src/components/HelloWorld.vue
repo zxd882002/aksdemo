@@ -3,6 +3,7 @@
     <h1>{{ msg }}</h1>
     <p>Weather Forcast</p>
     <button @click="get">Get /api/weatherforecast</button>
+    {{ weatherforecastDataReactive[0].date }}
     <table>
       <thead>
         <tr>
