@@ -2,7 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h3>Weather Forcast</h3>
-    <button @click="get">Get /api/weatherforecast</button>
+    <button v-if="!show" @click="get">Get /api/weatherforecast</button>
     <table v-if="show">
       <thead>
         <tr>
@@ -60,7 +60,9 @@ h3 {
   margin: 40px 0 0;
 }
 table {
-  margin: 40px 0 0;
+  margin-top: 40;
+  margin-left: auto;
+  margin-right: auto;
 }
 ul {
   list-style-type: none;
