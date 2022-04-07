@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import WeatherForecastData from "@/models/WeatherForecastData";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, defineProps } from "vue";
 
 defineProps({ msg: String });
 
