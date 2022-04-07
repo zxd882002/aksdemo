@@ -34,20 +34,19 @@ export default defineComponent({
   },
   setup: () => {
     let weatherforecastDatas: WeatherForecastData[] = [];
+    let weatherforecastDataReactive = reactive(weatherforecastDatas);
 
     var get = async () => {
       try {
         const { data } = await axios.get("/api/weatherforecast");
-        weatherforecastDatas = data;
+        weatherforecastDataReactive = data;
         console.log("data:");
-        console.log(weatherforecastDatas);
+        console.log(weatherforecastDataReactive);
       } catch (error) {
         console.log("error:");
         console.log(error);
       }
     };
-
-    let weatherforecastDataReactive = reactive(weatherforecastDatas);
 
     return { get, weatherforecastDataReactive };
   },
