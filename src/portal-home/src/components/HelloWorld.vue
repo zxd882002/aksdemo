@@ -4,7 +4,7 @@
     <p>Weather Forcast</p>
     <button @click="get">Get /api/weatherforecast</button>
     <div v-if="show">
-      {{ weatherforecastDataReactive[0].date }}
+      {{ weatherDatas[0].date }}
       <table>
         <thead>
           <tr>
@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in weatherforecastDataReactive" :key="item.index">
+          <tr v-for="item in weatherDatas" :key="item.index">
             <td>{{ item.date }}</td>
             <td>{{ item.summary }}</td>
             <td>{{ item.tmperatureC }}</td>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import axios from "axios";
 import WeatherForecastData from "../models/WeatherForecastData";
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, toRefs } from "vue";
 
 export default defineComponent({
   name: "HelloWorld",
@@ -36,24 +36,25 @@ export default defineComponent({
     msg: String,
   },
   setup: () => {
-    let weatherforecastDatas: WeatherForecastData[] = [];
-    let weatherforecastDataReactive = reactive(weatherforecastDatas);
-    let show = ref(false);
+    let state = reactive({
+      weatherDatas: [] as WeatherForecastData[],
+      show: false,
+    });
 
-    var get = async () => {
+    const get = async () => {
       try {
         const { data } = await axios.get("/api/weatherforecast");
-        weatherforecastDataReactive = reactive(data);
+        state.weatherDatas = data;
         console.log("data:");
-        console.log(weatherforecastDataReactive);
-        show.value = true;
+        console.log(state.weatherDatas);
+        state.show = true;
       } catch (error) {
         console.log("error:");
         console.log(error);
       }
     };
 
-    return { get, weatherforecastDataReactive, show };
+    return { get, ...toRefs(state) };
   },
 });
 </script>
