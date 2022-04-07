@@ -22,32 +22,39 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import axios from "axios";
-import WeatherForecastData from "@/models/WeatherForecastData";
-import { reactive, toRefs } from "vue";
+import WeatherForecastData from "../models/WeatherForecastData";
+import { defineComponent, reactive, toRefs } from "vue";
 
-defineProps({ msg: String });
+export default defineComponent({
+  name: "HelloWorld",
+  props: {
+    msg: String,
+  },
+  setup: () => {
+    const state = reactive({
+      weatherDatas: [] as WeatherForecastData[],
+      show: false,
+    });
 
-const state = reactive({
-  weatherDatas: [] as WeatherForecastData[],
-  show: false,
+    const get = async () => {
+      try {
+        const { data } = await axios.get("/api/weatherforecast");
+        state.weatherDatas = data;
+        state.show = true;
+      } catch (error) {
+        console.log("error:");
+        console.log(error);
+      }
+    };
+
+    return { get, ...toRefs(state) };
+  },
 });
-
-const get = async () => {
-  try {
-    const { data } = await axios.get("/api/weatherforecast");
-    state.weatherDatas = data;
-    state.show = true;
-  } catch (error) {
-    console.log("error:");
-    console.log(error);
-  }
-};
-
-const { weatherDatas, show } = toRefs(state);
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;

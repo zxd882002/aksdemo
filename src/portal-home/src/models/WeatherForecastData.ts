@@ -1,9 +1,7 @@
-export default class WeatherForecastData {
-    constructor(
-        public index: number,
-        public date: string,
-        public temperatureC: number,
-        public temperatureF: number,
-        public summary: string
-    ) { }
+export default interface WeatherForecastData {   
+        index: number;
+        date: string;
+        temperatureC: number;
+        temperatureF: number;
+        summary: string;
 }
