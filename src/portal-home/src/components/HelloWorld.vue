@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in weatherforecastDataReactive" :key="item.date">
+        <tr v-for="item in weatherforecastDataReactive" :key="item.index">
           <td>{{ item.date }}</td>
           <td>{{ item.summary }}</td>
           <td>{{ item.tmperatureC }}</td>
