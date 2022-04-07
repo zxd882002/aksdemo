@@ -43,7 +43,7 @@ export default defineComponent({
     var get = async () => {
       try {
         const { data } = await axios.get("/api/weatherforecast");
-        weatherforecastDataReactive = data;
+        weatherforecastDataReactive = reactive(data);
         console.log("data:");
         console.log(weatherforecastDataReactive);
         show.value = true;
