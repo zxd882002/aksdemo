@@ -2,7 +2,10 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h3>Weather Forcast</h3>
-    <button v-if="!show" @click="get">Get /api/weatherforecast</button>
+    <el-button type="primary" v-if="!show" @click="get"
+      >Get /api/weatherforecast</el-button
+    >
+    <div>{{ errorMsg }}</div>
     <table v-if="show">
       <thead>
         <tr>
@@ -32,6 +35,7 @@ defineProps({ msg: String });
 const state = reactive({
   weatherDatas: [] as WeatherForecastData[],
   show: false,
+  errorMsg: "",
 });
 
 const get = async () => {
@@ -40,12 +44,11 @@ const get = async () => {
     state.weatherDatas = data;
     state.show = true;
   } catch (error) {
-    console.log("error:");
-    console.log(error);
+    state.errorMsg = error as string;
   }
 };
 
-const { weatherDatas, show } = toRefs(state);
+const { weatherDatas, show, errorMsg } = toRefs(state);
 </script>
 
 <style scoped>
