@@ -1,45 +1,61 @@
 <template>
-  <div class="common-layout">
-    <el-container style="border: 1px solid #eee">
-      <el-header class="header"> 淘淘の家</el-header>
-      <el-container>
-        <el-aside width="200px" style="border: 1px solid #eee">
-          <el-scrollbar
-            ><el-menu
-              ><el-sub-menu index="1">
-                <template #title>
-                  <coordinate
-                    style="width: 1em; height: 1em; padding-right: 1em;"
-                  /><span>小游戏</span>
-                </template>
-                <el-menu-item index="1-1">猜数字</el-menu-item>
-                <el-menu-item index="1-2">数独</el-menu-item>
-                <el-menu-item index="1-3">五子棋</el-menu-item>
-              </el-sub-menu>
-            </el-menu>
-          </el-scrollbar></el-aside
-        >
-        <el-main style="border: 1px solid #eee"
-          ><HelloWorld msg="Welcome to MY Vue.js + TypeScript App"
-        /></el-main>
-      </el-container>
+  <el-container style="height: 100%">
+    <el-header> 淘淘の家</el-header>
+    <el-container>
+      <el-aside>
+        <el-menu>
+          <el-sub-menu index="1">
+            <template #title>
+              <coordinate style="width: 1em; height: 1em; padding-right: 1em" />
+              <span>小游戏</span>
+            </template>
+            <el-menu-item index="1-1">猜数字</el-menu-item>
+            <el-menu-item index="1-2">五子棋</el-menu-item>
+            <el-menu-item index="1-3">...</el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="2">
+            <template #title>
+              <tools style="width: 1em; height: 1em; padding-right: 1em" />
+              <span>小工具</span>
+            </template>
+            <el-menu-item index="2-1">计算器</el-menu-item>
+            <el-menu-item index="2-2">...</el-menu-item>
+          </el-sub-menu>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
-import { Coordinate } from "@element-plus/icons-vue";
+import { Coordinate, Tools } from "@element-plus/icons-vue";
 </script>
 
 <style scoped>
-.header {
-  background: #409eff;
+.el-header {
+  background: #337ecc;
   display: flex;
   align-items: center; /*垂直居中*/
   height: 3em;
   color: white;
   font-size: larger;
   font-weight: bold;
+}
+.el-aside {
+  width: 200px;
+  border-right: 1px solid #eee;
+  background-color: #409eff;
+}
+.el-sub-menu {
+  background-color: #409eff;
+}
+.el-sub-menu > :hover {
+  background-color: #409eff;
+}
+.el-menu-item {
+  background-color: #79bbff;
 }
 </style>
