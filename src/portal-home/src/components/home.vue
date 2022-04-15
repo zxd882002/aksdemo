@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>{{ msg ?? "这是我们的主页" }}</h1>
     <h3>Weather Forcast</h3>
     <el-button type="primary" v-if="!show" @click="get"
       >Get /api/weatherforecast</el-button
