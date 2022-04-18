@@ -51,7 +51,7 @@ const get = async () => {
 const { weatherDatas, show, errorMsg } = toRefs(state);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .hello {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
