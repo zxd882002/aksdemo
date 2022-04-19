@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace WeatherForecastAPI.Models.NumberGuess
 {
@@ -6,8 +7,8 @@ namespace WeatherForecastAPI.Models.NumberGuess
     {
         public Guid GameIdentifier { get; set; }
         public int GameRetry { get; set; }
-        public int[] GameNumber { get; set; }
-        public string GameStatus { get; set; }
-        public GameHistory[] GameHistories { get; set; }
+        public int[] GameAnswer { get; set; } = null!;
+        public string GameStatus { get; set; } = null!;
+        public List<GameHistory> GameHistories { get; set; } = null!;
     }
 }

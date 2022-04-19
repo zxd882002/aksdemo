@@ -17,7 +17,7 @@ namespace WeatherForecastAPI.Controllers
             _gameStatus = gameStatus;
         }
 
-        [HttpPost]
+        [HttpPost("StartGame")]
         public StartGameResponse StartGame(StartGameReuqest request)
         {
             var info = _gameStatus.CreateGameStatusInformation();
@@ -31,6 +31,33 @@ namespace WeatherForecastAPI.Controllers
                 GameRetry = info.GameRetry,
                 GameStatus = info.GameStatus,
                 GameHistories = info.GameHistories.Select(x => $"{x.Input} - {x.Result}").ToArray()
+            };
+        }
+
+        [HttpPost("CheckResult")]
+        public CheckResultResponse CheckResult(CheckResultRequest request)
+        {
+            var info = _gameStatus.CheckResult(request.GameIdentifier, request.Input);
+            if (info == null)
+                return new CheckResultResponse
+                {
+                    Header = new ResponseHeader
+                    {
+                        ResponseId = request.Header.RequestId
+                    }
+                };
+
+            return new CheckResultResponse
+            {
+                Header = new ResponseHeader
+                {
+                    ResponseId = request.Header.RequestId
+                },
+                GameIdentifier = info.GameIdentifier.ToString(),
+                GameRetry = info.GameRetry,
+                GameStatus = info.GameStatus,
+                GameHistories = info.GameHistories.Select(x => $"{x.Input} - {x.Result}").ToArray(),
+                GameAnswer = info.GameRetry == 0 ? string.Join("", info.GameAnswer) : null
             };
         }
     }

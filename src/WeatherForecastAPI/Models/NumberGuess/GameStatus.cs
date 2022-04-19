@@ -20,11 +20,52 @@ namespace WeatherForecastAPI.Models.NumberGuess
             {
                 GameIdentifier = guid,
                 GameRetry = 10,
-                GameNumber = GenerateNumber(),
+                GameAnswer = GenerateNumber(),
                 GameStatus = "Started",
-                GameHistories = new GameHistory[10]
+                GameHistories = new List<GameHistory>()
             };
+            _gameStatus[guid] = gameStatusInformation;
             return gameStatusInformation;
+        }
+
+        public GameStatusInformation? CheckResult(string gameIdentifierString, int[] inputs)
+        {
+            try
+            {
+                Guid gameIdentifier = Guid.Parse(gameIdentifierString);
+                if (_gameStatus.ContainsKey(gameIdentifier))
+                {
+                    var information = _gameStatus[gameIdentifier];
+                    string checkResult = Check(information.GameAnswer, inputs);
+                    information.GameHistories.Add(new GameHistory
+                    {
+                        Input = string.Join("", inputs),
+                        Result = checkResult
+                    });
+                    information.GameRetry = information.GameRetry - 1;
+
+                    if (checkResult == "4A0B")
+                    {
+                        // answer is correct
+                        information.GameStatus = "Pass";
+                        _gameStatus.Remove(gameIdentifier);
+
+                    }
+                    else if (information.GameRetry == 0)
+                    {
+                        // anwer is not correct and no retries
+                        information.GameStatus = "Fail";
+                        _gameStatus.Remove(gameIdentifier);
+                    }
+
+                    return information;
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private int[] GenerateNumber()
@@ -47,6 +88,28 @@ namespace WeatherForecastAPI.Models.NumberGuess
             }
 
             return numbers.Take(4).ToArray();
+        }
+        private string Check(int[] expected, int[] actual)
+        {
+            int aCount = 0;
+            int bCount = 0;
+            for (int i = 0; i < expected.Length; i++)
+            {
+                int expectedNumber = expected[i];
+                for (int j = 0; j < actual.Length; j++)
+                {
+                    int actualNumber = actual[j];
+                    if (expectedNumber == actualNumber && i == j)
+                    {
+                        aCount++;
+                    }
+                    else if (expectedNumber == actualNumber)
+                    {
+                        bCount++;
+                    }
+                }
+            }
+            return $"{aCount}A{bCount}B";
         }
     }
 }
