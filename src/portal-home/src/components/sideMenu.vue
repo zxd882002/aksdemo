@@ -60,7 +60,7 @@ window.addEventListener("resize", () => {
   }
   .collaps-button {
     padding: 20px;
-    background-color: #337ecc;
+    background-color: var(--el-color-primary-dark-2);
     color: white;
     display: flex;
     align-items: flex-end;

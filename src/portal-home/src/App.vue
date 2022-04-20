@@ -18,7 +18,7 @@ import SideMenu from "./components/sideMenu.vue";
 
 <style lang="scss" scoped>
 .el-header {
-  background: #337ecc;
+  background: var(--el-color-primary-dark-2);
   display: flex;
   align-items: center; /*垂直居中*/
   height: 3em;
