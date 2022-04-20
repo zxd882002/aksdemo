@@ -11,7 +11,7 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /api/WeatherForecast
+        prefix: /api
       ignoreUriCase: true
     route:
     - destination:
