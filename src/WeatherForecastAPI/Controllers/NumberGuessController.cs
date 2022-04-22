@@ -57,7 +57,7 @@ namespace WeatherForecastAPI.Controllers
                 GameRetry = info.GameRetry,
                 GameStatus = info.GameStatus,
                 GameHistories = info.GameHistories.Select(x => $"{x.Input} - {x.Result}").ToArray(),
-                GameAnswer = info.GameRetry == 0 ? string.Join("", info.GameAnswer) : null
+                GameAnswer = info.GameStatus == "Pass" || info.GameStatus == "Fail" ? string.Join("", info.GameAnswer) : null
             };
         }
     }

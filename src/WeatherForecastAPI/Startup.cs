@@ -25,6 +25,16 @@ namespace WeatherForecastAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy
+                    .WithOrigins("http://localhost:8080", "http://10.80.151.95:8080")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
             services.AddControllers();
             services.AddSingleton<GameStatus>(new GameStatus());
             services.AddSwaggerGen();
@@ -36,13 +46,15 @@ namespace WeatherForecastAPI
             app.UseSwagger();
 
             app.UseSwaggerUI();
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
