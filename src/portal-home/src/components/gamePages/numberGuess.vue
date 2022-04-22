@@ -109,7 +109,7 @@ const startGame = async () => {
   try {
     const request: NumberGuessStartGameRequest = {
       header: {
-        requestId: Guid.create(),
+        requestId: Guid.create().toString(),
       },
     };
     const { data } = await axios.post<NumberGuessStartGameResponse>(
@@ -129,7 +129,7 @@ const resultCheck = async () => {
   try {
     const request: NumberGuessCheckResultRequest = {
       header: {
-        requestId: Guid.create(),
+        requestId: Guid.create().toString(),
       },
       gameIdentifier: gameStatusInformation.gameIdentifier,
       input: [
