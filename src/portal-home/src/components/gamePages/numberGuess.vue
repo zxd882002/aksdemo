@@ -44,28 +44,36 @@
         >次机会
       </div>
       <div class="inputOut">
+        <div class="halfPlaceHolder"></div>
         <input
+          type="text"
           class="input"
           contenteditable="true"
           ref="input1"
           v-model="inputNumber[0]"
           @keyup="onInputNumber1"
         />
+        <div class="placeHolder"></div>
         <input
+          type="text"
           class="input"
           contenteditable="true"
           ref="input2"
           v-model="inputNumber[1]"
           @keyup="onInputNumber2"
         />
+        <div class="placeHolder"></div>
         <input
+          type="text"
           class="input"
           contenteditable="true"
           ref="input3"
           v-model="inputNumber[2]"
           @keyup="onInputNumber3"
         />
+        <div class="placeHolder"></div>
         <input
+          type="text"
           class="input"
           contenteditable="true"
           ref="input4"
@@ -263,18 +271,31 @@ const {
 <style lang="scss" scoped>
 .inputOut {
   display: flex;
-  margin: 10px;
+  height: 30vw;
+  max-height: 90px;
+  align-items: center;
   .input {
-    width: 30px;
-    height: 30px;
+    width: 10vw;
+    height: 10vw;
     border-top: none;
     border-left: none;
     border-right: none;
-    border-bottom: 1px solid black;
-    margin-left: 30px;
+    border-bottom: px solid black;
     text-align: center;
-    //-webkit-user-select: auto;
-    -webkit-user-select: text !important;
+    max-width: 30px;
+    max-height: 30px;
+  }
+  .halfPlaceHolder {
+    width: 5vw;
+    height: 10vw;
+    max-width: 15px;
+    max-height: 30px;
+  }
+  .placeHolder {
+    width: 10vw;
+    height: 10vw;
+    max-width: 30px;
+    max-height: 30px;
   }
 }
 </style>
