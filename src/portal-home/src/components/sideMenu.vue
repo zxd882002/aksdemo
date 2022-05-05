@@ -33,10 +33,11 @@
 
 <script setup lang="ts">
 import { Coordinate, Tools, Fold, Expand } from "@element-plus/icons-vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 const collapse = ref(false);
-window.addEventListener("resize", () => {
+const resizeSideMenu = () => {
   setTimeout(() => {
+    console.log("call resize");
     const width = window.document.documentElement.getBoundingClientRect().width;
     if (width <= 540) {
       collapse.value = true;
@@ -44,6 +45,11 @@ window.addEventListener("resize", () => {
       collapse.value = false;
     }
   }, 500);
+};
+
+onMounted(() => {
+  window.addEventListener("resize", resizeSideMenu);
+  resizeSideMenu();
 });
 </script>
 
