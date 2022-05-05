@@ -46,24 +46,28 @@
       <div class="inputOut">
         <input
           class="input"
+          contenteditable="true"
           ref="input1"
           v-model="inputNumber[0]"
           @keyup="onInputNumber1"
         />
         <input
           class="input"
+          contenteditable="true"
           ref="input2"
           v-model="inputNumber[1]"
           @keyup="onInputNumber2"
         />
         <input
           class="input"
+          contenteditable="true"
           ref="input3"
           v-model="inputNumber[2]"
           @keyup="onInputNumber3"
         />
         <input
           class="input"
+          contenteditable="true"
           ref="input4"
           v-model="inputNumber[3]"
           @keyup="onInputNumber4"
@@ -269,6 +273,8 @@ const {
     border-bottom: 1px solid black;
     margin-left: 30px;
     text-align: center;
+    //-webkit-user-select: auto;
+    -webkit-user-select: text !important;
   }
 }
 </style>
