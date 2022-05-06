@@ -1,4 +1,17 @@
 <template>
+  这个是test input
+  <input type="text" @input="testInput" />
+  {{ intputValue }}
+  <br />
+  这个是test keyup
+  <input type="text" @keyup="testKeyUp" />
+  {{ keyupValue }}
+  <br />
+  这个是test keyup.Enter
+  <input type="text" @keyup.enter="testKeyUpEnter" placeholder="text" />
+  <input type="search" @keyup.enter="testKeyUpEnter" placeholder="search" />
+  {{ keyupEnterValue }}
+
   <el-alert :title="errorMsg" type="error" show-icon v-show="errorMsg != ''" />
   <div>
     <div v-show="!gameStarted">
@@ -46,7 +59,7 @@
       <div class="inputOut">
         <div class="halfPlaceHolder"></div>
         <input
-          type="text"
+          type="search"
           class="input"
           contenteditable="true"
           ref="input1"
@@ -55,7 +68,7 @@
         />
         <div class="placeHolder"></div>
         <input
-          type="text"
+          type="search"
           class="input"
           contenteditable="true"
           ref="input2"
@@ -64,7 +77,7 @@
         />
         <div class="placeHolder"></div>
         <input
-          type="text"
+          type="search"
           class="input"
           contenteditable="true"
           ref="input3"
@@ -73,7 +86,7 @@
         />
         <div class="placeHolder"></div>
         <input
-          type="text"
+          type="search"
           class="input"
           contenteditable="true"
           ref="input4"
@@ -185,6 +198,23 @@ const resultCheck = async () => {
   } catch (error) {
     gameStatusInformation.errorMsg = error as string;
   }
+};
+
+const intputValue = ref("");
+const testInput = (event: Event) => {
+  const inputEvent = event as InputEvent;
+  console.log(inputEvent);
+  intputValue.value = inputEvent.data ?? "";
+};
+const keyupValue = ref("");
+const testKeyUp = (event: KeyboardEvent) => {
+  console.log(event);
+  keyupValue.value = event.key ?? "";
+};
+const keyupEnterValue = ref("");
+const testKeyUpEnter = (event: KeyboardEvent) => {
+  console.log(event);
+  keyupEnterValue.value = event.key ?? "";
 };
 
 const onInputNumber1 = (event: KeyboardEvent) => {

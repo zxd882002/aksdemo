@@ -37,7 +37,6 @@ import { onMounted, ref } from "vue";
 const collapse = ref(false);
 const resizeSideMenu = () => {
   setTimeout(() => {
-    console.log("call resize");
     const width = window.document.documentElement.getBoundingClientRect().width;
     if (width <= 540) {
       collapse.value = true;
