@@ -1,17 +1,4 @@
 <template>
-  这个是test input
-  <input type="text" @input="testInput" />
-  {{ intputValue }}
-  <br />
-  这个是test keyup
-  <input type="text" @keyup="testKeyUp" />
-  {{ keyupValue }}
-  <br />
-  这个是test keyup.Enter
-  <input type="text" @keyup.enter="testKeyUpEnter" placeholder="text" />
-  <input type="search" @keyup.enter="testKeyUpEnter" placeholder="search" />
-  {{ keyupEnterValue }}
-
   <el-alert :title="errorMsg" type="error" show-icon v-show="errorMsg != ''" />
   <div>
     <div v-show="!gameStarted">
@@ -42,7 +29,8 @@
         >开始
       </el-button>
     </div>
-    <div v-show="gameStarted">
+    <div v-show="gameStarted"></div>
+    <div>
       <div>
         请输入4个不重复的数字，按回车键提交 - 你还有<span
           v-bind:style="{
@@ -59,39 +47,43 @@
       <div class="inputOut">
         <div class="halfPlaceHolder"></div>
         <input
-          type="search"
+          type="text"
           class="input"
           contenteditable="true"
           ref="input1"
           v-model="inputNumber[0]"
-          @keyup="onInputNumber1"
+          @input="onInputNumber1"
+          @keyup.enter="onEnter"
         />
         <div class="placeHolder"></div>
         <input
-          type="search"
+          type="text"
           class="input"
           contenteditable="true"
           ref="input2"
           v-model="inputNumber[1]"
-          @keyup="onInputNumber2"
+          @input="onInputNumber2"
+          @keyup.enter="onEnter"
         />
         <div class="placeHolder"></div>
         <input
-          type="search"
+          type="text"
           class="input"
           contenteditable="true"
           ref="input3"
           v-model="inputNumber[2]"
-          @keyup="onInputNumber3"
+          @input="onInputNumber3"
+          @keyup.enter="onEnter"
         />
         <div class="placeHolder"></div>
         <input
-          type="search"
+          type="text"
           class="input"
           contenteditable="true"
           ref="input4"
           v-model="inputNumber[3]"
-          @keyup="onInputNumber4"
+          @input="onInputNumber4"
+          @keyup.enter="onEnter"
         />
       </div>
       <div v-if="gameHistories.length != 0">
@@ -200,44 +192,31 @@ const resultCheck = async () => {
   }
 };
 
-const intputValue = ref("");
-const testInput = (event: Event) => {
+const onInputNumber1 = (event: Event) => {
   const inputEvent = event as InputEvent;
-  console.log(inputEvent);
-  intputValue.value = inputEvent.data ?? "";
-};
-const keyupValue = ref("");
-const testKeyUp = (event: KeyboardEvent) => {
-  console.log(event);
-  keyupValue.value = event.key ?? "";
-};
-const keyupEnterValue = ref("");
-const testKeyUpEnter = (event: KeyboardEvent) => {
-  console.log(event);
-  keyupEnterValue.value = event.key ?? "";
-};
-
-const onInputNumber1 = (event: KeyboardEvent) => {
-  if (event.key == "Enter") onEnter(event);
-  else if (event.key.match("^[0-9]$")) handleInput(0, event.key);
+  const input = inputEvent.data ?? "";
+  if (input.match("^[0-9]$")) handleInput(0, input);
   else clearInput(0);
 };
 
-const onInputNumber2 = (event: KeyboardEvent) => {
-  if (event.key == "Enter") onEnter(event);
-  else if (event.key.match("^[0-9]$")) handleInput(1, event.key);
+const onInputNumber2 = (event: Event) => {
+  const inputEvent = event as InputEvent;
+  const input = inputEvent.data ?? "";
+  if (input.match("^[0-9]$")) handleInput(1, input);
   else clearInput(1);
 };
 
-const onInputNumber3 = (event: KeyboardEvent) => {
-  if (event.key == "Enter") onEnter(event);
-  else if (event.key.match("^[0-9]$")) handleInput(2, event.key);
+const onInputNumber3 = (event: Event) => {
+  const inputEvent = event as InputEvent;
+  const input = inputEvent.data ?? "";
+  if (input.match("^[0-9]$")) handleInput(2, input);
   else clearInput(2);
 };
 
-const onInputNumber4 = (event: KeyboardEvent) => {
-  if (event.key == "Enter") onEnter(event);
-  else if (event.key.match("^[0-9]$")) handleInput(3, event.key);
+const onInputNumber4 = (event: Event) => {
+  const inputEvent = event as InputEvent;
+  const input = inputEvent.data ?? "";
+  if (input.match("^[0-9]$")) handleInput(3, input);
   else clearInput(3);
 };
 
