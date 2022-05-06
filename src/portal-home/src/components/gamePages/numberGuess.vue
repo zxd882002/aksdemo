@@ -29,8 +29,7 @@
         >开始
       </el-button>
     </div>
-    <div v-show="gameStarted"></div>
-    <div>
+    <div v-show="gameStarted">
       <div>
         请输入4个不重复的数字，按回车键提交 - 你还有<span
           v-bind:style="{
