@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,15 +25,25 @@ namespace WeatherForecastAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
+            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(
+            new ConfigurationOptions
+            {
+                EndPoints = { "redis-master.redis.svc.cluster.local:6379" },
+                Password = "123456"
+            });
+
+            var db = redis.GetDatabase();
+            var pong = await db.PingAsync();
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Index = index,
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
+                Summary = Summaries[rng.Next(Summaries.Length)] + $"[REDIS PONG: {pong}]"
             })
             .ToArray();
         }

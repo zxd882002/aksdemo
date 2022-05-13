@@ -1,0 +1,8 @@
+global:
+  storageClass: csi-cinder-sc-delete
+
+auth:
+  password: "123456"
+
+architecture: standalone
+
