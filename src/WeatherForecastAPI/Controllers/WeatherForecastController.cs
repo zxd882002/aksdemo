@@ -25,7 +25,7 @@ namespace WeatherForecastAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WeatherForecast>> Get()
+        public IEnumerable<WeatherForecast> Get()
         {
 
             var rng = new Random();
