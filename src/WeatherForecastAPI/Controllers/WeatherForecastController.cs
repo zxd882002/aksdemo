@@ -39,7 +39,7 @@ namespace WeatherForecastAPI.Controllers
             .ToArray();
         }
 
-        [HttpGet]
+        [HttpGet("redis")]
         public async Task<string> Get(int id)
         {
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(

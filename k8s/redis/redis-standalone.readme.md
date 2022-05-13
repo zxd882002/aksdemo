@@ -6,6 +6,7 @@ helm -n redis delete redis
 https://www.teanote.pub/archives/347
 https://artifacthub.io/packages/helm/bitnami/redis
 https://docs.redis.com/latest/rs/references/client_references/client_csharp/
+https://github.com/zhaohuabing/istio-redis-culster
 
 NAME: redis
 LAST DEPLOYED: Fri May 13 15:25:17 2022
