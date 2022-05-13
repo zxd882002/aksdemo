@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,15 @@ namespace WeatherForecastAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // redis
+            var multiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
+            {
+                EndPoints = { "redis-master.redis.svc.cluster.local:6379" },
+                Password = "123456"
+            });
+            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+
+            // dev env: cors
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
@@ -35,8 +45,14 @@ namespace WeatherForecastAPI
                     .AllowAnyMethod();
                 });
             });
+
+            // controller
             services.AddControllers();
+
+            // models
             services.AddSingleton<GameStatus>(new GameStatus());
+
+            // swagger
             services.AddSwaggerGen();
         }
 

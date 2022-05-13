@@ -18,10 +18,12 @@ namespace WeatherForecastAPI.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IConnectionMultiplexer _redis;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IConnectionMultiplexer redis)
         {
             _logger = logger;
+            _redis = redis;
         }
 
         [HttpGet]
@@ -42,14 +44,7 @@ namespace WeatherForecastAPI.Controllers
         [HttpGet("redis")]
         public async Task<string> Get(int id)
         {
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(
-            new ConfigurationOptions
-            {
-                EndPoints = { "redis-master.redis.svc.cluster.local:6379" },
-                Password = "123456"
-            });
-
-            var db = redis.GetDatabase();
+            var db = _redis.GetDatabase();
             var pong = await db.PingAsync();
             return pong + id.ToString();
         }
