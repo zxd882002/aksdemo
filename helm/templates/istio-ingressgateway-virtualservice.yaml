@@ -11,6 +11,16 @@ spec:
   http:
   - match:
     - uri:
+        prefix: /swagger
+      ignoreUriCase: true
+    route:
+    - destination:
+        host: {{ .Values.weatherForecastApi.name }}
+        port:
+          number: {{.Values.weatherForecastApi.service.port}}
+        subset: subset-{{ .Values.version }} 
+  - match:
+    - uri:
         prefix: /api
       ignoreUriCase: true
     route:
@@ -19,6 +29,7 @@ spec:
         port:
           number: {{.Values.weatherForecastApi.service.port}}
         subset: subset-{{ .Values.version }}  
+  
   - match:
     - uri:
         prefix: /
