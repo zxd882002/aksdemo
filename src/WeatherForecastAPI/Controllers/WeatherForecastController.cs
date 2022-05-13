@@ -27,6 +27,21 @@ namespace WeatherForecastAPI.Controllers
         [HttpGet]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
+
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Index = index,
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+
+        [HttpGet]
+        public async Task<string> Get(int id)
+        {
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(
             new ConfigurationOptions
             {
@@ -36,16 +51,7 @@ namespace WeatherForecastAPI.Controllers
 
             var db = redis.GetDatabase();
             var pong = await db.PingAsync();
-
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Index = index,
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)] + $"[REDIS PONG: {pong}]"
-            })
-            .ToArray();
+            return pong + id.ToString();
         }
     }
 }
