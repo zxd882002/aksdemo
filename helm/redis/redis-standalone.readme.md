@@ -5,7 +5,7 @@ https://artifacthub.io/packages/helm/bitnami/redis
 https://docs.redis.com/latest/rs/references/client_references/client_csharp/
 
 NAME: redis
-LAST DEPLOYED: Fri May 13 13:50:09 2022
+LAST DEPLOYED: Fri May 13 14:21:28 2022
 NAMESPACE: redis
 STATUS: deployed
 REVISION: 1
