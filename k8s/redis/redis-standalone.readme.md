@@ -1,11 +1,14 @@
+kubectl create ns redis
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm -n redis install redis bitnami/redis -f redis-values-standalone.yaml
+helm -n redis delete redis
+
 https://www.teanote.pub/archives/347
 https://artifacthub.io/packages/helm/bitnami/redis
 https://docs.redis.com/latest/rs/references/client_references/client_csharp/
 
 NAME: redis
-LAST DEPLOYED: Fri May 13 14:21:28 2022
+LAST DEPLOYED: Fri May 13 15:25:17 2022
 NAMESPACE: redis
 STATUS: deployed
 REVISION: 1

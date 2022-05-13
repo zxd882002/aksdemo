@@ -1,3 +1,6 @@
+global:
+  storageClass: default
+
 auth:
   password: "123456"
 
