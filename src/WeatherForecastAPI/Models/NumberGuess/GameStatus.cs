@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using WeatherForecastAPI.Infrastructure.Entensions;
 using WeatherForecastAPI.Infrastructure.Redis;
 
 namespace WeatherForecastAPI.Models.NumberGuess
@@ -22,7 +22,7 @@ namespace WeatherForecastAPI.Models.NumberGuess
             {
                 GameIdentifier = guid.ToString(),
                 GameRetry = 10,
-                GameAnswer = GenerateNumber(),
+                GameAnswer = 4.GenerateNoDupeRandomNumber(),
                 GameStatus = "Started",
                 GameHistories = new List<GameHistory>()
             };
@@ -72,28 +72,6 @@ namespace WeatherForecastAPI.Models.NumberGuess
             {
                 return null;
             }
-        }
-
-        private int[] GenerateNumber()
-        {
-            int[] numbers = new int[10];
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                numbers[i] = i;
-            }
-
-            Random r = new Random();
-            int loop = 100000;
-            for (int i = 0; i < loop; i++)
-            {
-                int number1 = r.Next(0, 10);
-                int number2 = r.Next(0, 10);
-                int temp = numbers[number1];
-                numbers[number1] = numbers[number2];
-                numbers[number2] = temp;
-            }
-
-            return numbers.Take(4).ToArray();
         }
 
         private string Check(int[] expected, int[] actual)
