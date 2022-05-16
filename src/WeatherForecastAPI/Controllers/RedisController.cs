@@ -21,7 +21,7 @@ namespace WeatherForecastAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<object> Get()
+        public object Get()
         {
             return _weatherForecastApiOptions;
         }
