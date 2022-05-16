@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: {{ .Values.portalHome.image.pullPolicy }}
           ports:
             - containerPort: 80
-              protocol: TCP          
+              protocol: TCP     
           livenessProbe:
             httpGet:
               path: /

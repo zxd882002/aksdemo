@@ -18,5 +18,9 @@ weatherForecastApi:
   image:
     repository: xudongacr.azurecr.io/weatherforecastapi
     pullPolicy: IfNotPresent
+  env:
+    ASPNETCORE_URLS: http://+:80
+    WeatherForecastAPI__RedisEndPoint: redis-master.redis.svc.cluster.local:6379
+    WeatherForecastAPI__Password: "123456"
   service:
     port: 80

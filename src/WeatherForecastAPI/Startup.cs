@@ -22,12 +22,7 @@ namespace WeatherForecastAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // options            
-            try
-            {
-                services.Configure<WeatherForecastApiOptions>(Configuration.GetSection(WeatherForecastApiOptions.SectionName));
-            }
-            catch { }
-
+            services.Configure<WeatherForecastApiOptions>(Configuration.GetSection(WeatherForecastApiOptions.SectionName));
 
             // redis            
             services.AddSingleton<IRedisHelper, RedisHelper>();
