@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +16,10 @@ namespace WeatherForecastAPI.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly IConnectionMultiplexer _redis;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IConnectionMultiplexer redis)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            _redis = redis;
         }
 
         [HttpGet]

@@ -20,9 +20,12 @@ namespace WeatherForecastAPI.Controllers
         [HttpGet]
         public GetSaultResponse GetSault()
         {
-            var sault = 4.GenerateNoDupeRandomNumber().ToString() ?? "0000";
-            var traceId = Guid.NewGuid().ToString();
-            _redisHelper.SaveToRedis(traceId, sault, TimeSpan.FromMinutes(10));
+            string sault = 4.GenerateNoDupeRandomNumber().ToString() ?? "0000";
+            string traceId = Guid.NewGuid().ToString();
+            string password = "20181129673365402" + sault;
+            string hash = password.GetSHA256String();
+
+            _redisHelper.SaveToRedis(traceId, hash, TimeSpan.FromMinutes(10));
             return new GetSaultResponse
             {
                 Sault = sault,
