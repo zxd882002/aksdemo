@@ -1,7 +1,9 @@
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WeatherForecastAPI.Models.ConfigOptions;
 
 namespace WeatherForecastAPI.Infrastructure.Redis
 {
@@ -15,15 +17,19 @@ namespace WeatherForecastAPI.Infrastructure.Redis
 
     public class RedisHelper : IRedisHelper
     {
-        private readonly IConnectionMultiplexer _redis;
-        public RedisHelper(IConnectionMultiplexer redis)
+        private readonly WeatherForecastApiOptions _weatherForecastApiOptions;
+        private ConnectionMultiplexer? _multiplexer = null;
+
+        public RedisHelper(IOptions<WeatherForecastApiOptions> weatherForecastApiOptions)
         {
-            _redis = redis;
+            _weatherForecastApiOptions = weatherForecastApiOptions.Value;
         }
 
         public async Task<string> PingRedis()
         {
-            var db = _redis.GetDatabase();
+            GetConnectionDataBase();
+
+            var db = GetConnectionDataBase();
             var pong = await db.PingAsync();
             return pong.ToString();
         }
@@ -31,14 +37,14 @@ namespace WeatherForecastAPI.Infrastructure.Redis
         public async Task<bool> SaveToRedis<T>(string key, T value, TimeSpan? expiry)
         {
             string serializedValue = JsonSerializer.Serialize(value);
-            var db = _redis.GetDatabase();
+            var db = GetConnectionDataBase();
             bool result = await db.StringSetAsync(key, serializedValue, expiry);
             return result;
         }
 
         public async Task<T?> GetFromRedis<T>(string key)
         {
-            var db = _redis.GetDatabase();
+            var db = GetConnectionDataBase();
             string? serializedValue = await db.StringGetAsync(key);
 
             if(serializedValue == null)
@@ -53,9 +59,26 @@ namespace WeatherForecastAPI.Infrastructure.Redis
 
         public async Task<bool> RemoveFromRedis(string key)
         {
-            var db = _redis.GetDatabase();
+            var db = GetConnectionDataBase();
             var result = await db.KeyDeleteAsync(key);
             return result;
+        }
+
+        private IDatabase GetConnectionDataBase()
+        {
+            if(_multiplexer == null)
+            {
+                _multiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
+                {
+                    EndPoints = { _weatherForecastApiOptions.RedisEndPoint },
+                    Password = string.IsNullOrWhiteSpace(_weatherForecastApiOptions.RedisPassword) ? null : _weatherForecastApiOptions.RedisPassword
+                });
+            }
+
+            if (_multiplexer == null)
+                throw new ArgumentNullException($"Cannot connect to {_weatherForecastApiOptions.RedisEndPoint}");
+
+            return _multiplexer.GetDatabase();
         }
     }
 }

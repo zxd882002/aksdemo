@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StackExchange.Redis;
 using WeatherForecastAPI.Infrastructure.Redis;
 using WeatherForecastAPI.Models.ConfigOptions;
 using WeatherForecastAPI.Models.NumberGuess;
@@ -22,17 +21,10 @@ namespace WeatherForecastAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // options
-            WeatherForecastApiOptions weatherForecastApiOptions = new WeatherForecastApiOptions();
-            Configuration.GetSection(WeatherForecastApiOptions.SectionName).Bind(weatherForecastApiOptions);
+            // options            
+            services.Configure<WeatherForecastApiOptions>(Configuration.GetSection(WeatherForecastApiOptions.SectionName));
 
-            // redis
-            ConnectionMultiplexer? multiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
-            {
-                EndPoints = { weatherForecastApiOptions.RedisEndPoint },
-                Password = string.IsNullOrWhiteSpace(weatherForecastApiOptions.RedisPassword) ? null : weatherForecastApiOptions.RedisPassword
-            });
-            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+            // redis            
             services.AddSingleton<IRedisHelper, RedisHelper>();
 
             // dev env: cors
