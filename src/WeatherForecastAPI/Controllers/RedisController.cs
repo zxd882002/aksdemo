@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 using WeatherForecastAPI.Infrastructure.Redis;
+using WeatherForecastAPI.Models.ConfigOptions;
 
 namespace WeatherForecastAPI.Controllers
 {
@@ -10,10 +12,18 @@ namespace WeatherForecastAPI.Controllers
     public class RedisController : ControllerBase
     {
         private readonly IRedisHelper _redisHelper;
+        private readonly IOptions<WeatherForecastApiOptions> _weatherForecastApiOptions;
 
-        public RedisController(IRedisHelper redisHelper)
+        public RedisController(IRedisHelper redisHelper, IOptions<WeatherForecastApiOptions> weatherForecastApiOptions)
         {
             _redisHelper = redisHelper;
+            _weatherForecastApiOptions = weatherForecastApiOptions;
+        }
+
+        [HttpGet]
+        public async Task<object> Get()
+        {
+            return _weatherForecastApiOptions;
         }
 
         [HttpPost("SetValue")]

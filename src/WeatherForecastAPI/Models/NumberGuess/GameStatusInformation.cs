@@ -5,7 +5,7 @@ namespace WeatherForecastAPI.Models.NumberGuess
 {
     public class GameStatusInformation
     {
-        public string GameIdentifier { get; set; }
+        public string GameIdentifier { get; set; } = string.Empty;
         public int GameRetry { get; set; }
         public int[] GameAnswer { get; set; } = null!;
         public string GameStatus { get; set; } = null!;
