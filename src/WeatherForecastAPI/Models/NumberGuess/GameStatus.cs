@@ -1,41 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using WeatherForecastAPI.Infrastructure.Redis;
 
 namespace WeatherForecastAPI.Models.NumberGuess
 {
     public class GameStatus
     {
-        private readonly Dictionary<Guid, GameStatusInformation> _gameStatus;
+        private readonly IRedisHelper _redisHelper;
 
-        public GameStatus()
+        public GameStatus(IRedisHelper redisHelper)
         {
-            _gameStatus = new Dictionary<Guid, GameStatusInformation>();
+            _redisHelper = redisHelper;
         }
 
-        public GameStatusInformation CreateGameStatusInformation()
+        public async Task<GameStatusInformation> CreateGameStatusInformation()
         {
             Guid guid = Guid.NewGuid();
             GameStatusInformation gameStatusInformation = new GameStatusInformation
             {
-                GameIdentifier = guid,
+                GameIdentifier = guid.ToString(),
                 GameRetry = 10,
                 GameAnswer = GenerateNumber(),
                 GameStatus = "Started",
                 GameHistories = new List<GameHistory>()
             };
-            _gameStatus[guid] = gameStatusInformation;
+            await _redisHelper.SaveToRedis(guid.ToString(), gameStatusInformation, TimeSpan.FromDays(1));
             return gameStatusInformation;
         }
 
-        public GameStatusInformation? CheckResult(string gameIdentifierString, int[] inputs)
+        public async Task<GameStatusInformation?> CheckResult(string gameIdentifierString, int[] inputs)
         {
             try
             {
-                Guid gameIdentifier = Guid.Parse(gameIdentifierString);
-                if (_gameStatus.ContainsKey(gameIdentifier))
+                var information = await _redisHelper.GetFromRedis<GameStatusInformation>(gameIdentifierString);
+                if (information != null)
                 {
-                    var information = _gameStatus[gameIdentifier];
+
                     string checkResult = Check(information.GameAnswer, inputs);
                     information.GameHistories.Add(new GameHistory
                     {
@@ -48,14 +50,18 @@ namespace WeatherForecastAPI.Models.NumberGuess
                     {
                         // answer is correct
                         information.GameStatus = "Pass";
-                        _gameStatus.Remove(gameIdentifier);
+                        await _redisHelper.RemoveFromRedis(gameIdentifierString);
 
                     }
                     else if (information.GameRetry == 0)
                     {
                         // anwer is not correct and no retries
                         information.GameStatus = "Fail";
-                        _gameStatus.Remove(gameIdentifier);
+                        await _redisHelper.RemoveFromRedis(gameIdentifierString);
+                    }
+                    else
+                    {
+                        await _redisHelper.SaveToRedis(gameIdentifierString, information, TimeSpan.FromDays(1));
                     }
 
                     return information;
@@ -89,6 +95,7 @@ namespace WeatherForecastAPI.Models.NumberGuess
 
             return numbers.Take(4).ToArray();
         }
+
         private string Check(int[] expected, int[] actual)
         {
             int aCount = 0;

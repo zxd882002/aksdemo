@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WeatherForecastAPI.Infrastructure.Redis;
+using WeatherForecastAPI.Models.ConfigOptions;
 using WeatherForecastAPI.Models.NumberGuess;
 
 namespace WeatherForecastAPI
@@ -26,13 +22,18 @@ namespace WeatherForecastAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // options
+            WeatherForecastApiOptions weatherForecastApiOptions = new WeatherForecastApiOptions();
+            Configuration.GetSection(WeatherForecastApiOptions.SectionName).Bind(weatherForecastApiOptions);
+
             // redis
-            var multiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
+            ConnectionMultiplexer? multiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
             {
-                EndPoints = { "redis-master.redis.svc.cluster.local:6379" },
-                Password = "123456"
+                EndPoints = { weatherForecastApiOptions.RedisEndPoint },
+                Password = string.IsNullOrWhiteSpace(weatherForecastApiOptions.RedisPassword) ? null : weatherForecastApiOptions.RedisPassword
             });
             services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+            services.AddSingleton<IRedisHelper, RedisHelper>();
 
             // dev env: cors
             services.AddCors(options =>
@@ -50,7 +51,7 @@ namespace WeatherForecastAPI
             services.AddControllers();
 
             // models
-            services.AddSingleton<GameStatus>(new GameStatus());
+            services.AddSingleton<GameStatus>();
 
             // swagger
             services.AddSwaggerGen();

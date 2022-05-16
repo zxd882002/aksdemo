@@ -6,6 +6,5 @@ namespace WeatherForecastAPI.Controllers
     [Route("api/[controller]")]
     public class GoBangController : ControllerBase
     {
-
     }
 }

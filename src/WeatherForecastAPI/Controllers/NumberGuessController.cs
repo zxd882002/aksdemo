@@ -3,6 +3,7 @@ using WeatherForecastAPI.Models.Requests.NumberGuessRequests;
 using WeatherForecastAPI.Models.Responses.NumberGuessResponses;
 using WeatherForecastAPI.Models.NumberGuess;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WeatherForecastAPI.Controllers
 {
@@ -18,16 +19,16 @@ namespace WeatherForecastAPI.Controllers
         }
 
         [HttpPost("StartGame")]
-        public StartGameResponse StartGame(StartGameReuqest request)
+        public async Task<StartGameResponse> StartGame(StartGameReuqest request)
         {
-            var info = _gameStatus.CreateGameStatusInformation();
+            var info = await _gameStatus.CreateGameStatusInformation();
             return new StartGameResponse
             {
                 Header = new ResponseHeader
                 {
                     ResponseId = request.Header.RequestId
                 },
-                GameIdentifier = info.GameIdentifier.ToString(),
+                GameIdentifier = info.GameIdentifier,
                 GameRetry = info.GameRetry,
                 GameStatus = info.GameStatus,
                 GameHistories = info.GameHistories.Select(x => $"{x.Input} - {x.Result}").ToArray()
@@ -35,9 +36,9 @@ namespace WeatherForecastAPI.Controllers
         }
 
         [HttpPost("CheckResult")]
-        public CheckResultResponse CheckResult(CheckResultRequest request)
+        public async Task<CheckResultResponse> CheckResult(CheckResultRequest request)
         {
-            var info = _gameStatus.CheckResult(request.GameIdentifier, request.Input);
+            var info = await _gameStatus.CheckResult(request.GameIdentifier, request.Input);
             if (info == null)
                 return new CheckResultResponse
                 {
@@ -53,7 +54,7 @@ namespace WeatherForecastAPI.Controllers
                 {
                     ResponseId = request.Header.RequestId
                 },
-                GameIdentifier = info.GameIdentifier.ToString(),
+                GameIdentifier = info.GameIdentifier,
                 GameRetry = info.GameRetry,
                 GameStatus = info.GameStatus,
                 GameHistories = info.GameHistories.Select(x => $"{x.Input} - {x.Result}").ToArray(),

@@ -4,7 +4,6 @@ using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WeatherForecastAPI.Controllers
 {
@@ -39,14 +38,6 @@ namespace WeatherForecastAPI.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
-        }
-
-        [HttpGet("redis")]
-        public async Task<string> Get(int id)
-        {
-            var db = _redis.GetDatabase();
-            var pong = await db.PingAsync();
-            return pong + id.ToString();
         }
     }
 }
