@@ -20,12 +20,6 @@ namespace WeatherForecastAPI.Controllers
             _weatherForecastApiOptions = weatherForecastApiOptions;
         }
 
-        [HttpGet]
-        public object Get()
-        {
-            return _weatherForecastApiOptions;
-        }
-
         [HttpPost("SetValue")]
         public async Task<bool> SetValue(string key, string value, int? expirySecond)
         {

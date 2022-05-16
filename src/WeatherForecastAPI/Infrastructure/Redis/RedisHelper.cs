@@ -50,6 +50,8 @@ namespace WeatherForecastAPI.Infrastructure.Redis
             if(serializedValue == null)
                 return default(T);
 
+            serializedValue = serializedValue.Trim('"');
+
             if (serializedValue is T stringValue)
                 return stringValue;
 

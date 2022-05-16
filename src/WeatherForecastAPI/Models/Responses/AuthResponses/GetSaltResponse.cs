@@ -1,8 +1,8 @@
 ﻿namespace WeatherForecastAPI.Models.Responses.AuthResponses
 {
-    public class GetSaultResponse
+    public class GetSaltResponse
     {
-        public string Sault { get; set; } = string.Empty;
+        public string Salt { get; set; } = string.Empty;
         public string TraceId { get; set; }= string.Empty;
     }
 }

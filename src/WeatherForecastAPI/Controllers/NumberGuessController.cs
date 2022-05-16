@@ -26,7 +26,8 @@ namespace WeatherForecastAPI.Controllers
             {
                 Header = new ResponseHeader
                 {
-                    ResponseId = request.Header.RequestId
+                    ResponseId = request.Header.RequestId,
+                    StatusCode = 200               
                 },
                 GameIdentifier = info.GameIdentifier,
                 GameRetry = info.GameRetry,
@@ -44,7 +45,8 @@ namespace WeatherForecastAPI.Controllers
                 {
                     Header = new ResponseHeader
                     {
-                        ResponseId = request.Header.RequestId
+                        ResponseId = request.Header.RequestId, 
+                        StatusCode = 200
                     }
                 };
 
@@ -52,7 +54,8 @@ namespace WeatherForecastAPI.Controllers
             {
                 Header = new ResponseHeader
                 {
-                    ResponseId = request.Header.RequestId
+                    ResponseId = request.Header.RequestId,
+                    StatusCode = 200
                 },
                 GameIdentifier = info.GameIdentifier,
                 GameRetry = info.GameRetry,

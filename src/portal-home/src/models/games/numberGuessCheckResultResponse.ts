@@ -1,7 +1,7 @@
-import { Guid } from "guid-typescript";
 export default interface NumberGuessCheckResultResponse {
   header: {
     responseId: string;
+    statusCode: number;
   };
   gameIdentifier: string;
   gameRetry: number;
