@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using WeatherForecastAPI.Infrastructure.Encryption;
 using WeatherForecastAPI.Infrastructure.Entensions;
 using WeatherForecastAPI.Infrastructure.Redis;
 using WeatherForecastAPI.Models.Requests.AuthRequests;
@@ -13,10 +14,12 @@ namespace WeatherForecastAPI.Controllers
     public class AuthController : ControllerBase
     {
         private IRedisHelper _redisHelper;
+        private ECDsSigner _signer;
 
-        public AuthController(IRedisHelper redisHelper)
+        public AuthController(IRedisHelper redisHelper, ECDsSigner signer)
         {
             _redisHelper = redisHelper;
+            _signer = signer;
         }
 
         [HttpGet("GetSalt")]
@@ -39,9 +42,9 @@ namespace WeatherForecastAPI.Controllers
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest request)
         {
             var result = await _redisHelper.GetFromRedis<string>(request.TraceId);
-            if (result != null && string.Equals(result,request.PasswordHash, StringComparison.InvariantCultureIgnoreCase))
+            if (result != null && string.Equals(result, request.PasswordHash, StringComparison.InvariantCultureIgnoreCase))
             {
-                bool removed = await _redisHelper.RemoveFromRedis(request.TraceId);
+                await _redisHelper.RemoveFromRedis(request.TraceId);
                 return new AuthenticateResponse
                 {
                     Header = new ResponseHeader
@@ -50,7 +53,7 @@ namespace WeatherForecastAPI.Controllers
                         StatusCode = 200
                     },
                     AuthSuccess = true,
-                    AuthToken = "mockToken"
+                    AuthToken = _signer.SignJwt()
                 };
             }
             return new AuthenticateResponse

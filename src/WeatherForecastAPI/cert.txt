@@ -1,0 +1,23 @@
+﻿jwk (test)
+{
+    "kty": "EC",
+    "d": "eQWpRW_kd6N3fLzb8ngLgAACjNNvWxWHnJa9rQ6_FvY", // optional
+    "use": "sig",
+    "crv": "P-256",
+    "kid": "ic1EYreC1UwexTSowT0K6kYrstk_Hr-DWWj0KS3QHLU",
+    "x": "28QJtSh28OVqJ-mUEuAPVfwV3iIkX9AVrfNTu2o8SfY",
+    "y": "9jwkgqnMYPGIm-LSr8q5n60EiqvXL8DFgSiheLII9JQ",
+    "alg": "ES256"
+}
+
+jwk (prod)
+{
+    "kty": "EC",
+    "d": "lXb5wGm_qAgol7MqhRlEqxH_zOfwkbZL6W75ktNTnjA",
+    "use": "sig",
+    "crv": "P-256",
+    "kid": "DXVflz-XM-WrtYzHS4_W5C1pNfM09u8ATe26MN7TMWU",
+    "x": "Dg0GIj6YzbKbOyoarmqgN7kqJfsk_syk33nXEDx6mZ8",
+    "y": "oN1Xq3P1N8zy96TsB-_bVnwRoh9sJK5RqPGj_Hp81Lg",
+    "alg": "ES256"
+}

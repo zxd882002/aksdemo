@@ -2,7 +2,7 @@
 {
     public class AuthenticateResponse
     {
-        public ResponseHeader Header { get; set; }
+        public ResponseHeader Header { get; set; } = null!;
         public bool AuthSuccess { get; set; }
         public string? AuthToken { get; set; }
     }

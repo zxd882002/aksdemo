@@ -47,6 +47,7 @@ import * as Crypto from "crypto-js";
 import axios from "axios";
 import { Guid } from "guid-typescript";
 import { ref } from "vue";
+import { useStore } from "@/stores";
 
 const birthdate = ref("");
 const lane = ref("");
@@ -93,6 +94,10 @@ const tryAuth = async () => {
     );
     let succeed = data.authSuccess;
     console.log(succeed);
+    let token = data.authToken;
+    console.log(token);
+    const store = useStore();
+    store.token = token;
   } catch (error) {
     errorMsg.value = error as string;
   }
