@@ -48,6 +48,7 @@ import axios from "axios";
 import { Guid } from "guid-typescript";
 import { ref } from "vue";
 import { useStore } from "@/stores";
+import { useRouter } from "vue-router";
 
 const birthdate = ref("");
 const lane = ref("");
@@ -98,6 +99,8 @@ const tryAuth = async () => {
     console.log(token);
     const store = useStore();
     store.token = token;
+    const router = useRouter();
+    router.push("/");
   } catch (error) {
     errorMsg.value = error as string;
   }

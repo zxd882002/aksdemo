@@ -30,7 +30,7 @@ namespace WeatherForecastAPI.Infrastructure.Encryption
             var handler = new JsonWebTokenHandler();
             var token = handler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = "zxyHome",
+                Issuer = "zyxHome",
                 Audience = "admin",
                 NotBefore = now,
                 Expires = now.AddHours(12),
