@@ -8,6 +8,6 @@ spec:
     matchLabels:
       istio: ingressgateway
   jwtRules:
-    issuer: {{ .Values.gateway.jwtConfig.issuer }}
+  - issuer: {{ .Values.gateway.jwtConfig.issuer }}
     jwks: | 
       {{ .Values.gateway.jwtConfig.jwk }}
