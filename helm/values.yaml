@@ -1,5 +1,10 @@
 gateway:
   name: weather-forecast-gateway
+  jwtConfig:
+    issuer: zyxHome
+    jwk: |
+      { "keys":[{"kty": "EC","use": "sig","crv": "P-256","kid": "ic1EYreC1UwexTSowT0K6kYrstk_Hr-DWWj0KS3QHLU","x": "28QJtSh28OVqJ-mUEuAPVfwV3iIkX9AVrfNTu2o8SfY","y": "9jwkgqnMYPGIm-LSr8q5n60EiqvXL8DFgSiheLII9JQ","alg": "ES256"}]}
+
 
 version: v1
 

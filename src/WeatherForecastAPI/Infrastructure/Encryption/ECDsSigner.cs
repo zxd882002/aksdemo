@@ -35,7 +35,8 @@ namespace WeatherForecastAPI.Infrastructure.Encryption
                 NotBefore = now,
                 Expires = now.AddHours(12),
                 IssuedAt = now,
-                Claims = new Dictionary<string, object> { { "sub", "SwaggerPermission" } }
+                Claims = new Dictionary<string, object> { { "sub", "SwaggerPermission" } },
+                SigningCredentials = new SigningCredentials(new ECDsaSecurityKey(_key), "ES256")
             });
             return token;
         }

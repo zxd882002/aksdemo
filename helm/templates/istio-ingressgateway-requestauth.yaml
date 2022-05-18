@@ -1,0 +1,13 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: {{ .Values.gateway.name }}-jwt
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway
+  jwtRules:
+    issuer: {{ .Values.gateway.jwtConfig.issuer }}
+    jwks: | 
+      {{ .Values.gateway.jwtConfig.jwk }}

@@ -6,9 +6,6 @@ import App from "./App.vue";
 import router from "./router/index";
 import { createPinia } from "pinia";
 
-// import Axios from "axios";
-// Axios.defaults.baseURL = "http://localhost:15000";
-
 const app = createApp(App);
 app.use(ElementPlus, {
   locale: zhCn,
