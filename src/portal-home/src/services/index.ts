@@ -6,39 +6,51 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // intercept request
-axios.interceptors.request.use(
-  (config) => {
-    if (localStorage.getItem("BearerToken")) {
-      config.headers!.BearerToken = localStorage.getItem(
-        "BearerToken"
-      ) as string;
-    }
+// axios.interceptors.request.use(
+//   (config) => {
+//     if (localStorage.getItem("BearerToken")) {
+//       config.headers!.BearerToken = localStorage.getItem(
+//         "BearerToken"
+//       ) as string;
+//     }
 
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
-interface ApiConfig {
+interface ApiConfig<TRequest> {
   method: "get" | "post";
   url: string;
-  params: object;
+  params: TRequest;
   config: AxiosRequestConfig | undefined;
 }
 
-const CallApi = async <T>(api: ApiConfig) => {
-  let data: T;
+const callApi = async <TRequest, TResponse>(
+  api: ApiConfig<TRequest>
+): Promise<TResponse> => {
+  let data: TResponse;
   switch (api.method) {
-    case "get":
-      let getResponse = await axios.get<T>(api.url, api.config);
+    case "get": {
+      const getResponse = await axios.get<TResponse>(api.url, api.config);
       data = getResponse.data;
       break;
-    case "post":
-      let postResponse = await axios.post<T>(api.url, api.params, api.config);
+    }
+    case "post": {
+      const postResponse = await axios.post<TResponse>(
+        api.url,
+        api.params,
+        api.config
+      );
       data = postResponse.data;
       break;
+    }
+    default:
+      throw new Error();
   }
   return data;
 };
+
+export { ApiConfig, callApi };

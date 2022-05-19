@@ -7,17 +7,15 @@ export const useStore = defineStore("main", {
   }),
   actions: {
     setToken(token: string) {
-      const tokenSplit = token.split(".");
-      console.log(tokenSplit);
-      const payloadBase64 = tokenSplit[1];
-      console.log(payloadBase64);
+      const payloadBase64 = token.split(".")[1];
       const payloadString = Buffer.from(payloadBase64, "base64").toString(
         "binary"
       );
       console.log(payloadString);
-      const payload = eval(payloadString);
+      const payload = JSON.parse(payloadString);
       console.log(payload);
       this.isAuthenticated = true;
+      this.tokenExp = new Date(payload.exp);
       localStorage.setItem("BearerToken", token);
     },
   },

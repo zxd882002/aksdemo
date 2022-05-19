@@ -118,8 +118,12 @@ import axios from "axios";
 import { Guid } from "guid-typescript";
 import { computed } from "@vue/reactivity";
 import { reactive, toRefs, ref } from "vue";
-import NumberGuessStartGameRequest from "@/models/games/numberGuessStartGameRequest";
-import NumberGuessStartGameResponse from "@/models/games/numberGuessStartGameResponse";
+import { callApi } from "@/services/index";
+import {
+  StartGameRequest,
+  StartGameResponse,
+  startGameApi,
+} from "@/services/games/numberGuess/startGameApi";
 import NumberGuessCheckResultRequest from "@/models/games/numberGuessCheckResultRequest";
 import NumberGuessCheckResultResponse from "@/models/games/numberGuessCheckResultResponse";
 
@@ -140,14 +144,8 @@ const gameStatusInformation = reactive({
 
 const startGame = async () => {
   try {
-    const request: NumberGuessStartGameRequest = {
-      header: {
-        requestId: Guid.create().toString(),
-      },
-    };
-    const { data } = await axios.post<NumberGuessStartGameResponse>(
-      "/api/NumberGuess/StartGame",
-      request
+    const data = await callApi<StartGameRequest, StartGameResponse>(
+      startGameApi(Guid.create().toString())
     );
     gameStatusInformation.gameIdentifier = data.gameIdentifier;
     gameStatusInformation.gameRetry = data.gameRetry;
