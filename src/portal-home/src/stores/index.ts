@@ -7,7 +7,10 @@ export const useStore = defineStore("main", {
   }),
   actions: {
     setToken(token: string) {
-      const payloadBase64 = token.split(".")[1];
+      const tokenSplit = token.split(".");
+      console.log(tokenSplit);
+      const payloadBase64 = tokenSplit[1];
+      console.log(payloadBase64);
       const payloadString = Buffer.from(payloadBase64, "base64").toString(
         "binary"
       );
