@@ -6,7 +6,6 @@
     <el-container style="height: 100%">
       <el-header>
         <router-link to="/" class="title">淘淘の家</router-link>
-        <div>{{ token }}</div>
       </el-header>
       <el-container>
         <SideMenu />
@@ -22,14 +21,9 @@
 import SideMenu from "./components/sideMenu.vue";
 import { useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
-import { useStore } from "@/stores";
 const router = useRouter();
 const isLoginPage = computed(() => {
   return router.currentRoute.value.name == "admin";
-});
-const store = useStore();
-const token = computed(() => {
-  store.token;
 });
 </script>
 

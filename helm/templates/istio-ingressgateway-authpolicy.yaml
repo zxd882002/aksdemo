@@ -11,7 +11,7 @@ spec:
   rules:
   - to:
     - operation:
-        paths: ["/swagger*"]
+        paths: ["/api/weatherforecast"]
     when:
     - key: request.auth.claims[aud]
       notValues: ["admin"]
