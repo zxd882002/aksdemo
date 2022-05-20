@@ -50,7 +50,7 @@ const get = async () => {
       isAuthenticated.value
         ? {
             headers: {
-              Authorization: "Bearer:" + localStorage.getItem("BearerToken"),
+              Authorization: "Bearer " + localStorage.getItem("BearerToken"),
             },
           }
         : undefined

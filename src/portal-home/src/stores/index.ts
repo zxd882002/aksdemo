@@ -16,6 +16,7 @@ export const useStore = defineStore("main", {
       console.log(payload);
       this.isAuthenticated = true;
       this.tokenExp = new Date(payload.exp);
+      console.log(this.tokenExp);
       localStorage.setItem("BearerToken", token);
     },
   },
