@@ -40,12 +40,10 @@
 </template>
 
 <script setup lang="ts">
-import AuthenticationRequest from "@/models/auth/authenticateRequest";
-import AuthenticationResponse from "@/models/auth/authenticateResponse";
-import GetSaltResponse from "@/models/auth/getSaultResponse";
+import { callApi } from "@/services";
+import { GetSaltResponse, getSaultApi } from "@/services/auth/getSaultApi";
+import { AuthenticateRequest, AuthenticateResponse, authenticateApi } from "@/services/auth/authenticateApi";
 import * as Crypto from "crypto-js";
-import axios from "axios";
-import { Guid } from "guid-typescript";
 import { ref } from "vue";
 import { useStore } from "@/stores";
 import { useRouter } from "vue-router";
@@ -63,46 +61,23 @@ const errorMsg = ref("");
 
 let traceId = "";
 const getSalt = async () => {
-  try {
-    const { data } = await axios.get<GetSaltResponse>("/api/Auth/GetSalt");
+  const data = await callApi<undefined, GetSaltResponse>(getSaultApi((e) => (errorMsg.value = e as string)));
+  if (data) {
     traceId = data.traceId;
     salt.value = data.salt;
-  } catch (error) {
-    errorMsg.value = error as string;
   }
 };
 
 const tryAuth = async () => {
-  try {
-    const input =
-      birthdate.value +
-      "-" +
-      lane.value +
-      "-" +
-      number.value +
-      "-" +
-      room.value +
-      "-" +
-      inputSalt.value;
-    const inputHash = Crypto.SHA256(input).toString();
-    const request: AuthenticationRequest = {
-      header: {
-        requestId: Guid.create().toString(),
-      },
-      traceId: traceId,
-      passwordHash: inputHash,
-    };
-    const { data } = await axios.post<AuthenticationResponse>(
-      "/api/Auth/Authenticate",
-      request
-    );
+  const input = birthdate.value + "-" + lane.value + "-" + number.value + "-" + room.value + "-" + inputSalt.value;
+  const inputHash = Crypto.SHA256(input).toString();
+  const data = await callApi<AuthenticateRequest, AuthenticateResponse>(
+    authenticateApi(traceId, inputHash, (e) => (errorMsg.value = e as string))
+  );
 
-    if (data.authSuccess) {
-      store.setToken(data.authToken);
-      router.push("/");
-    }
-  } catch (error) {
-    errorMsg.value = error as string;
+  if (data && data.authSuccess) {
+    store.setToken(data.authToken);
+    router.push("/apiTest");
   }
 };
 </script>
@@ -114,12 +89,7 @@ const tryAuth = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(
-    to top,
-    #1e3c72 0%,
-    #1e3c72 1%,
-    #2a5298 100%
-  );
+  background-image: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);
   .loginBox {
     width: auto;
     height: auto;

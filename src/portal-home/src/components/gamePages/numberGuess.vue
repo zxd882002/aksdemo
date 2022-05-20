@@ -24,9 +24,7 @@
         <h1>猜数字</h1>
       </div>
       <el-button type="primary" round @click="startGame">
-        点击<span v-show="gameStatus == 'Pass' || gameStatus == 'Fail'"
-          >重新</span
-        >开始
+        点击<span v-show="gameStatus == 'Pass' || gameStatus == 'Fail'">重新</span>开始
       </el-button>
     </div>
     <div v-show="gameStarted">
@@ -100,12 +98,8 @@
         <li>点击开始以后，系统会生成一个随机的不重复的4位数。（比如：1234）</li>
         <li>你可以输入4个不重复的数字并提交。（比如:1357)</li>
         <li>系统根据你输入的数字，给出相应的提示：xAyB。（比如：1A1B)</li>
-        <li>
-          其中A表示的是有哪几个数和系统的数相同，并且位置也相同（比如，数字1在不仅系统中出现，且位置相同）
-        </li>
-        <li>
-          其中B表示的是有哪几个数和系统的数相同，但是位置不相同（比如，数字3在系统中出现，但是位置不同）
-        </li>
+        <li>其中A表示的是有哪几个数和系统的数相同，并且位置也相同（比如，数字1在不仅系统中出现，且位置相同）</li>
+        <li>其中B表示的是有哪几个数和系统的数相同，但是位置不相同（比如，数字3在系统中出现，但是位置不同）</li>
         <li>当所有的数字都猜出，且位置相同，游戏胜利</li>
         <li>每局有10次机会，如果机会用完都没有猜出，游戏失败</li>
       </ol>
@@ -114,18 +108,11 @@
 </template>
 
 <script setup lang="ts">
-import axios from "axios";
-import { Guid } from "guid-typescript";
 import { computed } from "@vue/reactivity";
 import { reactive, toRefs, ref } from "vue";
 import { callApi } from "@/services/index";
-import {
-  StartGameRequest,
-  StartGameResponse,
-  startGameApi,
-} from "@/services/games/numberGuess/startGameApi";
-import NumberGuessCheckResultRequest from "@/models/games/numberGuessCheckResultRequest";
-import NumberGuessCheckResultResponse from "@/models/games/numberGuessCheckResultResponse";
+import { StartGameRequest, StartGameResponse, startGameApi } from "@/services/games/numberGuess/startGameApi";
+import { CheckResultRequest, CheckResultResponse, checkResultApi } from "@/services/games/numberGuess/checkResultApi";
 
 const input1 = ref<HTMLElement | null>(null);
 const input2 = ref<HTMLElement | null>(null);
@@ -143,37 +130,33 @@ const gameStatusInformation = reactive({
 });
 
 const startGame = async () => {
-  try {
-    const data = await callApi<StartGameRequest, StartGameResponse>(
-      startGameApi(Guid.create().toString())
-    );
+  const data = await callApi<StartGameRequest, StartGameResponse>(
+    startGameApi((e) => (gameStatusInformation.errorMsg = e as string))
+  );
+
+  if (data) {
     gameStatusInformation.gameIdentifier = data.gameIdentifier;
     gameStatusInformation.gameRetry = data.gameRetry;
     gameStatusInformation.gameStatus = data.gameStatus;
     gameStatusInformation.gameHistories = data.gameHistories;
-  } catch (error) {
-    gameStatusInformation.errorMsg = error as string;
   }
 };
 
 const resultCheck = async () => {
-  try {
-    const request: NumberGuessCheckResultRequest = {
-      header: {
-        requestId: Guid.create().toString(),
-      },
-      gameIdentifier: gameStatusInformation.gameIdentifier,
-      input: [
+  const data = await callApi<CheckResultRequest, CheckResultResponse>(
+    checkResultApi(
+      gameStatusInformation.gameIdentifier,
+      [
         +gameStatusInformation.inputNumber[0],
         +gameStatusInformation.inputNumber[1],
         +gameStatusInformation.inputNumber[2],
         +gameStatusInformation.inputNumber[3],
       ],
-    };
-    const { data } = await axios.post<NumberGuessCheckResultResponse>(
-      "/api/NumberGuess/CheckResult",
-      request
-    );
+      (e) => (gameStatusInformation.errorMsg = e as string)
+    )
+  );
+
+  if (data) {
     gameStatusInformation.gameIdentifier = data.gameIdentifier;
     gameStatusInformation.gameRetry = data.gameRetry;
     gameStatusInformation.gameStatus = data.gameStatus;
@@ -184,8 +167,6 @@ const resultCheck = async () => {
     gameStatusInformation.inputNumber[2] = "";
     gameStatusInformation.inputNumber[3] = "";
     input1.value?.focus();
-  } catch (error) {
-    gameStatusInformation.errorMsg = error as string;
   }
 };
 
@@ -230,11 +211,7 @@ const onEnter = (event: KeyboardEvent) => {
 };
 
 const handleInput = (inputIndex: number, inputNumber: string) => {
-  for (
-    let index = 0;
-    index < gameStatusInformation.inputNumber.length;
-    index++
-  ) {
+  for (let index = 0; index < gameStatusInformation.inputNumber.length; index++) {
     if (index == inputIndex) {
       gameStatusInformation.inputNumber[index] = inputNumber;
     } else if (gameStatusInformation.inputNumber[index] == inputNumber) {
@@ -242,12 +219,9 @@ const handleInput = (inputIndex: number, inputNumber: string) => {
     }
   }
 
-  if (inputIndex == 0 && gameStatusInformation.inputNumber[1] == "")
-    input2.value?.focus();
-  if (inputIndex == 1 && gameStatusInformation.inputNumber[2] == "")
-    input3.value?.focus();
-  if (inputIndex == 2 && gameStatusInformation.inputNumber[3] == "")
-    input4.value?.focus();
+  if (inputIndex == 0 && gameStatusInformation.inputNumber[1] == "") input2.value?.focus();
+  if (inputIndex == 1 && gameStatusInformation.inputNumber[2] == "") input3.value?.focus();
+  if (inputIndex == 2 && gameStatusInformation.inputNumber[3] == "") input4.value?.focus();
 };
 
 const clearInput = (inputIndex: number) => {
@@ -259,19 +233,10 @@ const gameStarted = computed(() => {
 });
 
 const displayGameRetry = computed(() => {
-  return gameStatusInformation.gameRetry < 10
-    ? "0" + gameStatusInformation.gameRetry
-    : gameStatusInformation.gameRetry;
+  return gameStatusInformation.gameRetry < 10 ? "0" + gameStatusInformation.gameRetry : gameStatusInformation.gameRetry;
 });
 
-const {
-  gameRetry,
-  gameAnswer,
-  gameStatus,
-  gameHistories,
-  inputNumber,
-  errorMsg,
-} = toRefs(gameStatusInformation);
+const { gameRetry, gameAnswer, gameStatus, gameHistories, inputNumber, errorMsg } = toRefs(gameStatusInformation);
 </script>
 
 <style lang="scss" scoped>

@@ -8,14 +8,10 @@ export const useStore = defineStore("main", {
   actions: {
     setToken(token: string) {
       const payloadBase64 = token.split(".")[1];
-      const payloadString = Buffer.from(payloadBase64, "base64").toString(
-        "binary"
-      );
-      console.log(payloadString);
+      const payloadString = Buffer.from(payloadBase64, "base64").toString("binary");
       const payload = JSON.parse(payloadString);
-      console.log(payload);
       this.isAuthenticated = true;
-      this.tokenExp = new Date(payload.exp);
+      this.tokenExp = new Date(payload.exp * 1000);
       console.log(this.tokenExp);
       localStorage.setItem("BearerToken", token);
     },

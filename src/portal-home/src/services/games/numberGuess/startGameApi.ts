@@ -1,4 +1,5 @@
 import { ApiConfig } from "../../index";
+import { Guid } from "guid-typescript";
 
 interface StartGameRequest {
   header: {
@@ -17,16 +18,17 @@ interface StartGameResponse {
   gameHistories: string[];
 }
 
-const startGameApi = (requestId: string) => {
+const startGameApi = (onError: (e: unknown) => void): ApiConfig<StartGameRequest> => {
   return {
     method: "post",
     url: "/api/NumberGuess/StartGame",
     params: {
       header: {
-        requestId: requestId,
+        requestId: Guid.create().toString(),
       },
     } as StartGameRequest,
     config: undefined,
+    onError: onError,
   } as ApiConfig<StartGameRequest>;
 };
 

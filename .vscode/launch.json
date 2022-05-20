@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/WeatherForecastAPI/bin/Debug/netcoreapp3.1/WeatherForecastAPI.dll",
+            "program": "${workspaceFolder}/src/WeatherForecastAPI/bin/Debug/net6.0/WeatherForecastAPI.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/WeatherForecastAPI/",
             "stopAtEntry": false,

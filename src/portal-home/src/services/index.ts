@@ -26,31 +26,31 @@ interface ApiConfig<TRequest> {
   url: string;
   params: TRequest;
   config: AxiosRequestConfig | undefined;
+  onError: (e: unknown) => void;
 }
 
-const callApi = async <TRequest, TResponse>(
-  api: ApiConfig<TRequest>
-): Promise<TResponse> => {
-  let data: TResponse;
-  switch (api.method) {
-    case "get": {
-      const getResponse = await axios.get<TResponse>(api.url, api.config);
-      data = getResponse.data;
-      break;
+const callApi = async <TRequest, TResponse>(api: ApiConfig<TRequest>): Promise<TResponse | undefined> => {
+  try {
+    let data: TResponse;
+    switch (api.method) {
+      case "get": {
+        const getResponse = await axios.get<TResponse>(api.url, api.config);
+        data = getResponse.data;
+        break;
+      }
+      case "post": {
+        const postResponse = await axios.post<TResponse>(api.url, api.params, api.config);
+        data = postResponse.data;
+        break;
+      }
+      default:
+        throw new Error();
     }
-    case "post": {
-      const postResponse = await axios.post<TResponse>(
-        api.url,
-        api.params,
-        api.config
-      );
-      data = postResponse.data;
-      break;
-    }
-    default:
-      throw new Error();
+    return data;
+  } catch (e) {
+    api.onError(e);
+    return undefined;
   }
-  return data;
 };
 
 export { ApiConfig, callApi };
