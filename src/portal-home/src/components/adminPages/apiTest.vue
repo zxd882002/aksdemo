@@ -18,6 +18,14 @@
       </tr>
     </tbody>
   </table>
+
+  <h3>请输入你的API测试：</h3>
+  <div>API URL:</div>
+  <div><input /></div>
+  <div>Method</div>
+  <div><input /></div>
+  <div>Parameter (json)</div>
+  <div><input /></div>
 </template>
 
 <script setup lang="ts">
@@ -26,9 +34,6 @@ import { WeatherForecastData, weatherForecastApi } from "@/services/admin/weathe
 import { reactive, toRefs, computed } from "vue";
 import { useStore } from "@/stores";
 const store = useStore();
-const isAuthenticated = computed(() => {
-  return store.isAuthenticated;
-});
 const state = reactive({
   weatherDatas: [] as WeatherForecastData[],
   show: false,
@@ -36,7 +41,7 @@ const state = reactive({
 });
 const get = async () => {
   const data = await callApi<undefined, WeatherForecastData[]>(
-    weatherForecastApi(isAuthenticated.value, (e) => (state.errorMsg = e as string))
+    weatherForecastApi((e) => (state.errorMsg = e as string))
   );
 
   if (data) {

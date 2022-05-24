@@ -14,7 +14,8 @@ interface AuthenticateResponse {
     statusCode: number;
   };
   authSuccess: boolean;
-  authToken: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 const authenticateApi = (

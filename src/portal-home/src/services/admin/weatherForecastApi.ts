@@ -7,18 +7,11 @@ interface WeatherForecastData {
   summary: string;
 }
 
-const weatherForecastApi = (isAuthenticated: boolean, onError: (e: unknown) => void): ApiConfig<undefined> => {
+const weatherForecastApi = (onError: (e: unknown) => void): ApiConfig<undefined> => {
   return {
     method: "get",
     url: "/api/weatherforecast",
     params: undefined,
-    config: isAuthenticated
-      ? {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("BearerToken"),
-          },
-        }
-      : undefined,
     onError: onError,
   } as ApiConfig<undefined>;
 };

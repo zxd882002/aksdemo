@@ -53,7 +53,8 @@ namespace WeatherForecastAPI.Controllers
                         StatusCode = 200
                     },
                     AuthSuccess = true,
-                    AuthToken = _signer.SignJwt()
+                    AccessToken = _signer.SignJwt("admin", new TimeSpan(0, 0, 0), new TimeSpan(0, 5, 0)),
+                    RefreshToken = _signer.SignJwt("exAdmin", new TimeSpan(0, 5, 0), new TimeSpan(0, 30, 0))
                 };
             }
             return new AuthenticateResponse
@@ -64,6 +65,22 @@ namespace WeatherForecastAPI.Controllers
                     StatusCode = 200
                 },
                 AuthSuccess = false
+            };
+        }
+
+        [HttpPost("RefreshToken")]
+        public RefreshTokenResponse RefreshToken(RefreshTokenRequest request)
+        {
+            return new RefreshTokenResponse
+            {
+                Header = new ResponseHeader
+                {
+                    ResponseId = request.Header.RequestId,
+                    StatusCode = 200
+                },
+                AuthSuccess = true,
+                AccessToken = _signer.SignJwt("admin", new TimeSpan(0, 0, 0), new TimeSpan(0, 5, 0)),
+                RefreshToken = _signer.SignJwt("exAdmin", new TimeSpan(0, 5, 0), new TimeSpan(0, 30, 0))
             };
         }
     }

@@ -45,11 +45,10 @@ import { GetSaltResponse, getSaultApi } from "@/services/auth/getSaultApi";
 import { AuthenticateRequest, AuthenticateResponse, authenticateApi } from "@/services/auth/authenticateApi";
 import * as Crypto from "crypto-js";
 import { ref } from "vue";
-import { useStore } from "@/stores";
 import { useRouter } from "vue-router";
+import { jwtManager } from "@/models/JwtManager";
 
 const router = useRouter();
-const store = useStore();
 
 const birthdate = ref("");
 const lane = ref("");
@@ -76,7 +75,8 @@ const tryAuth = async () => {
   );
 
   if (data && data.authSuccess) {
-    store.setToken(data.authToken);
+    jwtManager.setAccessToken(data.accessToken);
+    jwtManager.setRefreshToken(data.refreshToken);
     router.push("/apiTest");
   }
 };

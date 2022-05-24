@@ -15,3 +15,9 @@ spec:
     when:
     - key: request.auth.claims[aud]
       notValues: ["admin"]
+  - to:
+    - operation:
+        paths: ["/api/auth/refreshToken"]
+    when:
+    - key: request.auth.claims[aud]
+      notValues: ["exAdmin"]

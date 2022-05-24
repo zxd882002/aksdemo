@@ -1,6 +1,6 @@
 ﻿namespace WeatherForecastAPI.Models.Responses.AuthResponses
 {
-    public class AuthenticateResponse
+    public class RefreshTokenResponse
     {
         public ResponseHeader Header { get; set; } = null!;
         public bool AuthSuccess { get; set; }

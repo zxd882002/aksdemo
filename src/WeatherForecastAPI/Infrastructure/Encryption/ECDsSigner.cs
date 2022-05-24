@@ -24,16 +24,16 @@ namespace WeatherForecastAPI.Infrastructure.Encryption
             });
         }
 
-        public string SignJwt()
+        public string SignJwt(string audience, TimeSpan issueFrom, TimeSpan issueTo)
         {
             var now = DateTime.UtcNow;
             var handler = new JsonWebTokenHandler();
             var token = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = "zyxHome",
-                Audience = "admin",
-                NotBefore = now,
-                Expires = now.AddHours(12),
+                Audience = audience,
+                NotBefore = now.Add(issueFrom),
+                Expires = now.Add(issueTo),
                 IssuedAt = now,
                 Claims = new Dictionary<string, object> { { "sub", "SwaggerPermission" } },
                 SigningCredentials = new SigningCredentials(new ECDsaSecurityKey(_key), "ES256")
