@@ -13,13 +13,12 @@ class JwtManager {
     const payloadString = Buffer.from(payloadBase64, "base64").toString("binary");
     const payload = JSON.parse(payloadString);
     this.store.accessTokenExp = new Date(payload.exp * 1000);
-    console.log(this.store.accessTokenExp);
     localStorage.setItem("AccessToken", token);
   }
 
   getAccessToken() {
     if (this.store.accessTokenExp < new Date()) return undefined;
-    let item = localStorage.getItem("AccessToken");
+    const item = localStorage.getItem("AccessToken");
     if (item) return item as string;
     return undefined;
   }
@@ -34,7 +33,7 @@ class JwtManager {
 
   getRefreshToken() {
     if (this.store.refreshTokenExp < new Date()) return undefined;
-    let item = localStorage.getItem("RefreshToken");
+    const item = localStorage.getItem("RefreshToken");
     if (item) return item as string;
     return undefined;
   }
@@ -46,7 +45,7 @@ class JwtManager {
       if (refreshToken) {
         const data = await axiosCallApi<RefreshTokenRequest, RefreshTokenResponse>(
           refreshTokenApi(refreshToken, (e) => {
-            console.error(e);
+            throw e;
           })
         );
         if (data && data.authSuccess) {
