@@ -1,4 +1,4 @@
-﻿namespace WeatherForecastAPI.Models.Responses.AuthResponses
+﻿namespace WeatherForecastAPI.Models.Auth.AuthResponses
 {
     public class GetSaltResponse
     {

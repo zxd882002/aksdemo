@@ -1,37 +1,23 @@
 import { ApiConfig } from "../index";
-import { Guid } from "guid-typescript";
 
-interface RefreshTokenRequest {
-  header: {
-    requestId: string;
-  };
-}
 interface RefreshTokenResponse {
-  header: {
-    responseId: string;
-    statusCode: number;
-  };
   authSuccess: boolean;
   accessToken: string;
   refreshToken: string;
 }
 
-const refreshTokenApi = (refreshToken: string, onError: (e: unknown) => void): ApiConfig<RefreshTokenRequest> => {
+const refreshTokenApi = (refreshToken: string, onError: (e: unknown) => void): ApiConfig<undefined> => {
   return {
     method: "post",
     url: "/api/Auth/RefreshToken",
-    params: {
-      header: {
-        requestId: Guid.create().toString(),
-      },
-    } as RefreshTokenRequest,
+    params: undefined,
     config: {
       headers: {
         Authorization: "Bearer " + refreshToken,
       },
     },
     onError: onError,
-  } as ApiConfig<RefreshTokenRequest>;
+  } as ApiConfig<undefined>;
 };
 
-export { RefreshTokenRequest, RefreshTokenResponse, refreshTokenApi };
+export { RefreshTokenResponse, refreshTokenApi };

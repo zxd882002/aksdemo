@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using WeatherForecastAPI.Models.Requests.NumberGuessRequests;
-using WeatherForecastAPI.Models.Responses.NumberGuessResponses;
-using WeatherForecastAPI.Models.NumberGuess;
 using System.Linq;
 using System.Threading.Tasks;
+using WeatherForecastAPI.Models.NumberGuess;
+using WeatherForecastAPI.Models.NumberGuess.NumberGuessResponses;
+using WeatherForecastAPI.Models.NumberGuessRequests;
 
 namespace WeatherForecastAPI.Controllers
 {
@@ -19,16 +19,11 @@ namespace WeatherForecastAPI.Controllers
         }
 
         [HttpPost("StartGame")]
-        public async Task<StartGameResponse> StartGame(StartGameReuqest request)
+        public async Task<StartGameResponse> StartGame()
         {
             var info = await _gameStatus.CreateGameStatusInformation();
             return new StartGameResponse
             {
-                Header = new ResponseHeader
-                {
-                    ResponseId = request.Header.RequestId,
-                    StatusCode = 200               
-                },
                 GameIdentifier = info.GameIdentifier,
                 GameRetry = info.GameRetry,
                 GameStatus = info.GameStatus,
@@ -40,23 +35,8 @@ namespace WeatherForecastAPI.Controllers
         public async Task<CheckResultResponse> CheckResult(CheckResultRequest request)
         {
             var info = await _gameStatus.CheckResult(request.GameIdentifier, request.Input);
-            if (info == null)
-                return new CheckResultResponse
-                {
-                    Header = new ResponseHeader
-                    {
-                        ResponseId = request.Header.RequestId, 
-                        StatusCode = 200
-                    }
-                };
-
             return new CheckResultResponse
-            {
-                Header = new ResponseHeader
-                {
-                    ResponseId = request.Header.RequestId,
-                    StatusCode = 200
-                },
+            {             
                 GameIdentifier = info.GameIdentifier,
                 GameRetry = info.GameRetry,
                 GameStatus = info.GameStatus,

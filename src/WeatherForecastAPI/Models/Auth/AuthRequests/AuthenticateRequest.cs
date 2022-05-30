@@ -1,8 +1,7 @@
-﻿namespace WeatherForecastAPI.Models.Requests.AuthRequests
+﻿namespace WeatherForecastAPI.Models.Auth.AuthRequests
 {
     public class AuthenticateRequest
     {
-        public RequestHeader Header { get; set; } = null!;
         public string TraceId { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
     }

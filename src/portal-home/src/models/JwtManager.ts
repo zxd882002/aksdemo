@@ -1,6 +1,6 @@
 import { useStore } from "@/stores";
 import { axiosCallApi } from "@/services";
-import { RefreshTokenRequest, RefreshTokenResponse, refreshTokenApi } from "@/services/auth/refreshTokenApi";
+import { RefreshTokenResponse, refreshTokenApi } from "@/services/auth/refreshTokenApi";
 
 class JwtManager {
   private store;
@@ -43,7 +43,7 @@ class JwtManager {
     if (this.store.accessTokenExp < current && current < this.store.refreshTokenExp) {
       const refreshToken = this.getRefreshToken();
       if (refreshToken) {
-        const data = await axiosCallApi<RefreshTokenRequest, RefreshTokenResponse>(
+        const data = await axiosCallApi<undefined, RefreshTokenResponse>(
           refreshTokenApi(refreshToken, (e) => {
             throw e;
           })

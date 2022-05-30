@@ -2,18 +2,11 @@ import { ApiConfig } from "../../index";
 import { Guid } from "guid-typescript";
 
 interface CheckResultRequest {
-  header: {
-    requestId: string;
-  };
   gameIdentifier: string;
   input: number[];
 }
 
 interface CheckResultResponse {
-  header: {
-    responseId: string;
-    statusCode: number;
-  };
   gameIdentifier: string;
   gameRetry: number;
   gameStatus: string;

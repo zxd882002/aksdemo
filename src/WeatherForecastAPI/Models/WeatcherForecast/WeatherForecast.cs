@@ -1,6 +1,6 @@
 using System;
 
-namespace WeatherForecastAPI
+namespace WeatherForecastAPI.Models.WeatcherForecast
 {
     public class WeatherForecast
     {

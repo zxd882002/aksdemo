@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WeatherForecastAPI.ConfigOptions;
 using WeatherForecastAPI.Infrastructure.Encryption;
 using WeatherForecastAPI.Infrastructure.Redis;
-using WeatherForecastAPI.Models.ConfigOptions;
 using WeatherForecastAPI.Models.NumberGuess;
 
 namespace WeatherForecastAPI

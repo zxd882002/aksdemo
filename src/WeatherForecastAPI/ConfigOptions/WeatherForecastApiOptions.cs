@@ -1,4 +1,4 @@
-﻿namespace WeatherForecastAPI.Models.ConfigOptions
+﻿namespace WeatherForecastAPI.ConfigOptions
 {
     public class WeatherForecastApiOptions
     {

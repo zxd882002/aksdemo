@@ -30,48 +30,42 @@ namespace WeatherForecastAPI.Models.NumberGuess
             return gameStatusInformation;
         }
 
-        public async Task<GameStatusInformation?> CheckResult(string gameIdentifierString, int[] inputs)
+        public async Task<GameStatusInformation> CheckResult(string gameIdentifierString, int[] inputs)
         {
-            try
+
+            var information = await _redisHelper.GetFromRedis<GameStatusInformation>(gameIdentifierString);
+            if (information == null)
             {
-                var information = await _redisHelper.GetFromRedis<GameStatusInformation>(gameIdentifierString);
-                if (information != null)
-                {
-
-                    string checkResult = Check(information.GameAnswer, inputs);
-                    information.GameHistories.Add(new GameHistory
-                    {
-                        Input = string.Join("", inputs),
-                        Result = checkResult
-                    });
-                    information.GameRetry = information.GameRetry - 1;
-
-                    if (checkResult == "4A0B")
-                    {
-                        // answer is correct
-                        information.GameStatus = "Pass";
-                        await _redisHelper.RemoveFromRedis(gameIdentifierString);
-
-                    }
-                    else if (information.GameRetry == 0)
-                    {
-                        // anwer is not correct and no retries
-                        information.GameStatus = "Fail";
-                        await _redisHelper.RemoveFromRedis(gameIdentifierString);
-                    }
-                    else
-                    {
-                        await _redisHelper.SaveToRedis(gameIdentifierString, information, TimeSpan.FromDays(1));
-                    }
-
-                    return information;
-                }
-                return null;
+                throw new Exception("Game not found");
             }
-            catch
+
+            string checkResult = Check(information.GameAnswer, inputs);
+            information.GameHistories.Add(new GameHistory
             {
-                return null;
+                Input = string.Join("", inputs),
+                Result = checkResult
+            });
+            information.GameRetry = information.GameRetry - 1;
+
+            if (checkResult == "4A0B")
+            {
+                // answer is correct
+                information.GameStatus = "Pass";
+                await _redisHelper.RemoveFromRedis(gameIdentifierString);
+
             }
+            else if (information.GameRetry == 0)
+            {
+                // anwer is not correct and no retries
+                information.GameStatus = "Fail";
+                await _redisHelper.RemoveFromRedis(gameIdentifierString);
+            }
+            else
+            {
+                await _redisHelper.SaveToRedis(gameIdentifierString, information, TimeSpan.FromDays(1));
+            }
+
+            return information;
         }
 
         private string Check(int[] expected, int[] actual)

@@ -3,7 +3,7 @@ using StackExchange.Redis;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WeatherForecastAPI.Models.ConfigOptions;
+using WeatherForecastAPI.ConfigOptions;
 
 namespace WeatherForecastAPI.Infrastructure.Redis
 {

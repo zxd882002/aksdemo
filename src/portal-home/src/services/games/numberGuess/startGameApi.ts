@@ -1,35 +1,20 @@
 import { ApiConfig } from "../../index";
-import { Guid } from "guid-typescript";
-
-interface StartGameRequest {
-  header: {
-    requestId: string;
-  };
-}
 
 interface StartGameResponse {
-  header: {
-    responseId: string;
-    statusCode: number;
-  };
   gameIdentifier: string;
   gameRetry: number;
   gameStatus: string;
   gameHistories: string[];
 }
 
-const startGameApi = (onError: (e: unknown) => void): ApiConfig<StartGameRequest> => {
+const startGameApi = (onError: (e: unknown) => void): ApiConfig<undefined> => {
   return {
     method: "post",
     url: "/api/NumberGuess/StartGame",
-    params: {
-      header: {
-        requestId: Guid.create().toString(),
-      },
-    } as StartGameRequest,
+    params: undefined,
     config: undefined,
     onError: onError,
-  } as ApiConfig<StartGameRequest>;
+  } as ApiConfig<undefined>;
 };
 
-export { StartGameRequest, StartGameResponse, startGameApi };
+export { StartGameResponse, startGameApi };

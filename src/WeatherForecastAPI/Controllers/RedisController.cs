@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
+using WeatherForecastAPI.ConfigOptions;
 using WeatherForecastAPI.Infrastructure.Redis;
-using WeatherForecastAPI.Models.ConfigOptions;
 
 namespace WeatherForecastAPI.Controllers
 {

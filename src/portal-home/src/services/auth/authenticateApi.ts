@@ -2,17 +2,10 @@ import { ApiConfig } from "../index";
 import { Guid } from "guid-typescript";
 
 interface AuthenticateRequest {
-  header: {
-    requestId: string;
-  };
   traceId: string;
   passwordHash: string;
 }
 interface AuthenticateResponse {
-  header: {
-    responseId: string;
-    statusCode: number;
-  };
   authSuccess: boolean;
   accessToken: string;
   refreshToken: string;

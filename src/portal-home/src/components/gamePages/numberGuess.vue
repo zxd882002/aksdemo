@@ -111,7 +111,7 @@
 import { computed } from "@vue/reactivity";
 import { reactive, toRefs, ref } from "vue";
 import { callApi } from "@/services/index";
-import { StartGameRequest, StartGameResponse, startGameApi } from "@/services/games/numberGuess/startGameApi";
+import { StartGameResponse, startGameApi } from "@/services/games/numberGuess/startGameApi";
 import { CheckResultRequest, CheckResultResponse, checkResultApi } from "@/services/games/numberGuess/checkResultApi";
 
 const input1 = ref<HTMLElement | null>(null);
@@ -130,7 +130,7 @@ const gameStatusInformation = reactive({
 });
 
 const startGame = async () => {
-  const response = await callApi<StartGameRequest, StartGameResponse>(
+  const response = await callApi<undefined, StartGameResponse>(
     startGameApi((e) => (gameStatusInformation.errorMsg = e as string))
   );
 

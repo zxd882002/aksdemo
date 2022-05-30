@@ -1,6 +1,6 @@
 <template>
   <el-alert :title="alertMessage" type="warning" show-icon v-show="refreshRemains <= 100" />
-  <h3>Weather Forcast</h3>
+  <h3>SMOKE TEST: Weather Forcast</h3>
   <el-button type="primary" @click="get"> Get /api/weatherforecast </el-button>
   <div>{{ errorMsg }}</div>
   <table v-if="show">
@@ -88,13 +88,25 @@ const responseBody = ref('{"Succeed": true}');
 const callTestApi = async () => {
   // eslint-disable-next-line
   const response = await callApi<any, any>(
-    testApi(inputMethod.value, inputUrl.value, JSON.parse(inputBody.value), (e) => {
-      responseBody.value = JSON.stringify(e);
-    })
+    testApi(
+      inputMethod.value,
+      inputUrl.value,
+      inputBody.value == "" ? undefined : JSON.parse(inputBody.value),
+      // eslint-disable-next-line
+      (e: any) => {
+        if (e.response) {
+          statusCode.value = e.response.status.toString();
+          responseBody.value = JSON.stringify(e.response.data);
+        } else {
+          statusCode.value = "";
+          responseBody.value = e.message;
+        }
+      }
+    )
   );
   if (response) {
     statusCode.value = response.status.toString();
-    responseBody.value = response.data;
+    responseBody.value = JSON.stringify(response.data);
   }
 };
 </script>

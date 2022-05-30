@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using WeatherForecastAPI.Infrastructure.Encryption;
 using WeatherForecastAPI.Infrastructure.Entensions;
 using WeatherForecastAPI.Infrastructure.Redis;
-using WeatherForecastAPI.Models.Requests.AuthRequests;
-using WeatherForecastAPI.Models.Responses.AuthResponses;
+using WeatherForecastAPI.Models.Auth.AuthRequests;
+using WeatherForecastAPI.Models.Auth.AuthResponses;
 
 namespace WeatherForecastAPI.Controllers
 {
@@ -47,11 +47,6 @@ namespace WeatherForecastAPI.Controllers
                 await _redisHelper.RemoveFromRedis(request.TraceId);
                 return new AuthenticateResponse
                 {
-                    Header = new ResponseHeader
-                    {
-                        ResponseId = request.Header.RequestId,
-                        StatusCode = 200
-                    },
                     AuthSuccess = true,
                     AccessToken = _signer.SignJwt("admin", new TimeSpan(0, 0, 0), new TimeSpan(0, 5, 0)),
                     RefreshToken = _signer.SignJwt("exAdmin", new TimeSpan(0, 5, 0), new TimeSpan(0, 30, 0))
@@ -59,25 +54,15 @@ namespace WeatherForecastAPI.Controllers
             }
             return new AuthenticateResponse
             {
-                Header = new ResponseHeader
-                {
-                    ResponseId = request.Header.RequestId,
-                    StatusCode = 200
-                },
                 AuthSuccess = false
             };
         }
 
         [HttpPost("RefreshToken")]
-        public RefreshTokenResponse RefreshToken(RefreshTokenRequest request)
+        public RefreshTokenResponse RefreshToken()
         {
             return new RefreshTokenResponse
             {
-                Header = new ResponseHeader
-                {
-                    ResponseId = request.Header.RequestId,
-                    StatusCode = 200
-                },
                 AuthSuccess = true,
                 AccessToken = _signer.SignJwt("admin", new TimeSpan(0, 0, 0), new TimeSpan(0, 5, 0)),
                 RefreshToken = _signer.SignJwt("exAdmin", new TimeSpan(0, 5, 0), new TimeSpan(0, 30, 0))
