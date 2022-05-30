@@ -1,5 +1,5 @@
 <template>
-  <div>计算器</div>
+  <div>微信scrum</div>
 </template>
 
 <script setup lang="ts"></script>

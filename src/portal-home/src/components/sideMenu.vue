@@ -19,7 +19,7 @@
           </el-icon>
           <span style="margin-left: 1rem">小工具</span>
         </template>
-        <el-menu-item index="/tools/calculator">计算器</el-menu-item>
+        <el-menu-item index="/tools/calculator">微信scrum</el-menu-item>
         <el-menu-item index="2-2">...</el-menu-item>
       </el-sub-menu>
     </el-menu>

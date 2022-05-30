@@ -39,9 +39,9 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "calculator",
         name: "calculator",
-        component: () => import("../components/toolPages/calculator.vue"),
+        component: () => import("../components/toolPages/scrum.vue"),
         meta: {
-          title: "淘淘の家 - 小工具 - 计算器",
+          title: "淘淘の家 - 小工具 - 微信scrum",
         },
       },
     ],
