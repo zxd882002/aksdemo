@@ -34,24 +34,29 @@ interface ApiConfig<TRequest> {
   onError: (e: unknown) => void;
 }
 
-const callApi = async <TRequest, TResponse>(api: ApiConfig<TRequest>): Promise<TResponse | undefined> => {
+const callApi = async <TRequest, TResponse>(
+  api: ApiConfig<TRequest>
+): Promise<{ data: TResponse; status: number } | undefined> => {
   try {
     let data: TResponse;
+    let status: number;
     switch (api.method) {
       case "get": {
         const getResponse = await service.get<TResponse>(api.url, api.config);
         data = getResponse.data;
+        status = getResponse.status;
         break;
       }
       case "post": {
         const postResponse = await service.post<TResponse>(api.url, api.params, api.config);
         data = postResponse.data;
+        status = postResponse.status;
         break;
       }
       default:
         throw new Error();
     }
-    return data;
+    return { data, status };
   } catch (e) {
     api.onError(e);
     return undefined;

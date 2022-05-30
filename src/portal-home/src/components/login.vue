@@ -60,8 +60,9 @@ const errorMsg = ref("");
 
 let traceId = "";
 const getSalt = async () => {
-  const data = await callApi<undefined, GetSaltResponse>(getSaultApi((e) => (errorMsg.value = e as string)));
-  if (data) {
+  const respnose = await callApi<undefined, GetSaltResponse>(getSaultApi((e) => (errorMsg.value = e as string)));
+  if (respnose) {
+    const data = respnose.data;
     traceId = data.traceId;
     salt.value = data.salt;
   }
@@ -70,14 +71,17 @@ const getSalt = async () => {
 const tryAuth = async () => {
   const input = birthdate.value + "-" + lane.value + "-" + number.value + "-" + room.value + "-" + inputSalt.value;
   const inputHash = Crypto.SHA256(input).toString();
-  const data = await callApi<AuthenticateRequest, AuthenticateResponse>(
+  const respnose = await callApi<AuthenticateRequest, AuthenticateResponse>(
     authenticateApi(traceId, inputHash, (e) => (errorMsg.value = e as string))
   );
 
-  if (data && data.authSuccess) {
-    jwtManager.setAccessToken(data.accessToken);
-    jwtManager.setRefreshToken(data.refreshToken);
-    router.push("/apiTest");
+  if (respnose) {
+    const data = respnose.data;
+    if (data.authSuccess) {
+      jwtManager.setAccessToken(data.accessToken);
+      jwtManager.setRefreshToken(data.refreshToken);
+      router.push("/apiTest");
+    }
   }
 };
 </script>

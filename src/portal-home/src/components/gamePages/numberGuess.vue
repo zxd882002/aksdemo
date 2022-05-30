@@ -130,11 +130,12 @@ const gameStatusInformation = reactive({
 });
 
 const startGame = async () => {
-  const data = await callApi<StartGameRequest, StartGameResponse>(
+  const response = await callApi<StartGameRequest, StartGameResponse>(
     startGameApi((e) => (gameStatusInformation.errorMsg = e as string))
   );
 
-  if (data) {
+  if (response) {
+    const data = response.data;
     gameStatusInformation.gameIdentifier = data.gameIdentifier;
     gameStatusInformation.gameRetry = data.gameRetry;
     gameStatusInformation.gameStatus = data.gameStatus;
@@ -143,7 +144,7 @@ const startGame = async () => {
 };
 
 const resultCheck = async () => {
-  const data = await callApi<CheckResultRequest, CheckResultResponse>(
+  const response = await callApi<CheckResultRequest, CheckResultResponse>(
     checkResultApi(
       gameStatusInformation.gameIdentifier,
       [
@@ -156,7 +157,8 @@ const resultCheck = async () => {
     )
   );
 
-  if (data) {
+  if (response) {
+    const data = response.data;
     gameStatusInformation.gameIdentifier = data.gameIdentifier;
     gameStatusInformation.gameRetry = data.gameRetry;
     gameStatusInformation.gameStatus = data.gameStatus;

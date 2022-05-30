@@ -1,4 +1,5 @@
 <template>
+  <el-alert :title="alertMessage" type="warning" show-icon v-show="refreshRemains <= 100" />
   <h3>Weather Forcast</h3>
   <el-button type="primary" @click="get"> Get /api/weatherforecast </el-button>
   <div>{{ errorMsg }}</div>
@@ -20,36 +21,82 @@
   </table>
 
   <h3>请输入你的API测试：</h3>
+  <h5>REQUEST</h5>
+  <div>Method:</div>
+  <div>
+    <el-select v-model="inputMethod" placeholder="Select">
+      <el-option v-for="item in inputMethods" :key="item" :label="item" :value="item" />
+    </el-select>
+  </div>
   <div>API URL:</div>
-  <div><input /></div>
-  <div>Method</div>
-  <div><input /></div>
-  <div>Parameter (json)</div>
-  <div><input /></div>
+  <div><el-input v-model="inputUrl" placeholder="/api/WeatherForecast" /></div>
+  <div>Body (json):</div>
+  <div><el-input v-model="inputBody" :autosize="{ minRows: 5 }" type="textarea" /></div>
+  <div><el-button type="primary" @click="callTestApi">提交</el-button></div>
+  <h5>RESPONSE</h5>
+  <div>Status Code:</div>
+  <div><el-input v-model="statusCode" /></div>
+  <div>Body</div>
+  <div><el-input v-model="responseBody" :autosize="{ minRows: 5 }" type="textarea" /></div>
 </template>
 
 <script setup lang="ts">
 import { callApi } from "@/services";
+import { testApi } from "@/services/admin/testApi";
 import { WeatherForecastData, weatherForecastApi } from "@/services/admin/weatherForecastApi";
-import { reactive, toRefs, computed } from "vue";
+import { ref, reactive, toRefs, computed, watchEffect } from "vue";
 import { useStore } from "@/stores";
+import { useRouter } from "vue-router";
 const store = useStore();
+const router = useRouter();
 const state = reactive({
   weatherDatas: [] as WeatherForecastData[],
   show: false,
   errorMsg: "",
 });
+let now = ref(new Date());
+window.setInterval(() => {
+  now.value = new Date();
+}, 1000);
+const alertMessage = computed(() => "您已经有很长时间没有操作了，再过" + refreshRemains.value + "秒就要重新登录");
+const refreshRemains = computed(() => {
+  return Math.round((store.refreshTokenExp.getTime() - now.value.getTime()) / 1000);
+});
+watchEffect(() => {
+  if (refreshRemains.value < 0) {
+    router.push("/admin");
+  }
+});
 const get = async () => {
-  const data = await callApi<undefined, WeatherForecastData[]>(
+  const response = await callApi<undefined, WeatherForecastData[]>(
     weatherForecastApi((e) => (state.errorMsg = e as string))
   );
 
-  if (data) {
-    state.weatherDatas = data;
+  if (response) {
+    state.weatherDatas = response.data;
     state.show = true;
   }
 };
 const { weatherDatas, show, errorMsg } = toRefs(state);
+
+const inputMethods = ["get", "post"];
+const inputUrl = ref("");
+const inputMethod = ref("");
+const inputBody = ref("");
+const statusCode = ref("200");
+const responseBody = ref('{"Succeed": true}');
+const callTestApi = async () => {
+  // eslint-disable-next-line
+  const response = await callApi<any, any>(
+    testApi(inputMethod.value, inputUrl.value, JSON.parse(inputBody.value), (e) => {
+      responseBody.value = JSON.stringify(e);
+    })
+  );
+  if (response) {
+    statusCode.value = response.status.toString();
+    responseBody.value = response.data;
+  }
+};
 </script>
 
 <style scoped lang="scss">
