@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using WeatherForecastAPI.ConfigOptions;
 using WeatherForecastAPI.Infrastructure.Encryption;
 using WeatherForecastAPI.Infrastructure.Redis;
+using WeatherForecastAPI.Models.GoBang;
 using WeatherForecastAPI.Models.NumberGuess;
 
 namespace WeatherForecastAPI
@@ -46,6 +47,7 @@ namespace WeatherForecastAPI
             // models
             services.AddSingleton<GameStatus>();
             services.AddSingleton<ECDsSigner>();
+            services.AddSingleton<IGoBangBoardFactory, GoBangBoardFactory>();
 
             // swagger
             services.AddSwaggerGen();

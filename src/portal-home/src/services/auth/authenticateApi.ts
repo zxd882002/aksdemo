@@ -1,5 +1,4 @@
 import { ApiConfig } from "../index";
-import { Guid } from "guid-typescript";
 
 interface AuthenticateRequest {
   traceId: string;
@@ -20,9 +19,6 @@ const authenticateApi = (
     method: "post",
     url: "/api/Auth/Authenticate",
     params: {
-      header: {
-        requestId: Guid.create().toString(),
-      },
       traceId: traceId,
       passwordHash: passwordHash,
     } as AuthenticateRequest,

@@ -1,5 +1,4 @@
 import { ApiConfig } from "../../index";
-import { Guid } from "guid-typescript";
 
 interface CheckResultRequest {
   gameIdentifier: string;
@@ -23,9 +22,6 @@ const checkResultApi = (
     method: "post",
     url: "/api/NumberGuess/CheckResult",
     params: {
-      header: {
-        requestId: Guid.create().toString(),
-      },
       gameIdentifier: gameIdentifier,
       input: input,
     } as CheckResultRequest,

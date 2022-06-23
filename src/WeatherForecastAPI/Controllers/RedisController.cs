@@ -34,5 +34,11 @@ namespace WeatherForecastAPI.Controllers
             string? value = await _redisHelper.GetFromRedis<string>(key);
             return value ?? "<NULL!>";
         }
+
+        [HttpPost("ClearCache")]
+        public async Task ClearCache()
+        {
+            await _redisHelper.ClearRedis();
+        }
     }
 }

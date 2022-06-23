@@ -4,28 +4,30 @@
     <canvas ref="goBangBoard" class="goBangBoard" id="board" @click="putGoBang" width="450" height="450"></canvas>
   </div>
   <button @click="startGame">游戏开始</button>
-  <div>x = {{ x }}</div>
-  <div>y = {{ y }}</div>
-  <div>x = {{ i }}</div>
-  <div>y = {{ j }}</div>
-  <div>当前下棋 {{ currentGo }}</div>
-  <div>board {{ board }}</div>
+  <div>(x,y) = ({{ i }}, {{ j }})</div>
+  <div>当前下棋： {{ currentGo }}</div>
+  <div>黑棋Score：{{ blackScore }}</div>
+  <div>白棋Score：{{ whiteScore }}</div>
+  <div>{{ errorMessage }}</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, reactive, toRefs } from "vue";
+import { callApi } from "@/services/index";
+import { GetBoardInfoRequest, GetBoardInfoResponse, getBoardInfoApi } from "@/services/games/goBang/getBoardInfoApi";
 
 const goBangBoard = ref<HTMLCanvasElement | null>(null);
 const goBangStatus = reactive({
+  started: false,
   currentGo: "black" as "black" | "white",
-  x: -1,
-  y: -1,
   i: -1,
   j: -1,
   board: [] as number[][],
+  blackScore: -1,
+  whiteScore: -1,
+  errorMessage: "",
 });
-const { currentGo, x, y, i, j, board } = toRefs(goBangStatus);
-
+const { currentGo, i, j, blackScore, whiteScore, errorMessage } = toRefs(goBangStatus);
 let canvasContext: CanvasRenderingContext2D | null | undefined;
 const drawBoard = () => {
   if (canvasContext) {
@@ -43,13 +45,13 @@ const drawBoard = () => {
 const drawGoBang = () => {
   if (canvasContext) {
     canvasContext.beginPath();
-    canvasContext.arc(15 + goBangStatus.i * 30, 15 + goBangStatus.j * 30, 13, 0, 2 * Math.PI); //绘制棋子
+    canvasContext.arc(15 + goBangStatus.j * 30, 15 + goBangStatus.i * 30, 13, 0, 2 * Math.PI); //绘制棋子
     var g = canvasContext.createRadialGradient(
-      15 + goBangStatus.i * 30,
       15 + goBangStatus.j * 30,
+      15 + goBangStatus.i * 30,
       13,
-      15 + goBangStatus.i * 30,
       15 + goBangStatus.j * 30,
+      15 + goBangStatus.i * 30,
       0
     ); //设置渐变
     if (goBangStatus.currentGo == "black") {
@@ -65,24 +67,41 @@ const drawGoBang = () => {
   }
 };
 
-const putGoBang = (e: MouseEvent) => {
-  goBangStatus.x = e.offsetX;
-  goBangStatus.y = e.offsetY;
-  goBangStatus.i = Math.floor(goBangStatus.x / 30);
-  goBangStatus.j = Math.floor(goBangStatus.y / 30);
-  if (goBangStatus.board[goBangStatus.j][goBangStatus.i] == 0) {
-    goBangStatus.board[goBangStatus.j][goBangStatus.i] = goBangStatus.currentGo == "black" ? 1 : 2;
-    drawGoBang();
-    goBangStatus.currentGo = goBangStatus.currentGo == "black" ? "white" : "black";
+const putGoBang = async (e: MouseEvent) => {
+  if (goBangStatus.started) {
+    goBangStatus.j = Math.floor(e.offsetX / 30);
+    goBangStatus.i = Math.floor(e.offsetY / 30);
+    if (goBangStatus.board[goBangStatus.i][goBangStatus.j] == 0) {
+      goBangStatus.board[goBangStatus.i][goBangStatus.j] = goBangStatus.currentGo == "black" ? 1 : 2;
+      drawGoBang();
+      await getGoBangStatus();
+      goBangStatus.currentGo = goBangStatus.currentGo == "black" ? "white" : "black";
+    }
+  }
+};
+
+const getGoBangStatus = async () => {
+  const response = await callApi<GetBoardInfoRequest, GetBoardInfoResponse>(
+    getBoardInfoApi(goBangStatus.board, goBangStatus.i, goBangStatus.j, (e) => {
+      goBangStatus.errorMessage = e as string;
+    })
+  );
+  console.log(response);
+  if (response) {
+    goBangStatus.blackScore = response.data.blackChessScore;
+    goBangStatus.whiteScore = response.data.whiteChessScore;
   }
 };
 
 const startGame = () => {
-  for (let i = 0; i < 15; i++) {
-    goBangStatus.board[i] = [] as number[];
-    for (let j = 0; j < 15; j++) {
-      goBangStatus.board[i][j] = 0;
+  if (!goBangStatus.started) {
+    for (let i = 0; i < 15; i++) {
+      goBangStatus.board[i] = [] as number[];
+      for (let j = 0; j < 15; j++) {
+        goBangStatus.board[i][j] = 0;
+      }
     }
+    goBangStatus.started = true;
   }
 };
 

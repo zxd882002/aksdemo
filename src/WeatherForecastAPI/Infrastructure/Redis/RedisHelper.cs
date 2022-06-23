@@ -13,6 +13,7 @@ namespace WeatherForecastAPI.Infrastructure.Redis
         Task<bool> SaveToRedis<T>(string key, T value, TimeSpan? expiry);
         Task<T?> GetFromRedis<T>(string key);
         Task<bool> RemoveFromRedis(string key);
+        Task ClearRedis();
     }
 
     public class RedisHelper : IRedisHelper
@@ -36,7 +37,15 @@ namespace WeatherForecastAPI.Infrastructure.Redis
 
         public async Task<bool> SaveToRedis<T>(string key, T value, TimeSpan? expiry)
         {
-            string serializedValue = JsonSerializer.Serialize(value);
+            string serializedValue;
+            if (typeof(T) == typeof(string))
+            {
+                serializedValue = (value as string)!;
+            }
+            else
+            {
+                serializedValue = JsonSerializer.Serialize(value);
+            }
             var db = GetConnectionDataBase();
             bool result = await db.StringSetAsync(key, serializedValue, expiry);
             return result;
@@ -47,7 +56,7 @@ namespace WeatherForecastAPI.Infrastructure.Redis
             var db = GetConnectionDataBase();
             string? serializedValue = await db.StringGetAsync(key);
 
-            if(serializedValue == null)
+            if (serializedValue == null)
                 return default(T);
 
             serializedValue = serializedValue.Trim('"');
@@ -66,14 +75,26 @@ namespace WeatherForecastAPI.Infrastructure.Redis
             return result;
         }
 
+        public async Task ClearRedis()
+        {
+            var db = GetConnectionDataBase();
+            var endpoints = db.Multiplexer.GetEndPoints(true);
+            foreach (var endpoint in endpoints)
+            {
+                var server = db.Multiplexer.GetServer(endpoint);
+                await server.FlushAllDatabasesAsync();
+            }
+        }
+
         private IDatabase GetConnectionDataBase()
         {
-            if(_multiplexer == null)
+            if (_multiplexer == null)
             {
                 _multiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
                 {
                     EndPoints = { _weatherForecastApiOptions.RedisEndPoint },
-                    Password = string.IsNullOrWhiteSpace(_weatherForecastApiOptions.RedisPassword) ? null : _weatherForecastApiOptions.RedisPassword
+                    Password = string.IsNullOrWhiteSpace(_weatherForecastApiOptions.RedisPassword) ? null : _weatherForecastApiOptions.RedisPassword,
+                    AllowAdmin = true
                 });
             }
 
