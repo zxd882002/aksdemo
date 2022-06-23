@@ -13,7 +13,7 @@ namespace WeatherForecastAPI.Infrastructure.Redis
         Task<bool> SaveToRedis<T>(string key, T value, TimeSpan? expiry);
         Task<T?> GetFromRedis<T>(string key);
         Task<bool> RemoveFromRedis(string key);
-        Task ClearRedis();
+        Task<string> ClearRedis();
     }
 
     public class RedisHelper : IRedisHelper
@@ -75,14 +75,21 @@ namespace WeatherForecastAPI.Infrastructure.Redis
             return result;
         }
 
-        public async Task ClearRedis()
+        public async Task<string> ClearRedis()
         {
-            var db = GetConnectionDataBase();
-            var endpoints = db.Multiplexer.GetEndPoints(true);
-            foreach (var endpoint in endpoints)
+            try
             {
-                var server = db.Multiplexer.GetServer(endpoint);
-                await server.FlushAllDatabasesAsync();
+                var db = GetConnectionDataBase();
+                var endpoints = db.Multiplexer.GetEndPoints(true);
+                foreach (var endpoint in endpoints)
+                {
+                    var server = db.Multiplexer.GetServer(endpoint);
+                    await server.FlushAllDatabasesAsync();
+                }
+                return "ok";
+            }catch(Exception e)
+            {
+                return e.ToString();
             }
         }
 

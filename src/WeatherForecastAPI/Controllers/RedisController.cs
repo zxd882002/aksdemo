@@ -36,9 +36,9 @@ namespace WeatherForecastAPI.Controllers
         }
 
         [HttpPost("ClearCache")]
-        public async Task ClearCache()
+        public async Task<string> ClearCache()
         {
-            await _redisHelper.ClearRedis();
+            return await _redisHelper.ClearRedis();
         }
     }
 }
