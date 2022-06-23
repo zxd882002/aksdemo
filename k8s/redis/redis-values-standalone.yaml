@@ -4,5 +4,8 @@ global:
 auth:
   password: "123456"
 
+master:
+  disableCommands: []
+
 architecture: standalone
 
