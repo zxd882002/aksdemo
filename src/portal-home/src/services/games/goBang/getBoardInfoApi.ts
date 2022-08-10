@@ -9,18 +9,18 @@ interface GetBoardInfoRequest {
 interface GetBoardInfoResponse {
   blackChessScore: number;
   whiteChessScore: number;
-  blackWin: boolean;
-  whiteWin: boolean;
-  blackHasLiveFour: boolean;
-  whiteHasLiveFour: boolean;
-  blackHasDoubleLiveThree: boolean;
-  whiteHasDoubleLiveThree: boolean;
-  bBlackHasDoubleDeadFour: boolean;
-  whiteHasDoubleDeadFour: boolean;
-  blackHasDeadFourLiveThree: boolean;
-  whiteHasDeadFourLiveThree: boolean;
-  blackMustFollow: boolean;
-  whiteMustFollow: boolean;
+  // blackWin: boolean;
+  // whiteWin: boolean;
+  // blackHasLiveFour: boolean;
+  // whiteHasLiveFour: boolean;
+  // blackHasDoubleLiveThree: boolean;
+  // whiteHasDoubleLiveThree: boolean;
+  // blackHasDoubleDeadFour: boolean;
+  // whiteHasDoubleDeadFour: boolean;
+  // blackHasDeadFourLiveThree: boolean;
+  // whiteHasDeadFourLiveThree: boolean;
+  // blackMustFollow: boolean;
+  // whiteMustFollow: boolean;
 }
 
 const getBoardInfoApi = (

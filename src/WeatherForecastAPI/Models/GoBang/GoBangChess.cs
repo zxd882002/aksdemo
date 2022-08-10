@@ -4,16 +4,48 @@ namespace WeatherForecastAPI.Models.GoBang
 {
     public struct GoBangChess
     {
-        public GoBangChessType Chess { get; set; }
+        public GoBangChessType ChessType { get; set; }
         public GoBangChessPosition Position { get; set; }
+
+        public GoBangChess(GoBangChessType chessType, int row, int column)
+        {
+            Position = new GoBangChessPosition
+            {
+                Row = row,
+                Column = column
+            };
+            ChessType = chessType;
+        }
+
+        public GoBangChess(int chessType, int row, int column)
+        {
+            Position = new GoBangChessPosition
+            {
+                Row = row,
+                Column = column
+            };
+            ChessType = GoBangChessType.Parse(chessType);
+        }
 
         public GoBangChess PositiveMove(GoBangBoard board, string direction, int step = 1)
         {
             GoBangChessPosition newPosition = Position.PositiveMove(direction, step);
-            GoBangChessType Chess = GetChessType(newPosition, board);
+            GoBangChessType chessType = GetChessType(newPosition, board);
             return new GoBangChess
             {
-                Chess = Chess,
+                ChessType = chessType,
+                Position = newPosition
+            };
+        }
+
+        [Obsolete]
+        public GoBangChess PositiveMove(ObsoleteGoBangBoard board, string direction, int step = 1)
+        {
+            GoBangChessPosition newPosition = Position.PositiveMove(direction, step);
+            GoBangChessType chessType = GetChessType(newPosition, board);
+            return new GoBangChess
+            {
+                ChessType = chessType,
                 Position = newPosition
             };
         }
@@ -21,10 +53,22 @@ namespace WeatherForecastAPI.Models.GoBang
         public GoBangChess NegativeMove(GoBangBoard board, string direction, int step = 1)
         {
             GoBangChessPosition newPosition = Position.NegativeMove(direction, step);
-            GoBangChessType Chess = GetChessType(newPosition, board);
+            GoBangChessType chessType = GetChessType(newPosition, board);
             return new GoBangChess
             {
-                Chess = Chess,
+                ChessType = chessType,
+                Position = newPosition
+            };
+        }
+
+        [Obsolete]
+        public GoBangChess NegativeMove(ObsoleteGoBangBoard board, string direction, int step = 1)
+        {
+            GoBangChessPosition newPosition = Position.NegativeMove(direction, step);
+            GoBangChessType chessType = GetChessType(newPosition, board);
+            return new GoBangChess
+            {
+                ChessType = chessType,
                 Position = newPosition
             };
         }
@@ -33,7 +77,20 @@ namespace WeatherForecastAPI.Models.GoBang
         {
             if (position.IsInsideBoundage())
             {
-                return board.Board[position.Row, position.Column];
+                return board.Board[position.Row][position.Column].ChessType;
+            }
+            else
+            {
+                return GoBangChessType.Wall;
+            }
+        }
+
+        [Obsolete]
+        private GoBangChessType GetChessType(GoBangChessPosition position, ObsoleteGoBangBoard board)
+        {
+            if (position.IsInsideBoundage())
+            {
+                return board.Board[position.Row][position.Column];
             }
             else
             {

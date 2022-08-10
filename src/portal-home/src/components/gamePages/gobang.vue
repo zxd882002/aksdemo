@@ -15,10 +15,15 @@
 import { onMounted, ref, reactive, toRefs } from "vue";
 import { callApi } from "@/services/index";
 import { GetBoardInfoRequest, GetBoardInfoResponse, getBoardInfoApi } from "@/services/games/goBang/getBoardInfoApi";
+import {
+  GetNextStepPointRequest,
+  GetNextStepPointResponse,
+  getNextStepPointApi,
+} from "@/services/games/goBang/getNextStepPointApi";
 
 const goBangBoard = ref<HTMLCanvasElement | null>(null);
 const goBangStatus = reactive({
-  started: false,
+  status: "not started",
   currentGo: "black" as "black" | "white",
   i: -1,
   j: -1,
@@ -68,14 +73,16 @@ const drawGoBang = () => {
 };
 
 const putGoBang = async (e: MouseEvent) => {
-  if (goBangStatus.started) {
+  if (goBangStatus.status == "started") {
     goBangStatus.j = Math.floor(e.offsetX / 30);
     goBangStatus.i = Math.floor(e.offsetY / 30);
     if (goBangStatus.board[goBangStatus.i][goBangStatus.j] == 0) {
       goBangStatus.board[goBangStatus.i][goBangStatus.j] = goBangStatus.currentGo == "black" ? 1 : 2;
       drawGoBang();
       await getGoBangStatus();
+
       goBangStatus.currentGo = goBangStatus.currentGo == "black" ? "white" : "black";
+      //await getNextStepPoint();
     }
   }
 };
@@ -93,15 +100,24 @@ const getGoBangStatus = async () => {
   }
 };
 
+const getNextStepPoint = async () => {
+  const response = await callApi<GetNextStepPointRequest, GetNextStepPointResponse>(
+  getNextStepPointApi(goBangStatus.board, goBangStatus.i, goBangStatus.j, 3, (e) => {
+      goBangStatus.errorMessage = e as string;
+    })
+  );
+  console.log(response);
+};
+
 const startGame = () => {
-  if (!goBangStatus.started) {
+  if (goBangStatus.status == "not started") {
     for (let i = 0; i < 15; i++) {
       goBangStatus.board[i] = [] as number[];
       for (let j = 0; j < 15; j++) {
         goBangStatus.board[i][j] = 0;
       }
     }
-    goBangStatus.started = true;
+    goBangStatus.status = "started";
   }
 };
 

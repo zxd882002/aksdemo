@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using WeatherForecastAPI.Infrastructure.Redis;
 
@@ -7,63 +7,125 @@ namespace WeatherForecastAPI.Models.GoBang
 {
     public interface IGoBangBoardFactory
     {
-        public Task<GoBangBoard> Parse(int[][] board, int lastRow, int lastColumn);
+        GoBangBoard Parse(int[][] board, int lastRow, int lastColumn, int chessType);
+        GoBangBoard Parse(GoBangChessType[][] currentBoard, GoBangChess lastChess);
+
+        Task<ObsoleteGoBangBoard> ObseleteParse(int[][] board, int lastRow, int lastColumn);
+        Task<ObsoleteGoBangBoard> ObseleteGenerateBoard(GoBangChessType[][] currentBoard, int lastRow, int lastColumn);
     }
 
     public class GoBangBoardFactory : IGoBangBoardFactory
     {
         private IRedisHelper _redisHelper;
+        private ConcurrentDictionary<string, ObsoleteGoBangBoard> _obseleteGoBangBoardDictionary;
+        private ConcurrentDictionary<string, GoBangBoard> _goBangBoardDictionary;
+
         public GoBangBoardFactory(IRedisHelper redisHelper)
         {
             _redisHelper = redisHelper;
+            _obseleteGoBangBoardDictionary = new ConcurrentDictionary<string, ObsoleteGoBangBoard>();
+            _goBangBoardDictionary = new ConcurrentDictionary<string, GoBangBoard>();
         }
 
-        public async Task<GoBangBoard> Parse(int[][] board, int lastRow, int lastColumn)
+        public async Task<ObsoleteGoBangBoard> ObseleteParse(int[][] board, int lastRow, int lastColumn)
         {
-            // get board from cache
-            string currentBoardHash = GetBoardHash(board);
-            string? currentBoardString = await _redisHelper.GetFromRedis<string>(currentBoardHash);
-            if (currentBoardString != null)
+            GoBangChessType[][] typedCurrentBoard = new GoBangChessType[board.Length][];
+            for (int i = 0; i < board.Length; i++)
             {
-                await _redisHelper.SaveToRedis(currentBoardHash, currentBoardString, TimeSpan.FromDays(1));
-                GoBangBoard goBangBoard = new GoBangBoard();
-                goBangBoard.Deserialize(board, currentBoardString);
+                typedCurrentBoard[i] = new GoBangChessType[board[i].Length];
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    typedCurrentBoard[i][j] = GoBangChessType.Parse(board[i][j]);
+                }
+            }
+
+            return await ObseleteGenerateBoard(typedCurrentBoard, lastRow, lastColumn);
+        }
+
+        public async Task<ObsoleteGoBangBoard> ObseleteGenerateBoard(GoBangChessType[][] currentBoard, int lastRow, int lastColumn)
+        {
+            GoBangChess lastChess = new GoBangChess
+            {
+                Position = new GoBangChessPosition { Row = lastRow, Column = lastColumn },
+                ChessType = currentBoard[lastRow][lastColumn]
+            };
+            ObsoleteGoBangBoard? goBangBoard = await GetGoBangBoardByCurrentBoard(currentBoard);
+            if (goBangBoard != null)
+            {
+                goBangBoard.LastChess = lastChess;
                 return goBangBoard;
             }
 
-            // if cache not found, generate from previous board
-            GoBangChessType currentChess = board[lastRow][lastColumn] == 1 ? GoBangChessType.BlackChess : GoBangChessType.WhiteChess;
-            board[lastRow][lastColumn] = 0;
+            currentBoard[lastRow][lastColumn] = GoBangChessType.Blank;
+            goBangBoard = await GetGoGangBoardByPreviousBoard(currentBoard, lastChess);
+            return goBangBoard;
+        }
 
-            GoBangBoard previousGoBangBoard = new GoBangBoard();
-            string previousBoardHash = GetBoardHash(board);
-            string? previousBoardString = await _redisHelper.GetFromRedis<string>(previousBoardHash);
-            if (previousBoardString == null)
+        private async Task<ObsoleteGoBangBoard?> GetGoBangBoardByCurrentBoard(GoBangChessType[][] currentBoard)
+        {
+            ObsoleteGoBangBoard goBangBoard = new ObsoleteGoBangBoard(currentBoard, this);
+
+            string boardHash = goBangBoard.GetBoardHash();
+
+            if (_obseleteGoBangBoardDictionary.ContainsKey(boardHash))
             {
-                // if previous board is not found, previous is all blank (no chess)
-                previousGoBangBoard.InitializeEmptyBoard();
+                return _obseleteGoBangBoardDictionary[boardHash];
             }
-            else
+            string? boardString = await _redisHelper.GetFromRedis<string>(boardHash);
+            if (boardString != null)
             {
-                previousGoBangBoard.Deserialize(board, previousBoardString);
+                _redisHelper.SaveToRedis(boardHash, boardString, TimeSpan.FromDays(1));
+                goBangBoard.Deserialize(boardString);
+                _obseleteGoBangBoardDictionary[boardHash] = goBangBoard;
+                return goBangBoard;
             }
-            GoBangBoard currentBoard = previousGoBangBoard.GetBoardInfoAfterPuttingChess(new GoBangChess { Position = new GoBangChessPosition { Row = lastRow, Column = lastColumn }, Chess = currentChess });
-            currentBoardString = currentBoard.Serialize();
-            await _redisHelper.SaveToRedis(currentBoardHash, currentBoardString, TimeSpan.FromDays(1));
+
+            if (goBangBoard.IsEmptyBoard())
+                return goBangBoard;
+
+            return null;
+        }
+
+        private async Task<ObsoleteGoBangBoard> GetGoGangBoardByPreviousBoard(GoBangChessType[][] previousBoard, GoBangChess lastChess)
+        {
+            ObsoleteGoBangBoard? previousGoBangBoard = await GetGoBangBoardByCurrentBoard(previousBoard);
+            ObsoleteGoBangBoard currentBoard = previousGoBangBoard!.GetBoardInfoAfterPuttingChess(lastChess);
+            string currentBoardHash = currentBoard.GetBoardHash();
+            _obseleteGoBangBoardDictionary[currentBoardHash] = currentBoard;
+            string currentBoardString = currentBoard.Serialize();
+            _redisHelper.SaveToRedis(currentBoardHash, currentBoardString, TimeSpan.FromDays(1));
             return currentBoard;
         }
 
-        private string GetBoardHash(int[][] board)
+        public GoBangBoard Parse(int[][] board, int lastRow, int lastColumn, int lastChessType)
         {
-            StringBuilder sb = new StringBuilder(GoBangBoard.BOARD_SIZE * GoBangBoard.BOARD_SIZE);
-            foreach (var row in board)
+            GoBangChess lastChess = new GoBangChess(lastChessType, lastRow, lastColumn);
+            GoBangChess[][] goBangChesses = new GoBangChess[board.Length][];
+            for (int i = 0; i < board.Length; i++)
             {
-                foreach (var chess in row)
+                goBangChesses[i] = new GoBangChess[board.Length];
+                for (int j = 0; j < board[i].Length; j++)
                 {
-                    sb.Append(chess);
+                    GoBangChess chess = new GoBangChess(board[i][j], i, j);
+                    goBangChesses[i][j] = chess;
                 }
             }
-            return sb.ToString();
+            return new GoBangBoard(goBangChesses, lastChess);
+        }
+
+        public GoBangBoard Parse(GoBangChessType[][] board, GoBangChess lastChess)
+        {
+            GoBangChess[][] goBangChesses = new GoBangChess[board.Length][];
+            for (int i = 0; i < board.Length; i++)
+            {
+                goBangChesses[i] = new GoBangChess[board.Length];
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    GoBangChess chess = new GoBangChess(board[i][j], i, j);
+                    goBangChesses[i][j] = chess;
+                }
+            }
+            return new GoBangBoard(goBangChesses, lastChess);
         }
     }
 }

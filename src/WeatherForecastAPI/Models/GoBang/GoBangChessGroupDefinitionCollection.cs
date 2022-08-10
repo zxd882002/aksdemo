@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WeatherForecastAPI.Models.GoBang
 {
@@ -10,19 +11,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.MoreThanFive,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess
-            },
+            }),
             Score = 5000000,
             AlreadyWin = true,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackFiveChessGroup = new GoBangChessGroupDefinition
         {
@@ -30,18 +32,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.Five,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess
-            },
+            }),
             Score = 5000000,
             AlreadyWin = true,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveFourGroup = new GoBangChessGroupDefinition
         {
@@ -49,39 +52,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 100000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    if (fromColumn > 0 && board.Board[fromRow, fromColumn - 1] == GoBangChessType.Blank) followedPoint.Add((fromRow, fromColumn - 1));
-                    if (toColumn < 14 && board.Board[toRow, toColumn + 1] == GoBangChessType.Blank) followedPoint.Add((toRow, toColumn + 1));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    if (fromRow > 0 && board.Board[fromRow - 1, fromColumn] == GoBangChessType.Blank) followedPoint.Add((fromRow - 1, fromColumn));
-                    if (toRow < 14 && board.Board[toRow + 1, toColumn] == GoBangChessType.Blank) followedPoint.Add((toRow + 1, toColumn));
-                }
-                else
-                {
-                    if (fromColumn > 0 && fromRow > 0 && board.Board[fromRow - 1, fromColumn - 1] == GoBangChessType.Blank) followedPoint.Add((fromRow - 1, fromColumn - 1));
-                    if (toColumn < 14 && toRow < 14 && board.Board[fromRow + 1, fromColumn + 1] == GoBangChessType.Blank) followedPoint.Add((fromRow + 1, fromColumn + 1));
-                }
-
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[5].Position }; },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup1 = new GoBangChessGroupDefinition
         {
@@ -89,24 +73,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 10000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                followedPoint.Add((fromRow, fromColumn));
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position }; },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup1Mirror = new GoBangChessGroupDefinition
         {
@@ -114,24 +94,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 10000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                followedPoint.Add((toRow, toColumn));
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[5].Position }; },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup2 = new GoBangChessGroupDefinition
         {
@@ -139,34 +115,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
-            },
+            }),
             Score = 10000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((fromRow, fromColumn + 1));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn));
-                }
-                else
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn + 1));
-                }
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position }; },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup2Mirror = new GoBangChessGroupDefinition
         {
@@ -174,34 +135,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
-            },
+            }),
             Score = 10000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((toRow, toColumn - 1));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((toRow - 1, toColumn));
-                }
-                else
-                {
-                    followedPoint.Add((toRow - 1, toRow - 1));
-                }
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[3].Position }; },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup3 = new GoBangChessGroupDefinition
         {
@@ -209,34 +155,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
-            },
+            }),
             Score = 10000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((fromRow, fromColumn + 2));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((fromRow + 2, fromColumn));
-                }
-                else
-                {
-                    followedPoint.Add((fromRow + 2, fromColumn + 2));
-                }
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[2].Position }; },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveThreeGroup1 = new GoBangChessGroupDefinition
         {
@@ -244,7 +175,7 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
@@ -252,31 +183,13 @@ namespace WeatherForecastAPI.Models.GoBang
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 8000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((fromRow, fromColumn + 1));
-                    followedPoint.Add((toRow, toColumn - 1));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn));
-                    followedPoint.Add((toRow - 1, toColumn));
-                }
-                else
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn + 1));
-                    followedPoint.Add((toRow - 1, toColumn - 1));
-                }
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = true
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[5].Position }; },
+            CouldFollowByAddingFourChess = true,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[1].Position, chesslist[5].Position, chesslist[6].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveThreeGroup2 = new GoBangChessGroupDefinition
         {
@@ -284,7 +197,7 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
@@ -292,32 +205,13 @@ namespace WeatherForecastAPI.Models.GoBang
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 8000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((fromRow, fromColumn + 1));
-                    followedPoint.Add((toRow, toColumn - 1));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn));
-                    followedPoint.Add((toRow - 1, toColumn));
-                }
-                else
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn + 1));
-                    followedPoint.Add((toRow - 1, toColumn - 1));
-                }
-                followedPoint.Add((toRow, toColumn));
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = true
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[5].Position, chesslist[6].Position }; },
+            CouldFollowByAddingFourChess = true,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[5].Position, chesslist[6].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveThreeGroup2Mirror = new GoBangChessGroupDefinition
         {
@@ -325,7 +219,7 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
@@ -333,32 +227,13 @@ namespace WeatherForecastAPI.Models.GoBang
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 8000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((fromRow, fromColumn + 1));
-                    followedPoint.Add((toRow, toColumn - 1));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn));
-                    followedPoint.Add((toRow - 1, toColumn));
-                }
-                else
-                {
-                    followedPoint.Add((fromRow + 1, fromColumn + 1));
-                    followedPoint.Add((toRow - 1, toColumn - 1));
-                }
-                followedPoint.Add((fromRow, fromColumn));
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = true
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[1].Position, chesslist[5].Position }; },
+            CouldFollowByAddingFourChess = true,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[1].Position, chesslist[5].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackJumpLiveThreeGroup = new GoBangChessGroupDefinition
         {
@@ -366,41 +241,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.JumpLiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 7000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((fromRow, fromColumn));
-                    followedPoint.Add((fromRow, fromColumn + 2));
-                    followedPoint.Add((toRow, toColumn));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((fromRow, fromColumn));
-                    followedPoint.Add((fromRow + 2, fromColumn));
-                    followedPoint.Add((toRow, toColumn));
-                }
-                else
-                {
-                    followedPoint.Add((fromRow, fromColumn));
-                    followedPoint.Add((fromRow + 2, fromColumn + 2));
-                    followedPoint.Add((toRow, toColumn));
-                }
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = true
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[2].Position, chesslist[5].Position }; },
+            CouldFollowByAddingFourChess = true,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[2].Position, chesslist[5].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackJumpLiveThreeGroupMirror = new GoBangChessGroupDefinition
         {
@@ -408,41 +262,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.JumpLiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 7000,
             AlreadyWin = false,
             EnemyMustFollow = true,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) =>
-            {
-                List<(int row, int column)> followedPoint = new List<(int row, int column)>();
-                if (fromRow == toRow)
-                {
-                    followedPoint.Add((fromRow, fromColumn));
-                    followedPoint.Add((toRow, toColumn - 2));
-                    followedPoint.Add((toRow, toColumn));
-                }
-                else if (fromColumn == toColumn)
-                {
-                    followedPoint.Add((fromRow, fromColumn));
-                    followedPoint.Add((toRow - 2, toColumn));
-                    followedPoint.Add((toRow, toColumn));
-                }
-                else
-                {
-                    followedPoint.Add((fromRow, fromColumn));
-                    followedPoint.Add((toRow - 2, toColumn - 2));
-                    followedPoint.Add((toRow, toColumn));
-                }
-                return followedPoint;
-            },
-            CouldFollowByAddingFourChess = true
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[3].Position, chesslist[5].Position }; },
+            CouldFollowByAddingFourChess = true,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[3].Position, chesslist[5].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup1 = new GoBangChessGroupDefinition
         {
@@ -450,19 +283,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[1].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup1Mirror = new GoBangChessGroupDefinition
         {
@@ -470,19 +304,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[4].Position, chesslist[5].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup2 = new GoBangChessGroupDefinition
         {
@@ -490,19 +325,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[2].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup2Mirror = new GoBangChessGroupDefinition
         {
@@ -510,19 +346,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[3].Position, chesslist[5].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup3 = new GoBangChessGroupDefinition
         {
@@ -530,19 +367,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[3].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup3Mirror = new GoBangChessGroupDefinition
         {
@@ -550,19 +388,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[2].Position, chesslist[5].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup4 = new GoBangChessGroupDefinition
         {
@@ -570,18 +409,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[2].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup4Mirror = new GoBangChessGroupDefinition
         {
@@ -589,18 +429,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[2].Position, chesslist[3].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup5 = new GoBangChessGroupDefinition
         {
@@ -608,18 +449,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[3].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup6 = new GoBangChessGroupDefinition
         {
@@ -627,7 +469,7 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
@@ -635,12 +477,13 @@ namespace WeatherForecastAPI.Models.GoBang
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 500,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[5].Position }; },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup1 = new GoBangChessGroupDefinition
         {
@@ -648,19 +491,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 50,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup2 = new GoBangChessGroupDefinition
         {
@@ -668,19 +512,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 50,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup2Mirror = new GoBangChessGroupDefinition
         {
@@ -688,19 +533,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 50,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup3 = new GoBangChessGroupDefinition
         {
@@ -708,18 +554,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 50,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup4 = new GoBangChessGroupDefinition
         {
@@ -727,19 +574,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 50,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup1 = new GoBangChessGroupDefinition
         {
@@ -747,19 +595,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 10,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup1Mirror = new GoBangChessGroupDefinition
         {
@@ -767,19 +616,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 10,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup2 = new GoBangChessGroupDefinition
         {
@@ -787,19 +637,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 10,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup2Mirror = new GoBangChessGroupDefinition
         {
@@ -807,19 +658,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 10,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup3 = new GoBangChessGroupDefinition
         {
@@ -827,19 +679,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.WhiteChess,
-            },
+            }),
             Score = 10,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup3Mirror = new GoBangChessGroupDefinition
         {
@@ -847,19 +700,20 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.WhiteChess,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
-            },
+            }),
             Score = 10,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup4 = new GoBangChessGroupDefinition
         {
@@ -867,18 +721,19 @@ namespace WeatherForecastAPI.Models.GoBang
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new GoBangChessType[] {
+            Pattern = new List<GoBangChessType>(new[] {
                 GoBangChessType.BlackChess,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.Blank,
                 GoBangChessType.BlackChess
-            },
+            }),
             Score = 10,
             AlreadyWin = false,
             EnemyMustFollow = false,
-            GetFollowingPointFuncs = (fromRow, fromColumn, toRow, toColumn, board) => { return new List<(int row, int column)>(); },
-            CouldFollowByAddingFourChess = false
+            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+            CouldFollowByAddingFourChess = false,
+            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
 
         public static readonly GoBangChessGroupDefinition WhiteMoreThanFiveChessGroup = BlackMoreThanFiveChessGroup.ReverseGoBangChessGroup();
@@ -955,7 +810,6 @@ namespace WeatherForecastAPI.Models.GoBang
             BlackDeadTwoGroup3Mirror,
             BlackDeadTwoGroup4
         };
-
         public static readonly GoBangChessGroupDefinition[] AllWhite = new GoBangChessGroupDefinition[]
         {
            WhiteMoreThanFiveChessGroup,
@@ -994,6 +848,11 @@ namespace WeatherForecastAPI.Models.GoBang
            WhiteDeadTwoGroup3Mirror,
            WhiteDeadTwoGroup4
         };
+
+        public static readonly GoBangChessGroupDefinition[] AllCriticalBlack = AllBlack.Where(x => x.EnemyMustFollow == true).ToArray();
+        public static readonly GoBangChessGroupDefinition[] AllNormalBlack = AllBlack.Where(x => x.EnemyMustFollow == false).ToArray();
+        public static readonly GoBangChessGroupDefinition[] AllCriticalWhite = AllWhite.Where(x => x.EnemyMustFollow == true).ToArray();
+        public static readonly GoBangChessGroupDefinition[] AllNormalWhite = AllWhite.Where(x => x.EnemyMustFollow == false).ToArray();
 
         private static Dictionary<int, GoBangChessGroupDefinition>? definitionIdDictionary = null;
         public static GoBangChessGroupDefinition? GetGoBangChessGroupDefinitionByDefinitionId(int definitionId)

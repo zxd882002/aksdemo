@@ -7,6 +7,12 @@ namespace WeatherForecastAPI.Models.GoBang
         public int Row { get; set; }
         public int Column { get; set; }
 
+        public GoBangChessPosition(int row, int column)
+        {
+            Row = row;
+            Column = column;
+        }
+
         public GoBangChessPosition PositiveMove(string direction, int step = 1)
         {
             int directRow = direction switch
@@ -62,8 +68,8 @@ namespace WeatherForecastAPI.Models.GoBang
 
         public bool IsInsideBoundage()
         {
-            return 0 <= Row && Row <= GoBangBoard.BOARD_SIZE - 1 &&
-                0 <= Column && Column <= GoBangBoard.BOARD_SIZE - 1;
+            return 0 <= Row && Row <= ObsoleteGoBangBoard.BOARD_SIZE - 1 &&
+                0 <= Column && Column <= ObsoleteGoBangBoard.BOARD_SIZE - 1;
         }
     }
 }

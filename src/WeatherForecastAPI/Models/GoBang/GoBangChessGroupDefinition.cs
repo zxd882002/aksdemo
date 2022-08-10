@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace WeatherForecastAPI.Models.GoBang
 {
-    public delegate List<(int row, int column)> GetFollowingPointDelegate(int fromRow, int fromColumn, int toRow, int toColumn, GoBangBoard board);
+    public delegate List<GoBangChessPosition> GetFollowingPointDelegate(List<GoBangChess> chessList);
 
     public class GoBangChessGroupDefinition
     {
@@ -12,12 +12,13 @@ namespace WeatherForecastAPI.Models.GoBang
         public GoBangChessGroupType Type { get; set; }
         public GoBangChessType GoBangChess { get; set; }
         public GoBangChessType EnemyChess { get; set; }
-        public GoBangChessType[] Pattern { get; set; } = null!;
+        public List<GoBangChessType> Pattern { get; set; } = null!;
         public long Score { get; set; }
         public bool AlreadyWin { get; set; }
         public bool EnemyMustFollow { get; set; }
-        public GetFollowingPointDelegate GetFollowingPointFuncs { get; set; } = null!;
+        public GetFollowingPointDelegate GetFollowingPosition { get; set; } = null!;
         public bool CouldFollowByAddingFourChess { get; set; }
+        public GetFollowingPointDelegate AddToFourChess { get; set; } = null!;
 
         public GoBangChessGroupDefinition ReverseGoBangChessGroup()
         {
@@ -27,11 +28,13 @@ namespace WeatherForecastAPI.Models.GoBang
                 Type = Type,
                 GoBangChess = ReverseChess(GoBangChess),
                 EnemyChess = ReverseChess(EnemyChess),
-                Pattern = Pattern.Select(x => ReverseChess(x)).ToArray(),
+                Pattern = Pattern.Select(x => ReverseChess(x)).ToList(),
                 Score = Score,
                 AlreadyWin = AlreadyWin,
                 EnemyMustFollow = EnemyMustFollow,
-                GetFollowingPointFuncs = GetFollowingPointFuncs
+                GetFollowingPosition = GetFollowingPosition,
+                CouldFollowByAddingFourChess = CouldFollowByAddingFourChess,
+                AddToFourChess = AddToFourChess
             };
         }
         private GoBangChessType ReverseChess(GoBangChessType originalChess)
@@ -45,18 +48,18 @@ namespace WeatherForecastAPI.Models.GoBang
 
         public bool IsMatch(List<GoBangChess> goBangChesses)
         {
-            if (goBangChesses.Count != Pattern.Length)
+            if (goBangChesses.Count != Pattern.Count)
                 return false;
 
             for (int i = 0; i < goBangChesses.Count; i++)
             {
-                if (i == 0 && goBangChesses[i].Chess == GoBangChessType.Wall && Pattern[i] == EnemyChess)
+                if (i == 0 && goBangChesses[i].ChessType == GoBangChessType.Wall && Pattern[i] == EnemyChess)
                     continue;
 
-                if (i == goBangChesses.Count - 1 && goBangChesses[i].Chess == GoBangChessType.Wall && Pattern[i] == EnemyChess)
+                if (i == goBangChesses.Count - 1 && goBangChesses[i].ChessType == GoBangChessType.Wall && Pattern[i] == EnemyChess)
                     continue;
 
-                if (goBangChesses[i].Chess != Pattern[i])
+                if (goBangChesses[i].ChessType != Pattern[i])
                     return false;
             }
 
