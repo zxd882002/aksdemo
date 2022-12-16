@@ -68,10 +68,8 @@ stages:
               installKubectl: true
           - task: HelmDeploy@0
             inputs:
-              connectionType: "Azure Resource Manager"
-              azureSubscription: "connection"
-              azureResourceGroup: $(resourceGroup)
-              kubernetesCluster: "myAKSCluster"
+              connectionType: "Kubernetes Service Connection"
+              kubernetesServiceEndpoint: "tecent"
               namespace: "myaksdemo"
               command: "upgrade"
               chartType: "FilePath"
