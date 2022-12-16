@@ -18,6 +18,8 @@ spec:
         - name: {{ .Values.portalHome.name }}          
           image: "{{ .Values.portalHome.image.repository }}:{{ .Values.version }}"
           imagePullPolicy: {{ .Values.portalHome.image.pullPolicy }}
+          imagePullSecrets:
+          - name: xudongacr
           ports:
             - containerPort: 80
               protocol: TCP     
