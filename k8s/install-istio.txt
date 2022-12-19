@@ -1,0 +1,76 @@
+1. 安装k3s镜像，删除traefik services
+
+kubectl get svc -n kube-system
+kubectl -n kube-system delete svc traefik
+
+2. 复制istioctl-1.16.1-linux-amd64.tar.gz到kvm中
+
+3. 执行下面命令
+
+tar -xzvf istioctl-1.16.1-linux-amd64.tar.gz
+
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+./istioctl operator init
+
+5. 执行下面命令
+
+kubectl apply -f - <<EOF
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  namespace: istio-system
+  name: example-istiocontrolplane
+spec:
+  profile: demo
+EOF
+
+6. 执行下面命令检查：
+
+$ kubectl get services -n istio-system
+NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)   AGE
+istio-egressgateway    ClusterIP      10.96.65.145    <none>           ...       30s
+istio-ingressgateway   LoadBalancer   10.96.189.244   192.168.11.156   ...       30s
+istiod                 ClusterIP      10.96.189.20    <none>           ...       37s
+
+$ kubectl get pods -n istio-system
+NAME                                    READY   STATUS    RESTARTS   AGE
+istio-egressgateway-696cccb5-m8ndk      1/1     Running   0          68s
+istio-ingressgateway-86cb4b6795-9jlrk   1/1     Running   0          68s
+istiod-b47586647-sf6sw                  1/1     Running   0          74s
+
+7. 下载 /etc/rancher/k3s/k3s.yaml 文件
+8. 修改 cluster 文件
+
+insecure-skip-tls-verify: true
+server: https://101.34.0.218:443
+
+i.e.
+
+apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://101.34.0.218:6443
+  name: default
+contexts:
+- context:
+    cluster: default
+    user: default
+  name: default
+current-context: default
+kind: Config
+preferences: {}
+users:
+- name: default
+  user:
+    client-certificate-data: LS...
+    client-key-data: LS...
+
+
+
+registry
+kubectl create secret docker-registry xudongacr --docker-server=xudongacr.azurecr.io --docker-username=xudongACR --docker-password=jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg 
+
+
+--docker-email=<your-email>
