@@ -67,10 +67,5 @@ users:
     client-certificate-data: LS...
     client-key-data: LS...
 
-
-
-registry
+9. 添加registry的secret
 kubectl create secret docker-registry xudongacr --docker-server=xudongacr.azurecr.io --docker-username=xudongACR --docker-password=jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg 
-
-
---docker-email=<your-email>

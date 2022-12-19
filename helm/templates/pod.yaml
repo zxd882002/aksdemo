@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-aks-demo-pod
+  namespace: myaksdemo
+spec:
+  containers:
+    - name: {{ .Values.portalHome.name }}
+      image: "{{ .Values.portalHome.image.repository }}:{{ .Values.version }}"
+    - name: {{ .Values.weatherForecastApi.name }}
+      image: "{{ .Values.weatherForecastApi.image.repository }}:{{ .Values.version }}"
+  imagePullSecrets:
+    - name: xudongacr
+EOF
