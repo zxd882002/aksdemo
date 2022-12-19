@@ -66,21 +66,13 @@ stages:
             inputs:
               helmVersion: "latest"
               installKubectl: true
-          - task: Bash@3
-            displayName: register helm to azure
-            inputs:            
-              targetType: 'inline'
-              script: 'helm registry login xudongacr.azurecr.io --username xudongACR --password jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg'            
-          - task: HelmDeploy@0
+          - task: AzureCLI@2
             inputs:
-              connectionType: "Kubernetes Service Connection"
-              kubernetesServiceEndpoint: "tecent"
-              namespace: "myaksdemo"
-              command: "upgrade"
-              chartType: "FilePath"
-              chartPath: "./helm"
-              releaseName: aksdemo
-              overrideValues: "version=$(Build.BuildId)"
-              azureSubscriptionForACR: "connection"
-              azureResourceGroupForACR: $(resourceGroup)
-              azureContainerRegistry: $(dockerRegistryServiceConnection)
+              azureSubscription: "connection"
+              scriptType: pscore
+              addSpnToEnvironment: true
+              scriptLocation: inlineScript
+              inlineScript: |
+                [System.Environment]::SetEnvironmentVariable("HELM_EXPERIMENTAL_OCI", "1")
+                helm registry login xudongacr.azurecr.io.azurecr.io --username xudongACR --password jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg
+                helm upgrade --namespace myaksdemo --install --set version=$(Build.BuildId) --wait aksdemo /home/vsts/work/1/s/helm
