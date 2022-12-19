@@ -76,8 +76,7 @@ stages:
               inlineScript: |
                 [System.Environment]::SetEnvironmentVariable("HELM_EXPERIMENTAL_OCI", "1")                
                 helm registry login xudongacr.azurecr.io --username xudongACR --password jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg 
-                helm chart pull xudongacr.azurecr.io/aksdemo:$(Build.BuildId)
-                helm chart export xudongacr.azurecr.io/aksdemo:$(Build.BuildId) --destination ./helm
+                helm pull xudongacr.azurecr.io/aksdemo:$(Build.BuildId)
           - task: HelmDeploy@0
             inputs:
               connectionType: "Kubernetes Service Connection"
