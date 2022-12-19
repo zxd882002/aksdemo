@@ -81,7 +81,7 @@ stages:
               namespace: "myaksdemo"
               command: "upgrade"
               chartType: "FilePath"
-              chartPath: "./aksdemoChart"
+              chartPath: "./aksdemoChart/aks-demo-2.0.0.tgz"
               releaseName: aksdemo
               overrideValues: "version=$(Build.BuildId)"
               azureSubscriptionForACR: "connection"
