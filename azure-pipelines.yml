@@ -66,6 +66,11 @@ stages:
             inputs:
               helmVersion: "latest"
               installKubectl: true
+          - task: Bash@3
+            displayName: register helm to azure
+            inputs:            
+              targetType: 'inline'
+              script: 'helm registry login xudongacr.azurecr.io --username xudongACR --password jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg'            
           - task: HelmDeploy@0
             inputs:
               connectionType: "Kubernetes Service Connection"
