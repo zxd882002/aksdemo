@@ -66,13 +66,17 @@ stages:
             inputs:
               helmVersion: "latest"
               installKubectl: true
+          - task: Kubernetes@1
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: 'tecent'
           - task: AzureCLI@2
             inputs:
-              azureSubscription: "connection"
+              azureSubscription: "connection"              
               scriptType: pscore
               addSpnToEnvironment: true
               scriptLocation: inlineScript
               inlineScript: |
                 [System.Environment]::SetEnvironmentVariable("HELM_EXPERIMENTAL_OCI", "1")
-                helm registry login xudongacr.azurecr.io --username xudongACR --password jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg
+                helm registry login xudongacr.azurecr.io --username xudongACR --password jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg 
                 helm upgrade --namespace myaksdemo --install --set version=$(Build.BuildId) --wait aksdemo /home/vsts/work/1/s/helm
