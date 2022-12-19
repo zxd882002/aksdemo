@@ -66,15 +66,14 @@ stages:
             inputs:
               helmVersion: "latest"
               installKubectl: true          
-          - task: AzureCLI@2
+          - task: HelmDeploy@0
             inputs:
-              azureSubscription: "connection"
-              scriptType: pscore
-              addSpnToEnvironment: true
-              scriptLocation: inlineScript
-              inlineScript: |
-                [System.Environment]::SetEnvironmentVariable("HELM_EXPERIMENTAL_OCI", "1")                
-                helm registry login xudongacr.azurecr.io --username xudongACR --password jwIjWB/RJ7OUSi9qJHmVEx8OpUYPfeGg
+              command: 'package'
+              chartPath: './helm'
+              destination: './aksdemoChart'
+              azureSubscriptionForACR: "connection"
+              azureResourceGroupForACR: $(resourceGroup)
+              azureContainerRegistry: $(dockerRegistryServiceConnection)
           - task: HelmDeploy@0
             inputs:
               connectionType: "Kubernetes Service Connection"
@@ -82,7 +81,7 @@ stages:
               namespace: "myaksdemo"
               command: "upgrade"
               chartType: "FilePath"
-              chartPath: "./helm"
+              chartPath: "./aksdemoChart"
               releaseName: aksdemo
               overrideValues: "version=$(Build.BuildId)"
               azureSubscriptionForACR: "connection"
