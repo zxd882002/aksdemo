@@ -5,9 +5,9 @@ metadata:
   namespace: myaksdemo
 spec:
   containers:
-    - name: { { .Values.portalHome.name } }
-      image: "{{ .Values.portalHome.image.repository }}:{{ .Values.version }}"
-    - name: { { .Values.weatherForecastApi.name } }
-      image: "{{ .Values.weatherForecastApi.image.repository }}:{{ .Values.version }}"
+    - name: portal-home
+      image: "xudongacr.azurecr.io/portal-home:v1"
+    - name: weather-forecast-api
+      image: "xudongacr.azurecr.io/weatherforecastapi:v1"
   imagePullSecrets:
     - name: xudongacr
