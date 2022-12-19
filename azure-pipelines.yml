@@ -10,7 +10,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: "295b2eae-9f75-4cc9-b9ec-c504cdef6bd8"
+  dockerRegistryServiceConnection: "xudongACR"
   containerRegistry: "xudongacr.azurecr.io"
   resourceGroup: "myResourceGroup"
   portalHomeDockerFilePath: "$(Build.SourcesDirectory)/src/portal-home/Dockerfile"
