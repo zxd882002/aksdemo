@@ -5,6 +5,8 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
+env:
+  Tag: $(date +%s)
 
 jobs:
   build:
@@ -13,6 +15,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image for weatherforcast
       working-directory: ./src/WeatherForecastAPI
-      run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:$(date +%s)
+      run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:$Tag
     - name: Push the image to docker hub
-      run: docker push zxd882002/weather-forecast-api:$(date +%s)
+      run: docker push zxd882002/weather-forecast-api:$Tag
