@@ -12,7 +12,7 @@ jobs:
      - name: Set tag
        run: echo "docker_tag=$(date +%s)" >> $GITHUB_ENV
      outputs:
-       tocker_tag: ${{env.docker_tag}}
+       docker_tag: ${{env.docker_tag}}
   
   build-weather-forecast-api:
     needs: 
