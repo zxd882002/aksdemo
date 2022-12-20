@@ -16,5 +16,7 @@ jobs:
     - name: Build the Docker image for weatherforcast
       working-directory: ./src/WeatherForecastAPI
       run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:${{ steps.vars.outputs.docker_tag }}
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Push the image to docker hub
       run: docker push zxd882002/weather-forecast-api:${{ steps.vars.outputs.docker_tag }}
