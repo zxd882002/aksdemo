@@ -5,22 +5,38 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
-jobs:   
+jobs:
+  prepare:
+     runs-on: ubuntu-latest
+     steps:
+     - name: Set tag
+       run: echo "docker_tag=$(date +%s)" >> $GITHUB_ENV
+     outputs:
+       tocker_tag: ${{env.docker_tag}}
+  
   build-weather-forecast-api:
+    needs: 
+      prepare
     runs-on: ubuntu-latest
     steps:
-    - name: Set tag
-      run: echo "docker_tag=$(date +%s)" >> $GITHUB_ENV
-    - uses: actions/checkout@v3    
+    - uses: actions/checkout@v3   
     - name: Build the Docker image for weatherforcast
       working-directory: ./src/WeatherForecastAPI
-      run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:${{ env.docker_tag }}
-    - name: Build the Docker image for portal home
-      working-directory: ./src/portal-home
-      run: docker build . --file Dockerfile --tag zxd882002/portal-home:${{ env.docker_tag }}
+      run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:${{ needs.prepare.outputs.docker_tag }}
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Push the image to docker hub
-      run: docker push zxd882002/weather-forecast-api:${{ env.docker_tag }}    
+      run: docker push zxd882002/weather-forecast-api:${{ needs.prepare.outputs.docker_tag }}
+  build-portal-home:
+    needs: 
+      prepare
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image for portal home
+      working-directory: ./src/portal-home
+      run: docker build . --file Dockerfile --tag zxd882002/portal-home:${{ needs.prepare.outputs.docker_tag }}
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Push the image to docker hub
-      run: docker push zxd882002/portal-home:${{ env.docker_tag }}
+      run: docker push zxd882002/portal-home:${{ needs.prepare.outputs.docker_tag }}
