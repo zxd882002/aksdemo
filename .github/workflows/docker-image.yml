@@ -43,6 +43,7 @@ jobs:
       
   helm-deploy:
     needs:
+    - prepare
     - build-weather-forecast-api
     - build-portal-home
     runs-on: ubuntu-latest
