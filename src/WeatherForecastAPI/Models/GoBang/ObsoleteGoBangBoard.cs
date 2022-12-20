@@ -387,7 +387,7 @@ namespace WeatherForecastAPI.Models.GoBang
             return _value.Value;
         }
 
-        public List<ObsoleteGoBangBoard> GetChildElements()
+        public async Task<List<ObsoleteGoBangBoard>> GetChildElements()
         {
             //Stopwatch sw = new Stopwatch();
             //sw.Start();
@@ -476,6 +476,11 @@ namespace WeatherForecastAPI.Models.GoBang
                 }
             }
             return positions;
+        }
+
+        Task<long> IValueableTreeNodeElement<ObsoleteGoBangBoard>.GetValue()
+        {
+            throw new NotImplementedException();
         }
     }
 }

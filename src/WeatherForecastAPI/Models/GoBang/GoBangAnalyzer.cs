@@ -1,4 +1,5 @@
-﻿using WeatherForecastAPI.Infrastructure.AlphaBetaTree;
+﻿using System;
+using WeatherForecastAPI.Infrastructure.AlphaBetaTree;
 
 namespace WeatherForecastAPI.Models.GoBang
 {
@@ -11,14 +12,15 @@ namespace WeatherForecastAPI.Models.GoBang
     {
         public GoBangBoard Analyze(GoBangBoard goBangBoard, int deep)
         {
-            var tree = TreeNodeCreator<GoBangBoard>.CreateMaxHeaderTreeNode(goBangBoard, deep, null);
+            var tree = TreeNodeCreator<GoBangBoard>.CreateMaxRootNode(goBangBoard, deep);
             var winnerNode = tree.GetWinnerNode(long.MinValue, long.MaxValue);
-            while(winnerNode.ParentNode!.ParentNode != null)
-            {
-                winnerNode = winnerNode.ParentNode;
-            }
+            throw new NotImplementedException();
+            //while(winnerNode.ParentNode!.ParentNode != null)
+            //{
+            //    winnerNode = winnerNode.ParentNode;
+            //}
 
-            return winnerNode.Element;
+            //return winnerNode.Element;
         }
     }
 }

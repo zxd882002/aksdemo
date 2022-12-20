@@ -849,10 +849,13 @@ namespace WeatherForecastAPI.Models.GoBang
            WhiteDeadTwoGroup4
         };
 
+        public static readonly GoBangChessGroupDefinition[] AllWinBlack = AllBlack.Where(x => x.AlreadyWin == true).ToArray();
         public static readonly GoBangChessGroupDefinition[] AllCriticalBlack = AllBlack.Where(x => x.EnemyMustFollow == true).ToArray();
-        public static readonly GoBangChessGroupDefinition[] AllNormalBlack = AllBlack.Where(x => x.EnemyMustFollow == false).ToArray();
+        public static readonly GoBangChessGroupDefinition[] AllNormalBlack = AllBlack.Except(AllWinBlack).Except(AllCriticalBlack).ToArray();
+
+        public static readonly GoBangChessGroupDefinition[] AllWinWhite = AllWhite.Where(x => x.AlreadyWin == true).ToArray();
         public static readonly GoBangChessGroupDefinition[] AllCriticalWhite = AllWhite.Where(x => x.EnemyMustFollow == true).ToArray();
-        public static readonly GoBangChessGroupDefinition[] AllNormalWhite = AllWhite.Where(x => x.EnemyMustFollow == false).ToArray();
+        public static readonly GoBangChessGroupDefinition[] AllNormalWhite = AllBlack.Except(AllWinWhite).Except(AllCriticalWhite).ToArray();
 
         private static Dictionary<int, GoBangChessGroupDefinition>? definitionIdDictionary = null;
         public static GoBangChessGroupDefinition? GetGoBangChessGroupDefinitionByDefinitionId(int definitionId)

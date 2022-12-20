@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WeatherForecastAPI.Infrastructure.Entensions;
 
 namespace WeatherForecastAPI.Infrastructure.AlphaBetaTree
@@ -9,6 +10,8 @@ namespace WeatherForecastAPI.Infrastructure.AlphaBetaTree
     {
         internal T Element { get; set; } = default!;
 
+        internal int Deep { get; set; }
+
         public List<AbstractTreeNode<T>> WinnerNodeList { get; set; } = new List<AbstractTreeNode<T>>();
 
         internal virtual long Value => WinnerNodeList.FirstOrDefault()!.Value;
@@ -17,6 +20,6 @@ namespace WeatherForecastAPI.Infrastructure.AlphaBetaTree
 
         internal List<AbstractTreeNode<T>>? ChildNodes { get; set; }
 
-        internal abstract AbstractTreeNode<T> GetWinnerNode(long alpha, long beta);
+        internal abstract Task<AbstractTreeNode<T>> GetWinnerNode(long alpha, long beta);
     }
 }
