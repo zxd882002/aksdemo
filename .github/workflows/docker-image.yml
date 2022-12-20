@@ -12,4 +12,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image for weatherforcast
-      run: docker build . --file /src/WeatherForecastAPI/Dockerfile --tag $(date +%s)
+      run: docker build . --file ./src/WeatherForecastAPI/Dockerfile --tag $(date +%s)
