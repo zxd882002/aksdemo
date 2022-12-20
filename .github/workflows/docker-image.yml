@@ -49,9 +49,10 @@ jobs:
     steps:
     - name: echo start helm chart build
       run: echo "start helm chart"
+    - uses: actions/checkout@v3
     - name: Helm 3
       uses: WyriHaximus/github-action-helm3@v2.0
       with:
         exec: |
-          helm upgrade APP_NAME ./.helm/app/ --install --wait --atomic --namespace=APP_NAMESPACE --set=app.name=APP_NAME --values=./.helm/app/values.yaml
+          helm upgrade --namespace myaksdemo --install --set version=${{ needs.prepare.outputs.docker_tag }} --wait aksdemo ./helm
         kubeconfig: '${{ secrets.KUBECONFIG }}'
