@@ -26,6 +26,7 @@ jobs:
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Push the image to docker hub
       run: docker push zxd882002/weather-forecast-api:${{ needs.prepare.outputs.docker_tag }}
+      
   build-portal-home:
     needs: 
       prepare
@@ -39,3 +40,18 @@ jobs:
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Push the image to docker hub
       run: docker push zxd882002/portal-home:${{ needs.prepare.outputs.docker_tag }}
+      
+  helm-deploy:
+    needs:
+    - build-weather-forecast-api
+    - build-portal-home
+    runs-on: ubuntu-latest
+    steps:
+    - name: echo start helm chart build
+      run: echo "start helm chart"
+    - name: Helm 3
+      uses: WyriHaximus/github-action-helm3@v2.0
+      with:
+        exec: |
+          helm upgrade APP_NAME ./.helm/app/ --install --wait --atomic --namespace=APP_NAMESPACE --set=app.name=APP_NAME --values=./.helm/app/values.yaml
+        kubeconfig: '${{ secrets.KUBECONFIG }}'
