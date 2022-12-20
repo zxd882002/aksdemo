@@ -5,18 +5,16 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
-env:
-  Tag: 123
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Get tag value
-      run: echo "$(date +%s)" >> $Tag
+    - name: Set tag var
+      id: vars
+      run: echo "docker_tag=$(date +%s)" >> $GITHUB_OUTPUT   
     - name: Build the Docker image for weatherforcast
       working-directory: ./src/WeatherForecastAPI
-      run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:$Tag
+      run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:${{ steps.vars.outputs.docker_tag }}
     - name: Push the image to docker hub
-      run: docker push zxd882002/weather-forecast-api:$Tag
+      run: docker push zxd882002/weather-forecast-api:${{ steps.vars.outputs.docker_tag }}
