@@ -14,3 +14,5 @@ jobs:
     - name: Build the Docker image for weatherforcast
       working-directory: ./src/WeatherForecastAPI
       run: docker build . --file Dockerfile --tag $(date +%s)
+    - name: Push the image to docker hub
+      run: docker push zxd882002/weather-forecast-api:$(date +%s)
