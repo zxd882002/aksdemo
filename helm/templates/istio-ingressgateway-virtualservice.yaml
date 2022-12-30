@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.portalHome.name }}-virtualservice
 spec:
   hosts:
-  - *
+  - "*"
   gateways:
   - {{ .Values.gateway.name }}
   http:
