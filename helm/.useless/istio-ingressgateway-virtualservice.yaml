@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.portalHome.name }}-virtualservice
+spec:
+  hosts:
+  - zyxhome.top
+  - www.zyxhome.top
+  gateways:
+  - {{ .Values.gateway.name }}
+  http:
+  - match:
+    - uri:
+        prefix: /swagger
+      ignoreUriCase: true
+    route:
+    - destination:
+        host: {{ .Values.weatherForecastApi.name }}
+        port:
+          number: {{.Values.weatherForecastApi.service.port}}
+        subset: subset-{{ .Values.version }} 
+  - match:
+    - uri:
+        prefix: /api
+      ignoreUriCase: true
+    route:
+    - destination:
+        host: {{ .Values.weatherForecastApi.name }}
+        port:
+          number: {{.Values.weatherForecastApi.service.port}}
+        subset: subset-{{ .Values.version }}  
+  
+  - match:
+    - uri:
+        prefix: /
+      ignoreUriCase: true
+    route:
+    - destination:
+        host: {{ .Values.portalHome.name }}
+        port:
+          number: {{.Values.portalHome.service.port}}
+        subset: subset-{{ .Values.version }}
+  

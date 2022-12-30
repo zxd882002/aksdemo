@@ -4,8 +4,7 @@ metadata:
   name: {{ .Values.portalHome.name }}-virtualservice
 spec:
   hosts:
-  - zyxhome.top
-  - www.zyxhome.top
+  - *
   gateways:
   - {{ .Values.gateway.name }}
   http:
