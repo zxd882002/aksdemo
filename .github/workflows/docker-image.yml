@@ -54,7 +54,7 @@ jobs:
     - name: inject istio
       uses: myrotvorets/kubectl-action@2.0.0
       with:
-        config: ${{ secrets.KUBECONFIG }}
+        config: '${{ secrets.KUBECONFIG }}'
         version: latest
         args: label namespace default istio-injection=enabled   
     - name: Helm 3
