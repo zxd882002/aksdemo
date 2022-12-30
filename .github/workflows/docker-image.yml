@@ -51,6 +51,8 @@ jobs:
     - name: echo start helm chart build
       run: echo "start helm chart"
     - uses: actions/checkout@v3
+    - name: inject istio
+      run: kubectl label namespace default istio-injection=enabled
     - name: Helm 3
       uses: WyriHaximus/github-action-helm3@v2.0
       with:
