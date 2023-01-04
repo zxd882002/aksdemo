@@ -50,13 +50,7 @@ jobs:
     steps:
     - name: echo start helm chart build
       run: echo "start helm chart"
-    - uses: actions/checkout@v3
-    - name: inject istio
-      uses: myrotvorets/kubectl-action@2.0.0
-      with:
-        config: '${{ secrets.KUBECONFIG }}'
-        version: latest
-        args: label namespace default istio-injection=enabled   
+    - uses: actions/checkout@v3    
     - name: Helm 3
       uses: WyriHaximus/github-action-helm3@v2.0
       with:
