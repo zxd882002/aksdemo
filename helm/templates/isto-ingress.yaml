@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: istio # 指定使用Istio ingressgateway
+  name: http-ingress
+  namespace: istio-system
+spec:
+  rules:
+  - host: '*'
+    http:
+      paths:
+      - path: /  # 匹配HTTP PATH
+        backend:
+          serviceName: httpbin
+          servicePort: 8080
