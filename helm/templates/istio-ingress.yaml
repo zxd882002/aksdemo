@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aks-demo
+  namespace: myaksdemo
+  annotations:
+    kubernetes.io/ingress.class: istio # 指定使用Istio ingressgateway
+    kubesphere.io/creator: admin
+spec:
+  rules:
+  - host: aks-demo.172.245.68.116.nip.io
+    http:
+      paths:
+      - path: /  # 匹配HTTP PATH
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: portal-home
+            port:
+              number: 80
