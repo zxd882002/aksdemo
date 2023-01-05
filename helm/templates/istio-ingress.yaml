@@ -4,9 +4,9 @@ metadata:
   name: aks-demo
   namespace: myaksdemo
   annotations:
-    kubernetes.io/ingress.class: istio # 指定使用Istio ingressgateway
     kubesphere.io/creator: admin
 spec:
+  ingressClassName: istio
   rules:
   - host: aks-demo.172.245.68.116.nip.io
     http:
