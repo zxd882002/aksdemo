@@ -3,7 +3,6 @@ kind: Gateway
 metadata:
   name: {{ .Values.gateway.name }}
 spec:
-  controller: istio.io/ingress-controller
   selector:
     istio: ingressgateway # use istio default controller
   servers:
