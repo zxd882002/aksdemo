@@ -6,6 +6,7 @@ auth:
 
 master:
   disableCommands: []
+  persistence:
+    enabled: false
 
 architecture: standalone
-

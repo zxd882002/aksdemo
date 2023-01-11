@@ -4,7 +4,8 @@ metadata:
   name: {{ .Values.portalHome.name }}-virtualservice
 spec:
   hosts:
-  - "*"
+  - zyxhome.top
+  - www.zyxhome.top
   gateways:
   - {{ .Values.gateway.name }}
   http:
@@ -38,5 +39,4 @@ spec:
         host: {{ .Values.portalHome.name }}
         port:
           number: {{.Values.portalHome.service.port}}
-        subset: subset-{{ .Values.version }}
-  
+        subset: subset-{{ .Values.version }}  
