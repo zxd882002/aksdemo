@@ -55,5 +55,5 @@ jobs:
       uses: WyriHaximus/github-action-helm3@v2.0
       with:
         exec: |
-          helm upgrade --namespace myaksdemo --install --set version=${{ needs.prepare.outputs.docker_tag }} --wait aksdemo ./helm
+          helm upgrade --namespace default --install --set version=${{ needs.prepare.outputs.docker_tag }} --wait aksdemo ./helm
         kubeconfig: '${{ secrets.KUBECONFIG }}'

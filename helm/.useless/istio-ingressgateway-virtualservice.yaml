@@ -40,4 +40,3 @@ spec:
         port:
           number: {{.Values.portalHome.service.port}}
         subset: subset-{{ .Values.version }}
-  
