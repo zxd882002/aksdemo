@@ -5,30 +5,33 @@ namespace WeatherForecastAPI.Models.GoBang
 {
     public class GoBangChessGroupDefinitionCollection
     {
-        public static readonly GoBangChessGroupDefinition BlackMoreThanFiveChessGroup = new GoBangChessGroupDefinition
-        {
-            DefinitionId = 1,
-            Type = GoBangChessGroupType.MoreThanFive,
-            GoBangChess = GoBangChessType.BlackChess,
-            EnemyChess = GoBangChessType.WhiteChess,
-            Pattern = new List<GoBangChessType>(new[] {
-                GoBangChessType.BlackChess,
-                GoBangChessType.BlackChess,
-                GoBangChessType.BlackChess,
-                GoBangChessType.BlackChess,
-                GoBangChessType.BlackChess,
-                GoBangChessType.BlackChess
-            }),
-            Score = 5000000,
-            AlreadyWin = true,
-            EnemyMustFollow = false,
-            GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
-            CouldFollowByAddingFourChess = false,
-            AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
-        };
+        ///*AAAAAA*/
+        //public static readonly GoBangChessGroupDefinition BlackMoreThanFiveChessGroup = new GoBangChessGroupDefinition
+        //{
+        //    DefinitionName = "AAAAAA",
+        //    Type = GoBangChessGroupType.MoreThanFive,
+        //    GoBangChess = GoBangChessType.BlackChess,
+        //    EnemyChess = GoBangChessType.WhiteChess,
+        //    Pattern = new List<GoBangChessType>(new[] {
+        //        GoBangChessType.BlackChess,
+        //        GoBangChessType.BlackChess,
+        //        GoBangChessType.BlackChess,
+        //        GoBangChessType.BlackChess,
+        //        GoBangChessType.BlackChess,
+        //        GoBangChessType.BlackChess
+        //    }),
+        //    Score = 5000000,
+        //    AlreadyWin = true,
+        //    EnemyMustFollow = false,
+        //    GetFollowingPosition = (chesslist) => { return new List<GoBangChessPosition>(); },
+        //    CouldFollowByAddingFourChess = false,
+        //    AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
+        //};
+
+        /*AAAAA*/
         public static readonly GoBangChessGroupDefinition BlackFiveChessGroup = new GoBangChessGroupDefinition
         {
-            DefinitionId = 2,
+            DefinitionName = "AAAAA",
             Type = GoBangChessGroupType.Five,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -46,9 +49,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BAAAAB*/
         public static readonly GoBangChessGroupDefinition BlackLiveFourGroup = new GoBangChessGroupDefinition
         {
-            DefinitionId = 3,
+            DefinitionName = "BAAAAB",
             Type = GoBangChessGroupType.LiveFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -67,9 +71,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BAAAAE*/
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup1 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 4,
+            DefinitionName = "BAAAAE",
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -88,9 +93,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*EAAAAB*/
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup1Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 5,
+            DefinitionName = "EAAAAB",
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -109,9 +115,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*ABAAA*/
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup2 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 6,
+            DefinitionName = "ABAAA",
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -129,9 +136,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*AAABA*/
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup2Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 7,
+            DefinitionName = "AAABA",
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -149,9 +157,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*AABAA*/
         public static readonly GoBangChessGroupDefinition BlackDeadFourGroup3 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 8,
+            DefinitionName = "AABAA",
             Type = GoBangChessGroupType.DeadFour,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -169,9 +178,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BBAAABB*/
         public static readonly GoBangChessGroupDefinition BlackLiveThreeGroup1 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 9,
+            DefinitionName = "BBAAABB",
             Type = GoBangChessGroupType.LiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -191,9 +201,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = true,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[1].Position, chesslist[5].Position, chesslist[6].Position }; },
         };
+        /*EBAAABB*/
         public static readonly GoBangChessGroupDefinition BlackLiveThreeGroup2 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 10,
+            DefinitionName = "EBAAABB",
             Type = GoBangChessGroupType.LiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -213,9 +224,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = true,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[5].Position, chesslist[6].Position }; },
         };
+        /*BBAAABE*/
         public static readonly GoBangChessGroupDefinition BlackLiveThreeGroup2Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 11,
+            DefinitionName = "BBAAABE",
             Type = GoBangChessGroupType.LiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -235,9 +247,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = true,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[1].Position, chesslist[5].Position }; },
         };
+        /*BABAAB*/
         public static readonly GoBangChessGroupDefinition BlackJumpLiveThreeGroup = new GoBangChessGroupDefinition
         {
-            DefinitionId = 12,
+            DefinitionName = "BABAAB",
             Type = GoBangChessGroupType.JumpLiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -256,9 +269,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = true,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[2].Position, chesslist[5].Position }; },
         };
+        /*BAABAB*/
         public static readonly GoBangChessGroupDefinition BlackJumpLiveThreeGroupMirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 13,
+            DefinitionName = "BAABAB",
             Type = GoBangChessGroupType.JumpLiveThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -277,9 +291,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = true,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[3].Position, chesslist[5].Position }; },
         };
+        /*BBAAAE*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup1 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 14,
+            DefinitionName = "BBAAAE",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -298,9 +313,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[1].Position }; },
         };
+        /*EAAABB*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup1Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 15,
+            DefinitionName = "EAAABB",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -319,9 +335,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[4].Position, chesslist[5].Position }; },
         };
+        /*BABAAE*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup2 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 16,
+            DefinitionName = "BABAAE",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -340,9 +357,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[2].Position }; },
         };
+        /*EAABAB*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup2Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 17,
+            DefinitionName = "EAABAB",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -361,9 +379,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[3].Position, chesslist[5].Position }; },
         };
+        /*BAABAE*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup3 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 18,
+            DefinitionName = "BAABAE",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -382,9 +401,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[0].Position, chesslist[3].Position }; },
         };
+        /*EABAAB*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup3Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 19,
+            DefinitionName = "EABAAB",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -403,9 +423,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[2].Position, chesslist[5].Position }; },
         };
+        /*ABBAA*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup4 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 20,
+            DefinitionName = "ABBAA",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -423,9 +444,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[2].Position }; },
         };
+        /*AABBA*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup4Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 21,
+            DefinitionName = "AABBA",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -443,9 +465,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[2].Position, chesslist[3].Position }; },
         };
+        /*ABABA*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup5 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 22,
+            DefinitionName = "ABABA",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -463,9 +486,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[3].Position }; },
         };
+        /*EBAAABE*/
         public static readonly GoBangChessGroupDefinition BlackDeadThreeGroup6 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 23,
+            DefinitionName = "EBAAABE",
             Type = GoBangChessGroupType.DeadThree,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -485,9 +509,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition> { chesslist[1].Position, chesslist[5].Position }; },
         };
+        /*BBAABB*/
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup1 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 24,
+            DefinitionName = "BBAABB",
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -506,9 +531,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BBAABE*/
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup2 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 25,
+            DefinitionName = "BBAABE",
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -527,9 +553,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*EBAABB*/
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup2Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 26,
+            DefinitionName = "EBAABB",
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -548,9 +575,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BABAB*/
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup3 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 27,
+            DefinitionName = "BABAB",
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -568,9 +596,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BABBAB*/
         public static readonly GoBangChessGroupDefinition BlackLiveTwoGroup4 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 28,
+            DefinitionName = "BABBAB",
             Type = GoBangChessGroupType.LiveTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -589,9 +618,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BBBAAE*/
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup1 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 29,
+            DefinitionName = "BBBAAE",
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -610,9 +640,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*EAABBB*/
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup1Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 30,
+            DefinitionName = "EAABBB",
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -631,9 +662,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BBABAE*/
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup2 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 31,
+            DefinitionName = "BBABAE",
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -652,9 +684,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*EABABB*/
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup2Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 32,
+            DefinitionName = "EABABB",
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -673,9 +706,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*BABBAE*/
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup3 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 33,
+            DefinitionName = "BABBAE",
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -694,9 +728,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*EABBAB*/
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup3Mirror = new GoBangChessGroupDefinition
         {
-            DefinitionId = 34,
+            DefinitionName = "EABBAB",
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -715,9 +750,10 @@ namespace WeatherForecastAPI.Models.GoBang
             CouldFollowByAddingFourChess = false,
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
+        /*ABBBA*/
         public static readonly GoBangChessGroupDefinition BlackDeadTwoGroup4 = new GoBangChessGroupDefinition
         {
-            DefinitionId = 35,
+            DefinitionName = "ABBBA",
             Type = GoBangChessGroupType.DeadTwo,
             GoBangChess = GoBangChessType.BlackChess,
             EnemyChess = GoBangChessType.WhiteChess,
@@ -736,7 +772,7 @@ namespace WeatherForecastAPI.Models.GoBang
             AddToFourChess = (chesslist) => { return new List<GoBangChessPosition>(); },
         };
 
-        public static readonly GoBangChessGroupDefinition WhiteMoreThanFiveChessGroup = BlackMoreThanFiveChessGroup.ReverseGoBangChessGroup();
+        //public static readonly GoBangChessGroupDefinition WhiteMoreThanFiveChessGroup = BlackMoreThanFiveChessGroup.ReverseGoBangChessGroup();
         public static readonly GoBangChessGroupDefinition WhiteFiveChessGroup = BlackFiveChessGroup.ReverseGoBangChessGroup();
         public static readonly GoBangChessGroupDefinition WhiteLiveFourGroup = BlackLiveFourGroup.ReverseGoBangChessGroup();
         public static readonly GoBangChessGroupDefinition WhiteDeadFourGroup1 = BlackDeadFourGroup1.ReverseGoBangChessGroup();
@@ -774,7 +810,7 @@ namespace WeatherForecastAPI.Models.GoBang
 
         public static readonly GoBangChessGroupDefinition[] AllBlack = new GoBangChessGroupDefinition[]
         {
-            BlackMoreThanFiveChessGroup,
+            //BlackMoreThanFiveChessGroup,
             BlackFiveChessGroup,
             BlackLiveFourGroup,
             BlackDeadFourGroup1,
@@ -812,7 +848,7 @@ namespace WeatherForecastAPI.Models.GoBang
         };
         public static readonly GoBangChessGroupDefinition[] AllWhite = new GoBangChessGroupDefinition[]
         {
-           WhiteMoreThanFiveChessGroup,
+           //WhiteMoreThanFiveChessGroup,
            WhiteFiveChessGroup,
            WhiteLiveFourGroup,
            WhiteDeadFourGroup1,
@@ -855,21 +891,21 @@ namespace WeatherForecastAPI.Models.GoBang
 
         public static readonly GoBangChessGroupDefinition[] AllWinWhite = AllWhite.Where(x => x.AlreadyWin == true).ToArray();
         public static readonly GoBangChessGroupDefinition[] AllCriticalWhite = AllWhite.Where(x => x.EnemyMustFollow == true).ToArray();
-        public static readonly GoBangChessGroupDefinition[] AllNormalWhite = AllBlack.Except(AllWinWhite).Except(AllCriticalWhite).ToArray();
+        public static readonly GoBangChessGroupDefinition[] AllNormalWhite = AllWhite.Except(AllWinWhite).Except(AllCriticalWhite).ToArray();
 
         private static Dictionary<int, GoBangChessGroupDefinition>? definitionIdDictionary = null;
-        public static GoBangChessGroupDefinition? GetGoBangChessGroupDefinitionByDefinitionId(int definitionId)
+        public static GoBangChessGroupDefinition? ObseleteGetGoBangChessGroupDefinitionByDefinitionId(int definitionId)
         {
             if (definitionIdDictionary == null)
             {
                 definitionIdDictionary = new Dictionary<int, GoBangChessGroupDefinition>();
                 foreach (var black in AllBlack)
                 {
-                    definitionIdDictionary.Add(black.DefinitionId, black);
+                    //definitionIdDictionary.Add(black.DefinitionName, black);
                 }
                 foreach (var white in AllWhite)
                 {
-                    definitionIdDictionary.Add(white.DefinitionId, white);
+                    //definitionIdDictionary.Add(white.DefinitionName, white);
                 }
             }
 

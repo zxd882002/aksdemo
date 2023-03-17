@@ -8,7 +8,7 @@ namespace WeatherForecastAPI.Models.GoBang
 
     public class GoBangChessGroupDefinition
     {
-        public int DefinitionId { get; set; }
+        public string DefinitionName { get; set; }
         public GoBangChessGroupType Type { get; set; }
         public GoBangChessType GoBangChess { get; set; }
         public GoBangChessType EnemyChess { get; set; }
@@ -24,7 +24,7 @@ namespace WeatherForecastAPI.Models.GoBang
         {
             return new GoBangChessGroupDefinition
             {
-                DefinitionId = 100 + DefinitionId,
+                DefinitionName = DefinitionName,
                 Type = Type,
                 GoBangChess = ReverseChess(GoBangChess),
                 EnemyChess = ReverseChess(EnemyChess),

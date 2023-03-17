@@ -1,38 +1,19 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WeatherForecastAPI.Infrastructure.AlphaBetaTree;
-using WeatherForecastAPI.Infrastructure.Entensions;
-using WeatherForecastAPI.Infrastructure.KMP;
+﻿using System.Text;
 
 namespace WeatherForecastAPI.Models.GoBang
 {
-    public class GoBangBoard : IValueableTreeNodeElement<GoBangBoard>
+    public class GoBangBoard // : IValueableTreeNodeElement<GoBangBoard>
     {
         public const int BOARD_SIZE = 15;
 
         public GoBangChess[][] Board { get; set; } = null!;
-        public GoBangChessType AiNextChess { get; set; }
-
         public GoBangChess LastChess { get; set; }
+
         public string BoardHash { get; set; }
         public bool IsEmptyBoard { get; set; }
         public bool IsAllFilledBoard { get; set; }
-        public bool IsWinDefinitionAnalyzed { get; set; }
-        public bool IsCriticalDefinitionAnalyzed { get; set; }
-        public bool IsNormalDefinitionAnalyzed { get; set; }
+        
         public bool[][] PossibleNextStep { get; set; }
-
-        // after analyze
-        public GoBangChessGroupDetailCollection GoBangChessGroupDetailCollection { get; set; } = new GoBangChessGroupDetailCollection();
-        public long BlackChessScore => GoBangChessGroupDetailCollection.SumSore(GoBangChessType.BlackChess);
-        public long WhiteChessScore => GoBangChessGroupDetailCollection.SumSore(GoBangChessType.WhiteChess);
-        public bool BlackChessWin => GoBangChessGroupDetailCollection.ContainsAlreadyWinDefinition(GoBangChessType.BlackChess);
-        public bool WhiteChessWin => GoBangChessGroupDetailCollection.ContainsAlreadyWinDefinition(GoBangChessType.WhiteChess);
-
 
         public GoBangBoard(GoBangChess[][] board, GoBangChess lastChess)
         {
@@ -69,147 +50,21 @@ namespace WeatherForecastAPI.Models.GoBang
             IsEmptyBoard = isEmptyBoard;
             IsAllFilledBoard = isAllFilledBoard;
             BoardHash = boardHashStringBuilder.ToString();
-            IsWinDefinitionAnalyzed = false;
-            IsCriticalDefinitionAnalyzed = false;
-            IsNormalDefinitionAnalyzed = false;
         }
         public GoBangChess this[GoBangChessPosition position] => Board[position.Row][position.Column];
 
-        public List<Task> AnalyzeWinDefinitions()
-        {
-            GoBangChessGroupDefinition[] winDefinitions = LastChess.ChessType == GoBangChessType.BlackChess
-                ? GoBangChessGroupDefinitionCollection.AllWinBlack
-                : GoBangChessGroupDefinitionCollection.AllWinWhite;
 
-            List<Task> tasks = new List<Task>();
-            if (!IsWinDefinitionAnalyzed)
-            {
-                foreach (var winDefinition in winDefinitions)
-                {
-                    var analyzeDefinitionTask = AnalyzeDefinition(winDefinition);
-                    tasks.Add(analyzeDefinitionTask);
-                }
-                IsWinDefinitionAnalyzed = true;
-            }
-            return tasks;
-        }
-
-        public List<Task> AnalyzeCriticalDefinitions()
-        {
-            GoBangChessGroupDefinition[] criticalDefinitions = LastChess.ChessType == GoBangChessType.BlackChess
-                ? GoBangChessGroupDefinitionCollection.AllCriticalBlack
-                : GoBangChessGroupDefinitionCollection.AllCriticalWhite;
-
-            List<Task> tasks = new List<Task>();
-
-            if (!IsCriticalDefinitionAnalyzed)
-            {
-                foreach (var criticalDefinition in criticalDefinitions)
-                {
-                    var analyzeDefinitionTask = AnalyzeDefinition(criticalDefinition);
-                    tasks.Add(analyzeDefinitionTask);
-                }
-                IsCriticalDefinitionAnalyzed = true;
-            }
-            return tasks;
-        }
-
-        public List<Task> AnalyzeNormalDefinitions()
-        {
-            GoBangChessGroupDefinition[] normalDefinitions = LastChess.ChessType == GoBangChessType.BlackChess
-               ? GoBangChessGroupDefinitionCollection.AllNormalBlack
-               : GoBangChessGroupDefinitionCollection.AllNormalWhite;
-
-            List<Task> tasks = new List<Task>();
-            if (!IsNormalDefinitionAnalyzed)
-            {
-                foreach (var normalDefinition in normalDefinitions)
-                {
-                    var analyzeDefinitionTask = AnalyzeDefinition(normalDefinition);
-                    tasks.Add(analyzeDefinitionTask);
-                }
-                IsNormalDefinitionAnalyzed = true;
-            }
-            return tasks;
-        }
-
-        public async Task AnalyzeAllDefinitions()
-        {
-            List<Task> tasks1 = AnalyzeWinDefinitions();
-            List<Task> tasks2 = AnalyzeCriticalDefinitions();
-            List<Task> tasks3 = AnalyzeNormalDefinitions();
-            tasks1.AddRange(tasks2);
-            tasks1.AddRange(tasks3);
-            await Task.WhenAll(tasks1);
-        }
-
-        private async Task AnalyzeDefinition(GoBangChessGroupDefinition definition)
-        {
-            Task<List<GoBangChessGroupDetail>> line1 = AnalyzeLine(@"-", definition);
-            Task<List<GoBangChessGroupDetail>> line2 = AnalyzeLine(@"|", definition);
-            Task<List<GoBangChessGroupDetail>> line3 = AnalyzeLine(@"/", definition);
-            Task<List<GoBangChessGroupDetail>> line4 = AnalyzeLine(@"\", definition);
-
-            await Task.WhenAll(line1, line2, line3, line4);
-
-            GoBangChessGroupDetailCollection.AddRange(line1.Result);
-            GoBangChessGroupDetailCollection.AddRange(line2.Result);
-            GoBangChessGroupDetailCollection.AddRange(line3.Result);
-            GoBangChessGroupDetailCollection.AddRange(line4.Result);
-        }
-
-        private async Task<List<GoBangChessGroupDetail>> AnalyzeLine(string direction, GoBangChessGroupDefinition definition)
-        {
-            KmpSearcher<GoBangChessType> searcher = new KmpSearcher<GoBangChessType>();
-            ConcurrentBag<GoBangChessGroupDetail> details = new ConcurrentBag<GoBangChessGroupDetail>();
-            List<GoBangChessPosition> startPositionList = direction switch
-            {
-                @"-" => ArrayExtensions.CreateInt(0, BOARD_SIZE).Select(x => new GoBangChessPosition { Row = x, Column = 0 }).ToList(),
-                @"|" => ArrayExtensions.CreateInt(0, BOARD_SIZE).Select(x => new GoBangChessPosition { Row = 0, Column = x }).ToList(),
-                @"/" => ArrayExtensions.CreateInt(0, BOARD_SIZE).Select(x => new GoBangChessPosition { Row = x, Column = 0 }).Union(ArrayExtensions.CreateInt(1, BOARD_SIZE).Select(x => new GoBangChessPosition { Row = BOARD_SIZE - 1, Column = x })).ToList(),
-                @"\" => ArrayExtensions.CreateInt(0, BOARD_SIZE).Select(x => new GoBangChessPosition { Row = 0, Column = x }).Union(ArrayExtensions.CreateInt(1, BOARD_SIZE).Select(x => new GoBangChessPosition { Row = x, Column = BOARD_SIZE - 1 })).ToList(),
-                _ => throw new NotSupportedException()
-            };
-
-            List<Task> getChessDetailTaskList = new List<Task>();
-            foreach (var startPosition in startPositionList)
-            {
-                Task getChessDetailTask = Task.Run(() =>
-                {
-                    List<GoBangChess> lineChesses = new List<GoBangChess>();
-                    List<GoBangChessType> lineChessTypees = new List<GoBangChessType>();
-                    GoBangChess currentChess = this[startPosition];
-                    while (currentChess.ChessType != GoBangChessType.Wall)
-                    {
-                        lineChesses.Add(currentChess);
-                        lineChessTypees.Add(currentChess.ChessType);
-                        currentChess = currentChess.PositiveMove(this, direction);
-                    }
-
-                    List<int> matchIndexList = searcher.Search(lineChessTypees, definition.Pattern);
-                    foreach (var detail in matchIndexList.Select(i => new GoBangChessGroupDetail(definition, lineChesses[i], direction)))
-                    {
-                        details.Add(detail);
-                    }
-                });
-
-                getChessDetailTaskList.Add(getChessDetailTask);
-
-            }
-
-            await Task.WhenAll(getChessDetailTaskList);
-            return details.ToList();
-        }
+        /*
 
         public async Task<long> GetValue()
         {
-            await AnalyzeAllDefinitions();
+            await AnalyzeAllDefinitions(this);
 
-            if (AiNextChess == GoBangChessType.BlackChess)
+            if (LastChess.ChessType == GoBangChessType.BlackChess)
             {
                 return BlackChessScore - WhiteChessScore;
             }
-            else if (AiNextChess == GoBangChessType.WhiteChess)
+            else if (LastChess.ChessType == GoBangChessType.WhiteChess)
             {
                 return WhiteChessScore - BlackChessScore;
             }
@@ -275,5 +130,7 @@ namespace WeatherForecastAPI.Models.GoBang
             }
             return positions;
         }
+
+        */
     }
 }

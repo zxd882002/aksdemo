@@ -36,7 +36,7 @@ namespace WeatherForecastAPI.Models.GoBang
                 sb.Append($"{c.Position.Row:00}{c.Position.Column:00}{c.ChessType.Value}");
             }
 
-            return $"{GoBangChessGroupDefinition.DefinitionId:000}{Direction}{sb}";
+            return $"{GoBangChessGroupDefinition.DefinitionName:000}{Direction}{sb}";
         }
 
         public static ObsoleteGoBangChessGroupDetail? ConvertFromString(string s)
@@ -55,7 +55,7 @@ namespace WeatherForecastAPI.Models.GoBang
                     definitionId = definitionId * 10 + (s[i] - '0');
                     if (i == 2)
                     {
-                        definition = GoBangChessGroupDefinitionCollection.GetGoBangChessGroupDefinitionByDefinitionId(definitionId);
+                        definition = GoBangChessGroupDefinitionCollection.ObseleteGetGoBangChessGroupDefinitionByDefinitionId(definitionId);
                     }
                 }
                 else if (i == 3)

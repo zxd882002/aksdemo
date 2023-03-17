@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using WeatherForecastAPI.Models.GoBang;
 using WeatherForecastAPI.Models.GoBang.GoBangRequest;
@@ -11,23 +12,25 @@ namespace WeatherForecastAPI.Controllers
     public class GoBangController : ControllerBase
     {
         private readonly IGoBangBoardFactory _factory;
-        private readonly IGoBangAnalyzer analyzer;
+        private readonly IGoBangAnalyzer _analyzer;
+        private readonly IGoBangNextStepAnalyzer _nextStepAnalyzer;
 
-        public GoBangController(IGoBangBoardFactory factory, IGoBangAnalyzer analyzer)
+        public GoBangController(IGoBangBoardFactory factory, IGoBangAnalyzer analyzer, IGoBangNextStepAnalyzer nextStepAnalyzer)
         {
             _factory = factory;
-            this.analyzer = analyzer;
+            _analyzer = analyzer;
+            _nextStepAnalyzer = nextStepAnalyzer;
         }
 
         [HttpPost("GetBoardInfo")]
         public async Task<GetBoardInfoResponse> GetBoardInfo(GetBoardInfoRequest request)
         {
             GoBangBoard board = _factory.Parse(request.GameBoard, request.Row, request.Column, request.LastChessType);
-            await board.AnalyzeAllDefinitions();
+            await _analyzer.Reset().AnalyzeAllDefinitions(board);
             GetBoardInfoResponse response = new GetBoardInfoResponse
             {
-                BlackChessScore = board.BlackChessScore,
-                WhiteChessScore = board.WhiteChessScore
+                BlackChessScore = _analyzer.BlackChessScore,
+                WhiteChessScore = _analyzer.WhiteChessScore
             };
             return response;
         }
@@ -37,16 +40,18 @@ namespace WeatherForecastAPI.Controllers
         {
             GetNextStepPointResponse response;
             GoBangBoard board = _factory.Parse(request.GameBoard, request.Row, request.Column, request.LastChessType);
-            board.AiNextChess = request.LastChessType == GoBangChessType.BlackChess.Value ? GoBangChessType.WhiteChess : GoBangChessType.BlackChess;
-            await Task.WhenAll(board.AnalyzeWinDefinitions());
-            if (board.BlackChessWin)
+            var tasks = request.LastChessType == 1
+                ? _analyzer.Reset().AnalyzeBlackWinDefinitions(board)
+                : _analyzer.Reset().AnalyzeWhiteWinDefinitions(board);
+            await Task.WhenAll(tasks);
+            if (_analyzer.BlackChessWin)
             {
                 response = new GetNextStepPointResponse
                 {
                     GameStatus = GoBangGameStatus.BlackWin
                 };
             }
-            else if (board.WhiteChessWin)
+            else if (_analyzer.WhiteChessWin)
             {
                 response = new GetNextStepPointResponse
                 {
@@ -55,35 +60,36 @@ namespace WeatherForecastAPI.Controllers
             }
             else
             {
-                GoBangBoard expectedBoard = analyzer.Analyze(board, request.Deep);
-                if (expectedBoard.IsAllFilledBoard && !expectedBoard.BlackChessWin && !expectedBoard.WhiteChessWin)
-                    response = new GetNextStepPointResponse
-                    {
-                        Row = expectedBoard.LastChess.Position.Row,
-                        Column = expectedBoard.LastChess.Position.Column,
-                        GameStatus = GoBangGameStatus.Tie
-                    };
-                else if (expectedBoard.BlackChessWin)
-                    response = new GetNextStepPointResponse
-                    {
-                        Row = expectedBoard.LastChess.Position.Row,
-                        Column = expectedBoard.LastChess.Position.Column,
-                        GameStatus = GoBangGameStatus.BlackWin
-                    };
-                else if (expectedBoard.WhiteChessWin)
-                    response = new GetNextStepPointResponse
-                    {
-                        Row = expectedBoard.LastChess.Position.Row,
-                        Column = expectedBoard.LastChess.Position.Column,
-                        GameStatus = GoBangGameStatus.WhiteWin
-                    };
-                else
-                    response = new GetNextStepPointResponse
-                    {
-                        Row = expectedBoard.LastChess.Position.Row,
-                        Column = expectedBoard.LastChess.Position.Column,
-                        GameStatus = GoBangGameStatus.Started
-                    };
+                GoBangBoard expectedBoard = _nextStepAnalyzer.AnalyzeNextStep(board, request.Deep);
+                throw new NotImplementedException();
+                //if (expectedBoard.IsAllFilledBoard && !expectedBoard.BlackChessWin && !expectedBoard.WhiteChessWin)
+                //    response = new GetNextStepPointResponse
+                //    {
+                //        Row = expectedBoard.LastChess.Position.Row,
+                //        Column = expectedBoard.LastChess.Position.Column,
+                //        GameStatus = GoBangGameStatus.Tie
+                //    };
+                //else if (expectedBoard.BlackChessWin)
+                //    response = new GetNextStepPointResponse
+                //    {
+                //        Row = expectedBoard.LastChess.Position.Row,
+                //        Column = expectedBoard.LastChess.Position.Column,
+                //        GameStatus = GoBangGameStatus.BlackWin
+                //    };
+                //else if (expectedBoard.WhiteChessWin)
+                //    response = new GetNextStepPointResponse
+                //    {
+                //        Row = expectedBoard.LastChess.Position.Row,
+                //        Column = expectedBoard.LastChess.Position.Column,
+                //        GameStatus = GoBangGameStatus.WhiteWin
+                //    };
+                //else
+                //    response = new GetNextStepPointResponse
+                //    {
+                //        Row = expectedBoard.LastChess.Position.Row,
+                //        Column = expectedBoard.LastChess.Position.Column,
+                //        GameStatus = GoBangGameStatus.Started
+                //    };
             }
 
             return response;

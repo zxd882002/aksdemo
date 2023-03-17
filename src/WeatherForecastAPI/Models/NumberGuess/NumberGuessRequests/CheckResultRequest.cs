@@ -1,4 +1,4 @@
-namespace WeatherForecastAPI.Models.NumberGuessRequests
+namespace WeatherForecastAPI.Models.NumberGuess.NumberGuessRequests
 {
     public class CheckResultRequest
     {

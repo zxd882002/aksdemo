@@ -7,6 +7,8 @@ namespace WeatherForecastAPI.Models.GoBang
     {
         private List<GoBangChessGroupDetail> _goBangChessGroupDetailList = new List<GoBangChessGroupDetail>();
 
+        public void Clear() => _goBangChessGroupDetailList.Clear();
+
         public void AddRange(List<GoBangChessGroupDetail> goBangChessGroupDetailList)
         {
             _goBangChessGroupDetailList.AddRange(goBangChessGroupDetailList);

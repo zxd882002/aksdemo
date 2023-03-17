@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 using WeatherForecastAPI.Models.NumberGuess;
+using WeatherForecastAPI.Models.NumberGuess.NumberGuessRequests;
 using WeatherForecastAPI.Models.NumberGuess.NumberGuessResponses;
-using WeatherForecastAPI.Models.NumberGuessRequests;
 
 namespace WeatherForecastAPI.Controllers
 {

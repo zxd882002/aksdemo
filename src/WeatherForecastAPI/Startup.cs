@@ -49,6 +49,7 @@ namespace WeatherForecastAPI
             services.AddSingleton<ECDsSigner>();
             services.AddScoped<IGoBangBoardFactory, GoBangBoardFactory>();
             services.AddSingleton<IGoBangAnalyzer, GoBangAnalyzer>();
+            services.AddSingleton<IGoBangNextStepAnalyzer, GoBangNextStepAnalyzer>();
 
             // swagger
             services.AddSwaggerGen();

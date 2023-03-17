@@ -16,15 +16,12 @@ namespace WeatherForecastAPI.Models.GoBang
 
     public class GoBangBoardFactory : IGoBangBoardFactory
     {
-        private IRedisHelper _redisHelper;
+        private IRedisHelper _redisHelper = null!;
         private ConcurrentDictionary<string, ObsoleteGoBangBoard> _obseleteGoBangBoardDictionary;
-        private ConcurrentDictionary<string, GoBangBoard> _goBangBoardDictionary;
 
-        public GoBangBoardFactory(IRedisHelper redisHelper)
+        public GoBangBoardFactory()
         {
-            _redisHelper = redisHelper;
             _obseleteGoBangBoardDictionary = new ConcurrentDictionary<string, ObsoleteGoBangBoard>();
-            _goBangBoardDictionary = new ConcurrentDictionary<string, GoBangBoard>();
         }
 
         public async Task<ObsoleteGoBangBoard> ObseleteParse(int[][] board, int lastRow, int lastColumn)
@@ -49,7 +46,7 @@ namespace WeatherForecastAPI.Models.GoBang
                 Position = new GoBangChessPosition { Row = lastRow, Column = lastColumn },
                 ChessType = currentBoard[lastRow][lastColumn]
             };
-            ObsoleteGoBangBoard? goBangBoard = await GetGoBangBoardByCurrentBoard(currentBoard);
+            ObsoleteGoBangBoard? goBangBoard = await ObsoleteGetGoBangBoardByCurrentBoard(currentBoard);
             if (goBangBoard != null)
             {
                 goBangBoard.LastChess = lastChess;
@@ -57,11 +54,11 @@ namespace WeatherForecastAPI.Models.GoBang
             }
 
             currentBoard[lastRow][lastColumn] = GoBangChessType.Blank;
-            goBangBoard = await GetGoGangBoardByPreviousBoard(currentBoard, lastChess);
+            goBangBoard = await ObsoleteGetGoGangBoardByPreviousBoard(currentBoard, lastChess);
             return goBangBoard;
         }
 
-        private async Task<ObsoleteGoBangBoard?> GetGoBangBoardByCurrentBoard(GoBangChessType[][] currentBoard)
+        private async Task<ObsoleteGoBangBoard?> ObsoleteGetGoBangBoardByCurrentBoard(GoBangChessType[][] currentBoard)
         {
             ObsoleteGoBangBoard goBangBoard = new ObsoleteGoBangBoard(currentBoard, this);
 
@@ -86,9 +83,9 @@ namespace WeatherForecastAPI.Models.GoBang
             return null;
         }
 
-        private async Task<ObsoleteGoBangBoard> GetGoGangBoardByPreviousBoard(GoBangChessType[][] previousBoard, GoBangChess lastChess)
+        private async Task<ObsoleteGoBangBoard> ObsoleteGetGoGangBoardByPreviousBoard(GoBangChessType[][] previousBoard, GoBangChess lastChess)
         {
-            ObsoleteGoBangBoard? previousGoBangBoard = await GetGoBangBoardByCurrentBoard(previousBoard);
+            ObsoleteGoBangBoard? previousGoBangBoard = await ObsoleteGetGoBangBoardByCurrentBoard(previousBoard);
             ObsoleteGoBangBoard currentBoard = previousGoBangBoard!.GetBoardInfoAfterPuttingChess(lastChess);
             string currentBoardHash = currentBoard.GetBoardHash();
             _obseleteGoBangBoardDictionary[currentBoardHash] = currentBoard;
