@@ -5,10 +5,9 @@ using WeatherForecastAPI.Models.GoBang.GoBangRequest;
 
 namespace UnitTests.GoBangTests
 {
-    public class Tests
+    public class GetBoardInfoTests
     {
         private IGoBangBoardFactory _goBangBoardFactory;
-        private IGoBangAnalyzer _goBangAnalyzer;
         private IGoBangNextStepAnalyzer _goBangNextStepAnalyzer;
         private GoBangController _goBangController;
 
@@ -16,9 +15,8 @@ namespace UnitTests.GoBangTests
         public void Setup()
         {
             _goBangBoardFactory = new GoBangBoardFactory();
-            _goBangAnalyzer = new GoBangAnalyzer();
-            _goBangNextStepAnalyzer = new GoBangNextStepAnalyzer();
-            _goBangController = new GoBangController(_goBangBoardFactory, _goBangAnalyzer, _goBangNextStepAnalyzer);
+            _goBangNextStepAnalyzer = new GoBangNextStepAnalyzer(_goBangBoardFactory);
+            _goBangController = new GoBangController(_goBangBoardFactory, _goBangNextStepAnalyzer);
         }
 
         [Test]

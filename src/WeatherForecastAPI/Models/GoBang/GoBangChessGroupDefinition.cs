@@ -26,9 +26,9 @@ namespace WeatherForecastAPI.Models.GoBang
             {
                 DefinitionName = DefinitionName,
                 Type = Type,
-                GoBangChess = ReverseChess(GoBangChess),
-                EnemyChess = ReverseChess(EnemyChess),
-                Pattern = Pattern.Select(x => ReverseChess(x)).ToList(),
+                GoBangChess = GoBangChess.ReverseChess(),
+                EnemyChess = EnemyChess.ReverseChess(),
+                Pattern = Pattern.Select(x => x.ReverseChess()).ToList(),
                 Score = Score,
                 AlreadyWin = AlreadyWin,
                 EnemyMustFollow = EnemyMustFollow,
@@ -36,14 +36,6 @@ namespace WeatherForecastAPI.Models.GoBang
                 CouldFollowByAddingFourChess = CouldFollowByAddingFourChess,
                 AddToFourChess = AddToFourChess
             };
-        }
-        private GoBangChessType ReverseChess(GoBangChessType originalChess)
-        {
-            return originalChess == GoBangChessType.BlackChess
-                ? GoBangChessType.WhiteChess
-                : originalChess == GoBangChessType.WhiteChess
-                    ? GoBangChessType.BlackChess
-                    : originalChess;
         }
 
         public bool IsMatch(List<GoBangChess> goBangChesses)

@@ -68,8 +68,8 @@ namespace WeatherForecastAPI.Models.GoBang
 
         public bool IsInsideBoundage()
         {
-            return 0 <= Row && Row <= ObsoleteGoBangBoard.BOARD_SIZE - 1 &&
-                0 <= Column && Column <= ObsoleteGoBangBoard.BOARD_SIZE - 1;
+            return 0 <= Row && Row <= GoBangBoard.BOARD_SIZE - 1 &&
+                0 <= Column && Column <= GoBangBoard.BOARD_SIZE - 1;
         }
     }
 }

@@ -36,19 +36,7 @@ namespace WeatherForecastAPI.Models.GoBang
                 ChessType = chessType,
                 Position = newPosition
             };
-        }
-
-        [Obsolete]
-        public GoBangChess PositiveMove(ObsoleteGoBangBoard board, string direction, int step = 1)
-        {
-            GoBangChessPosition newPosition = Position.PositiveMove(direction, step);
-            GoBangChessType chessType = GetChessType(newPosition, board);
-            return new GoBangChess
-            {
-                ChessType = chessType,
-                Position = newPosition
-            };
-        }
+        }         
 
         public GoBangChess NegativeMove(GoBangBoard board, string direction, int step = 1)
         {
@@ -60,37 +48,12 @@ namespace WeatherForecastAPI.Models.GoBang
                 Position = newPosition
             };
         }
-
-        [Obsolete]
-        public GoBangChess NegativeMove(ObsoleteGoBangBoard board, string direction, int step = 1)
-        {
-            GoBangChessPosition newPosition = Position.NegativeMove(direction, step);
-            GoBangChessType chessType = GetChessType(newPosition, board);
-            return new GoBangChess
-            {
-                ChessType = chessType,
-                Position = newPosition
-            };
-        }
-
+    
         private GoBangChessType GetChessType(GoBangChessPosition position, GoBangBoard board)
         {
             if (position.IsInsideBoundage())
             {
                 return board.Board[position.Row][position.Column].ChessType;
-            }
-            else
-            {
-                return GoBangChessType.Wall;
-            }
-        }
-
-        [Obsolete]
-        private GoBangChessType GetChessType(GoBangChessPosition position, ObsoleteGoBangBoard board)
-        {
-            if (position.IsInsideBoundage())
-            {
-                return board.Board[position.Row][position.Column];
             }
             else
             {

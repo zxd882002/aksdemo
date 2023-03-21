@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using WeatherForecastAPI.Infrastructure.Entensions;
 
 namespace WeatherForecastAPI.Infrastructure.AlphaBetaTree
 {
@@ -20,6 +18,6 @@ namespace WeatherForecastAPI.Infrastructure.AlphaBetaTree
 
         internal List<AbstractTreeNode<T>>? ChildNodes { get; set; }
 
-        internal abstract Task<AbstractTreeNode<T>> GetWinnerNode(long alpha, long beta);
+        internal abstract AbstractTreeNode<T> GetWinnerNode(long alpha, long beta);
     }
 }

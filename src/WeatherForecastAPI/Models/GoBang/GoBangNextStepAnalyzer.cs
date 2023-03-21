@@ -1,26 +1,39 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using WeatherForecastAPI.Infrastructure.AlphaBetaTree;
 
 namespace WeatherForecastAPI.Models.GoBang
 {
     public interface IGoBangNextStepAnalyzer
     {
-        GoBangBoard AnalyzeNextStep(GoBangBoard goBangBoard, int deep);
+        ValuedGoBangBoard? AnalyzeNextStep(GoBangBoard goBangBoard, int deep);
     }
 
-    public class GoBangNextStepAnalyzer: IGoBangNextStepAnalyzer
+    public class GoBangNextStepAnalyzer : IGoBangNextStepAnalyzer
     {
-        public GoBangBoard AnalyzeNextStep(GoBangBoard goBangBoard, int deep)
-        {
-            //var tree = TreeNodeCreator<GoBangBoard>.CreateMaxRootNode(goBangBoard, deep);
-            //var winnerNode = tree.GetWinnerNode(long.MinValue, long.MaxValue);
-            throw new NotImplementedException();
-            //while(winnerNode.ParentNode!.ParentNode != null)
-            //{
-            //    winnerNode = winnerNode.ParentNode;
-            //}
+        private readonly IGoBangBoardFactory _factory;
 
-            //return winnerNode.Element;
+        public GoBangNextStepAnalyzer(IGoBangBoardFactory factory)
+        {
+            _factory = factory;
+        }
+
+        public ValuedGoBangBoard? AnalyzeNextStep(GoBangBoard goBangBoard, int deep)
+        {
+            ValuedGoBangBoard valuedGoBangBoard = new ValuedGoBangBoard(goBangBoard, _factory, new GoBangAnalyzer(goBangBoard));
+            AbstractTreeNode<ValuedGoBangBoard> tree = goBangBoard.LastChess.ChessType == GoBangChessType.WhiteChess
+                ? TreeNodeCreator<ValuedGoBangBoard>.CreateMinRootNode(valuedGoBangBoard, deep)
+                : TreeNodeCreator<ValuedGoBangBoard>.CreateMaxRootNode(valuedGoBangBoard, deep);
+            AbstractTreeNode<ValuedGoBangBoard> winnerNode = tree.GetWinnerNode(long.MinValue, long.MaxValue);
+
+            List<GoBangChessPosition> list = new List<GoBangChessPosition>();
+            ValuedGoBangBoard? board = null;
+            while (winnerNode.ParentNode != null)
+            {
+                board = winnerNode.Element;
+                list.Insert(0, winnerNode.Element.GetPosition());
+                winnerNode = winnerNode.ParentNode;
+            }
+            return board;
         }
     }
 }

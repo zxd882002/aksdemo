@@ -29,5 +29,14 @@ namespace WeatherForecastAPI.Models.GoBang
         {
             return !type1.Equals(type2);
         }
+
+        public GoBangChessType ReverseChess()
+        {
+            return this == GoBangChessType.BlackChess
+                ? GoBangChessType.WhiteChess
+                : this == GoBangChessType.WhiteChess
+                    ? GoBangChessType.BlackChess
+                    : this;
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace WeatherForecastAPI.Infrastructure.AlphaBetaTree
     public interface IValueableTreeNodeElement<T>
         where T : IValueableTreeNodeElement<T>
     {
-        Task<long> GetValue();
+        public long Value { get; }
         Task<List<T>> GetChildElements();
     }
 }
