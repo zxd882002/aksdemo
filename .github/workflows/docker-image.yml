@@ -34,6 +34,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3 
     - name: npm install
+      working-directory: ./frontend/portal-home
       run: npm install
     - name: Build portal home to dist
       working-directory: ./frontend/portal-home
