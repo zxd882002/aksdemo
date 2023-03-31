@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3   
     - name: Build the Docker image for weatherforcast
-      working-directory: ./src/WeatherForecastAPI
+      working-directory: ./backend/WeatherForecastAPI
       run: docker build . --file Dockerfile --tag zxd882002/weather-forecast-api:${{ needs.prepare.outputs.docker_tag }}
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
@@ -33,8 +33,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Build portal home to dist
+      working-directory: ./frontend/portal-home
+      run: npm run build
     - name: Build the Docker image for portal home
-      working-directory: ./src/portal-home
+      working-directory: ./frontend/portal-home
       run: docker build . --file Dockerfile --tag zxd882002/portal-home:${{ needs.prepare.outputs.docker_tag }}
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
