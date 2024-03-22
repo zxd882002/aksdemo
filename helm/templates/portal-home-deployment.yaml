@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.portalHome.name }}          
-          image: "{{ .Values.portalHome.image.repository }}:{{ .Values.version }}"
+          image: "{{ .Values.portalHome.image.repository }}:{{ .Values.portalHome.image.version }}"
           imagePullPolicy: {{ .Values.portalHome.image.pullPolicy }}
           ports:
             - containerPort: 80
