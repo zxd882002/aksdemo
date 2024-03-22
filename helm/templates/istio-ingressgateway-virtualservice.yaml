@@ -4,15 +4,15 @@ metadata:
   name: {{ .Values.portalHome.name }}-virtualservice
 spec:
   hosts:
-  - "*"
+  - "192.168.88.2"
+  - "www.zyxhome.top"
   gateways:
   - {{ .Values.gateway.name }}
-  tls:
+  http:
   - match:
-    - sniHosts: ["192.168.88.2", "www.zyxhome.top"] 
     - uri:
         prefix: /swagger
-      ignoreUriCase: true   
+      ignoreUriCase: true
     route:
     - destination:
         host: {{ .Values.weatherForecastApi.name }}
@@ -20,7 +20,6 @@ spec:
           number: {{.Values.weatherForecastApi.service.port}}
         subset: subset-{{ .Values.version }} 
   - match:
-    - sniHosts: ["192.168.88.2", "www.zyxhome.top"]  
     - uri:
         prefix: /api
       ignoreUriCase: true
@@ -32,10 +31,9 @@ spec:
         subset: subset-{{ .Values.version }}  
   
   - match:
-    - sniHosts: ["192.168.88.2", "www.zyxhome.top"]
     - uri:
         prefix: /
-      ignoreUriCase: true  
+      ignoreUriCase: true
     route:
     - destination:
         host: {{ .Values.portalHome.name }}

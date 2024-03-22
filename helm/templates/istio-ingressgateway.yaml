@@ -4,22 +4,26 @@ metadata:
   name: {{ .Values.gateway.name }}
 spec:
   selector:
-    istio: ingressgateway # use istio default controller
+    istio: ingressgateway   # use istio default controller
   servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      tls:
-        httpsRedirect: true
-      hosts:
-        - "*"
-    - port:
-        number: 443
-        name: https
-        protocol: HTTPS
-      tls:
-        mode: PASSTHROUGH
-      hosts:
-        - "192.168.88.2"
-        - "www.zyxhome.top"
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    tls:
+      httpsRedirect: true # redirect http request to https
+    hosts:
+    - zyxhome.top
+    - www.zyxhome.top
+    - "192.168.88.2"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: istio-ingressgateway-cert
+    hosts:
+    - zyxhome.top
+    - www.zyxhome.top
+    - "192.168.88.2"
