@@ -7,7 +7,7 @@ spec:
   - "*"
   gateways:
   - {{ .Values.gateway.name }}
-  http:
+  tls:
   - match:
     - uri:
         prefix: /swagger
