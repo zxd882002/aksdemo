@@ -15,7 +15,6 @@ spec:
     hosts:
     - zyxhome.top
     - www.zyxhome.top
-    - "192.168.88.2"
   - port:
       number: 443
       name: https
@@ -26,4 +25,3 @@ spec:
     hosts:
     - zyxhome.top
     - www.zyxhome.top
-    - "192.168.88.2"
