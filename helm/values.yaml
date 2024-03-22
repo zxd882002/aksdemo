@@ -13,7 +13,7 @@ portalHome:
   replicas: 1
   image:
     repository: zxd882002/portal-home
-    version: 1680253628
+    version: "1680253628"
     pullPolicy: IfNotPresent
   service:
     port: 80
@@ -23,7 +23,7 @@ weatherForecastApi:
   replicas: 1
   image:
     repository: zxd882002/weather-forecast-api
-    version: 1680253628
+    version: "1680253628"
     pullPolicy: IfNotPresent
   env:
     ASPNETCORE_URLS: http://+:80
