@@ -9,7 +9,10 @@ spec:
   - {{ .Values.gateway.name }}
   tls:
   - match:
-    - sniHosts: ["192.168.88.2/swagger", "www.zyxhome.top/swagger"]    
+    - sniHosts: ["192.168.88.2", "www.zyxhome.top"] 
+    - uri:
+        prefix: /swagger
+      ignoreUriCase: true   
     route:
     - destination:
         host: {{ .Values.weatherForecastApi.name }}
@@ -17,7 +20,10 @@ spec:
           number: {{.Values.weatherForecastApi.service.port}}
         subset: subset-{{ .Values.version }} 
   - match:
-    - sniHosts: ["192.168.88.2/api", "www.zyxhome.top/api"]  
+    - sniHosts: ["192.168.88.2", "www.zyxhome.top"]  
+    - uri:
+        prefix: /api
+      ignoreUriCase: true
     route:
     - destination:
         host: {{ .Values.weatherForecastApi.name }}
@@ -26,7 +32,10 @@ spec:
         subset: subset-{{ .Values.version }}  
   
   - match:
-    - sniHosts: ["192.168.88.2/", "www.zyxhome.top/"]  
+    - sniHosts: ["192.168.88.2", "www.zyxhome.top"]
+    - uri:
+        prefix: /
+      ignoreUriCase: true  
     route:
     - destination:
         host: {{ .Values.portalHome.name }}
