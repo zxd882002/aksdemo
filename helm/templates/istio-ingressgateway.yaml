@@ -17,7 +17,6 @@ spec:
         name: https
         protocol: HTTPS
       tls:
-        mode: SIMPLE
-        credentialName: istio-ingressgateway-cert
+        mode: PASSTHROUGH
       hosts:
         - "*"
