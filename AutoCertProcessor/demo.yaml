@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Config
+clusters:
+- name: "demo"
+  cluster:
+    server: "https://192.168.88.200/k8s/clusters/c-m-6dkvlkww"
+    certificate-authority-data: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJ2akNDQ\
+      VdPZ0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQkdNUnd3R2dZRFZRUUtFeE5rZVc1aGJXbGoKY\
+      kdsemRHVnVaWEl0YjNKbk1TWXdKQVlEVlFRRERCMWtlVzVoYldsamJHbHpkR1Z1WlhJdFkyRkFNV\
+      GN3T1RBeQpNek16TnpBZUZ3MHlOREF5TWpjd09EUXlNVGRhRncwek5EQXlNalF3T0RReU1UZGFNR\
+      Vl4SERBYUJnTlZCQW9UCkUyUjVibUZ0YVdOc2FYTjBaVzVsY2kxdmNtY3hKakFrQmdOVkJBTU1IV\
+      1I1Ym1GdGFXTnNhWE4wWlc1bGNpMWoKWVVBeE56QTVNREl6TXpNM01Ga3dFd1lIS29aSXpqMENBU\
+      VlJS29aSXpqMERBUWNEUWdBRUNXNy9jVVRJYzdxRwpHWjRzSzlpc1lrT0ZXeXd2Y3JhUkFVbEowb\
+      GtzeVRUeEFmazVSTndub29tYm5kN283ak9NQ2JIRzFWTmtWa3FmCnlKU1hqZ0JmRmFOQ01FQXdEZ\
+      1lEVlIwUEFRSC9CQVFEQWdLa01BOEdBMVVkRXdFQi93UUZNQU1CQWY4d0hRWUQKVlIwT0JCWUVGT\
+      ExZYmJUU0RsS29mSSswems1bUtWRENhTmlaTUFvR0NDcUdTTTQ5QkFNQ0Ewa0FNRVlDSVFDSQpYT\
+      WRrVGtPUU5OMms0UjM3eFpoMXNDUmlOWktiVFpVM2psM0RBR251bEFJaEFMd1FnNlhEWHVOQmJSY\
+      zd4cmY0ClV1Yys3MG5zOXBvZlU2OXVBNmphRm5HZAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t"
+
+users:
+- name: "demo"
+  user:
+    token: "kubeconfig-user-g627cbdqsh:dqd5rrgtjn5n28p7lhk9vxqhh69hqpwlxvn4bpzplhwdhlx4c8bvv9"
+
+
+contexts:
+- name: "demo"
+  context:
+    user: "demo"
+    cluster: "demo"
+
+current-context: "demo"
