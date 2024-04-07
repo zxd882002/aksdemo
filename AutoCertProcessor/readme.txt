@@ -1,0 +1,1 @@
+docker image build -f Dockerfile -t zxd882002/auto-cert-processor .
