@@ -20,7 +20,7 @@ clusters:
 users:
 - name: "demo"
   user:
-    token: "kubeconfig-user-g627cbdqsh:dqd5rrgtjn5n28p7lhk9vxqhh69hqpwlxvn4bpzplhwdhlx4c8bvv9"
+    token: "kubeconfig-user-g627c9rjkw:l7qbd4fpfmgr54sc9h6cq8l5qj5f8b54ghdx6b2drs7ts82mzxchx5"
 
 
 contexts:

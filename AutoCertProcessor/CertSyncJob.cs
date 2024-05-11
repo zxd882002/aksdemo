@@ -13,11 +13,11 @@ public class CertSyncJob : IJob
     private const string CertKeyFileName = "zyxhome.top.key";
     private const string CertFileName = "zyxhome.top.cert";
     private const string SecretNameSpace = "istio-system";
-    private const string SecretName = "istio-ca-secret";
+    private const string SecretName = "istio-ingressgateway-cert";
 
     public async Task Execute(IJobExecutionContext context)
     {
-        Console.WriteLine("[Info] Start Cert Sync Job");
+        Console.WriteLine($"[{DateTime.Now}] [Info] Start Cert Sync Job");
 
         try
         {
@@ -30,7 +30,7 @@ public class CertSyncJob : IJob
 
             if (lastCert == cert)
             {
-                Console.WriteLine("[Info] Cert is the same. Skip");
+                Console.WriteLine($"[{DateTime.Now}] [Info] Cert is the same. Skip");
                 return;
             }
 
@@ -45,11 +45,11 @@ public class CertSyncJob : IJob
             await NewCertSecretAsync(client, SecretNameSpace, SecretName, key, cert);
             await File.WriteAllTextAsync(CertFileName, cert);
 
-            Console.WriteLine("[Info] End Cert Sync Job");
+            Console.WriteLine($"[{DateTime.Now}] [Info] End Cert Sync Job");
         }
         catch (Exception e)
         {
-            Console.WriteLine("[Error] Unhandled Exception");
+            Console.WriteLine($"[{DateTime.Now}] [Error] Unhandled Exception");
             Console.WriteLine(e);
         }
     }
@@ -67,7 +67,7 @@ public class CertSyncJob : IJob
         }
         catch (Exception e)
         {
-            Console.WriteLine("[Error] Error to get the cert");
+            Console.WriteLine($"[{DateTime.Now}] [Error] Error to get the cert");
             Console.WriteLine(e);
             return string.Empty;
         }
@@ -109,11 +109,11 @@ public class CertSyncJob : IJob
         try
         {
             await client.DeleteNamespacedSecretAsync(name, certSecretNamespace);
-            Console.WriteLine("[Info] The old cert is deleted");
+            Console.WriteLine($"[{DateTime.Now}] [Info] The old cert is deleted");
         }
         catch (Exception e)
         {
-            Console.WriteLine("[Error] Error to delete the cert secret");
+            Console.WriteLine($"[{DateTime.Now}] [Error] Error to delete the cert secret");
             Console.WriteLine(e);
         }
     }
@@ -127,21 +127,22 @@ public class CertSyncJob : IJob
             {
                 Data = new Dictionary<string, byte[]>
                 {
-                    { "ca-cert.pem", Encoding.ASCII.GetBytes(cert) },
-                    { "ca-key.pem", Encoding.ASCII.GetBytes(key) }
+                    { "tls.crt", Encoding.ASCII.GetBytes(cert) },
+                    { "tls.key", Encoding.ASCII.GetBytes(key) }
                 },
                 Kind = "Secret",
                 Metadata = new V1ObjectMeta
                 {
                     Name = name
-                }
+                },
+                Type = "kubernetes.io/tls"
             };
             await client.CreateNamespacedSecretAsync(secret, certSecretNamespace);
-            Console.WriteLine("[Info] New cert secret is added");
+            Console.WriteLine($"[{DateTime.Now}] [Info] New cert secret is added");
         }
         catch (Exception e)
         {
-            Console.WriteLine("[Error] Error to add the cert secret");
+            Console.WriteLine($"[{DateTime.Now}] [Error] Error to add the cert secret");
             Console.WriteLine(e);
         }
     }

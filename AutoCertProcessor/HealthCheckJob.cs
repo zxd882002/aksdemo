@@ -8,6 +8,6 @@ public class HealthCheckJob : IJob
 
     public Task Execute(IJobExecutionContext context)
     {
-        return Task.Factory.StartNew(() => { Console.WriteLine("[Info] I am healthy"); });
+        return Task.Factory.StartNew(() => { Console.WriteLine($"[{DateTime.Now}] [Info] I am healthy"); });
     }
 }

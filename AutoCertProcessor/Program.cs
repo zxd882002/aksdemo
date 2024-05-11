@@ -13,25 +13,25 @@ class Program
         var schedulerFactory = new StdSchedulerFactory();
         var scheduler = await schedulerFactory.GetScheduler();
         await scheduler.Start(cancellationToken);
-        Console.WriteLine("Schedule started");
+        Console.WriteLine($"[{DateTime.Now}] [Info] Schedule started");
 
         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                Console.WriteLine("Canceling from docker...");
+                Console.WriteLine($"[{DateTime.Now}] [Info] Canceling from docker...");
                 scheduler.Shutdown(true, cancellationToken).Wait(cancellationToken);
                 cancellationTokenSource.Cancel();
-                Console.WriteLine("canneled");
+                Console.WriteLine($"[{DateTime.Now}] [Info] Canneled");
             }
         };
 
         Console.CancelKeyPress += (_, _) =>
         {
-            Console.WriteLine("Canceling...");
+            Console.WriteLine($"[{DateTime.Now}] [Info] Canceling...");
             scheduler.Shutdown(true, cancellationToken).Wait(cancellationToken);
             cancellationTokenSource.Cancel();
-            Console.WriteLine("canneled");
+            Console.WriteLine($"[{DateTime.Now}] [Info] Canneled");
         };
 
         // health check job
@@ -46,6 +46,7 @@ class Program
         var certSyncTrigger = TriggerBuilder
             .Create()
             .WithCronSchedule(CertSyncJob.ScheduleJobCron)
+            //.WithCronSchedule("* * * * * ?")
             .Build();
         await scheduler.ScheduleJob(certSync, certSyncTrigger, cancellationToken);
 
