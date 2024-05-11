@@ -16,6 +16,12 @@ spec:
     - zyxhome.top
     - www.zyxhome.top
   - port:
+      number: 80
+      name: local
+      protocol: HTTP2   
+    hosts:
+    - 192.168.88.2
+  - port:
       number: 443
       name: https
       protocol: HTTPS
