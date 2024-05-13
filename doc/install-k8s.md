@@ -80,7 +80,7 @@
      namespace: metallb-system
    spec:
      addresses:
-     - 172.245.68.116/32
+     - 192.168.88.2/32
    ```
 4. 配置L2：`vi l2.yaml`
    ``` yaml
@@ -95,7 +95,8 @@
    ```
 5. 部署 address pool：`kubectl apply -f address.yaml`
 6. 部署 L2：`kubectl apply -f l2.yaml`
-7. 查看istio的LoadBalancer：`kubectl get service -A`。这时应该把本机ip分配上去了
+7. 把istio的ingress从node port改成LoadBalancer
+8. 查看istio的LoadBalancer：`kubectl get service -A`。这时应该把本机ip分配上去了
 
 # 安装book-info步骤
 1. 安装book info：
