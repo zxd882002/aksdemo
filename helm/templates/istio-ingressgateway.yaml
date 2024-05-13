@@ -9,7 +9,7 @@ spec:
   - port:
       number: 80
       name: http
-      protocol: HTTP2
+      protocol: HTTP
     tls:
       httpsRedirect: true # redirect http request to https
     hosts:
@@ -18,7 +18,7 @@ spec:
   - port:
       number: 80
       name: local
-      protocol: HTTP2   
+      protocol: HTTP   
     hosts:
     - 192.168.88.2
   - port:
