@@ -10,8 +10,8 @@ spec:
       number: 80
       name: http
       protocol: HTTP
-    tls:
-      httpsRedirect: true # redirect http request to https
+    #tls:
+    #  httpsRedirect: true # redirect http request to https
     hosts:
     - "*"
   - port:
