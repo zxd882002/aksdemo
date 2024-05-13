@@ -14,12 +14,12 @@ spec:
     #  httpsRedirect: true # redirect http request to https
     hosts:
     - "*"
-  - port:
-      number: 443
-      name: https
-      protocol: HTTPS
-    tls:
-      mode: SIMPLE
-      credentialName: istio-ingressgateway-cert
-    hosts:
-    - "*"
+  #- port:
+  #    number: 443
+  #    name: https
+  #    protocol: HTTPS
+  #  tls:
+  #    mode: SIMPLE
+  #    credentialName: istio-ingressgateway-cert
+  #  hosts:
+  #  - "*"
