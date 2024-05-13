@@ -13,14 +13,14 @@ spec:
     tls:
       httpsRedirect: true # redirect http request to https
     hosts:
-    - zyxhome.top
-    - www.zyxhome.top
+    - "zyxhome.top"
+    - "www.zyxhome.top"
   - port:
       number: 80
       name: local
       protocol: HTTP2   
     hosts:
-    - 192.168.88.2
+    - "192.168.88.2"
   - port:
       number: 443
       name: https
@@ -29,5 +29,5 @@ spec:
       mode: SIMPLE
       credentialName: istio-ingressgateway-cert
     hosts:
-    - zyxhome.top
-    - www.zyxhome.top
+    - "zyxhome.top"
+    - "www.zyxhome.top"
