@@ -5,6 +5,8 @@ metadata:
 spec:
   hosts:
   - 192.168.88.2
+  - zyxhome.top
+  - www.zyxhome.top
   gateways:
   - {{ .Values.gateway.name }}
   http:
