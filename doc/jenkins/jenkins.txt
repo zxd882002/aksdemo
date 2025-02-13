@@ -1,0 +1,4 @@
+docker run -p 8088:8080 -p 5055:5000 --restart=always -v /etc/localtime:/etc/localtime -v /root/jenkins/personal/test/docker/jenkins1/jenkins-data:/var/jenkins_home -v /root/jenkins/.docker/run/docker.sock:/var/run/docker.sock -v /root/jenkins/personal/test/docker/maven/apache-maven-3.8.1:/usr/local/maven --name jenkins_jdk11 -d jenkins/jenkins:jdk11
+
+
+docker run -d --name docker-jenkins -p 8008:8080 -p 5005:5000 --restart=always  jenkins/jenkins

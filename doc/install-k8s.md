@@ -53,7 +53,12 @@
    ```
   2. 重新登录
 
-# 安装istio步骤
+# 安装istio步骤 
+注：
+1. 下面步骤已过期。可以参考https://istio.io/latest/zh/docs/setup/getting-started/#install
+2. 但网页验证部分命令要改成：kubectl port-forward svc/bookinfo-gateway-istio 8080:80 **--address 192.168.88.200**
+
+以下为老版步骤：
 1. 下载安装demo, 并设置环境变量
   `curl -L https://istio.io/downloadIstio | sh -`
   `cd istio-1.16.1`
