@@ -7,6 +7,8 @@ spec:
   - 192.168.88.2
   - zyxhome.top
   - www.zyxhome.top
+  - www.6.zyxhome.top
+  - www.4.zyxhome.top
   gateways:
   - {{ .Values.gateway.name }}
   http:
