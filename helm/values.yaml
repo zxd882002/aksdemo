@@ -12,7 +12,7 @@ portalHome:
   name: portal-home
   replicas: 1
   image:
-    repository: zxd882002/portal-home
+    repository: 149.104.27.79:4433/zxd882002/portal-home
     version: "1680253628"
     pullPolicy: IfNotPresent
   service:
@@ -22,7 +22,7 @@ weatherForecastApi:
   name: weather-forecast-api
   replicas: 1
   image:
-    repository: zxd882002/weather-forecast-api
+    repository: 149.104.27.79:4433/zxd882002/weather-forecast-api
     version: "1680253628"
     pullPolicy: IfNotPresent
   env:
