@@ -9,6 +9,7 @@ spec:
   - www.zyxhome.top
   - www.6.zyxhome.top
   - www.4.zyxhome.top
+  - i.p.v.6.zyxhome.top
   gateways:
   - {{ .Values.gateway.name }}
   http:
