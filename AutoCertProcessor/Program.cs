@@ -34,21 +34,36 @@ class Program
             Console.WriteLine($"[{DateTime.Now}] [Info] Canneled");
         };
 
-        // health check job
-        var healthCheckJob = JobBuilder.Create<HealthCheckJob>().Build();
-        var healthCheckTrigger = TriggerBuilder.Create().WithCronSchedule(HealthCheckJob.ScheduleJobCron).Build();
-        await scheduler.ScheduleJob(healthCheckJob, healthCheckTrigger, cancellationToken);
+        // health check job -- no needed and skip
+        // var healthCheckJob = JobBuilder
+        //     .Create<HealthCheckJob>()
+        //     .Build();
+        // var healthCheckTrigger = TriggerBuilder
+        //     .Create()
+        //     .StartNow()
+        //     .WithCronSchedule(HealthCheckJob.ScheduleJobCron)
+        //     .Build();
+        // await scheduler.ScheduleJob(healthCheckJob, healthCheckTrigger, cancellationToken);
 
-        // certJob
-        var certSync = JobBuilder
+        // certJob - scheduled job
+        var certSync1 = JobBuilder
             .Create<CertSyncJob>()
             .Build();
-        var certSyncTrigger = TriggerBuilder
+        var certSyncTrigger1 = TriggerBuilder
             .Create()
             .WithCronSchedule(CertSyncJob.ScheduleJobCron)
-            //.WithCronSchedule("* * * * * ?")
             .Build();
-        await scheduler.ScheduleJob(certSync, certSyncTrigger, cancellationToken);
+        await scheduler.ScheduleJob(certSync1, certSyncTrigger1, cancellationToken);
+
+        // certJob - start now job
+        var certSync2 = JobBuilder
+            .Create<CertSyncJob>()
+            .Build();
+        var certSyncTrigger2 = TriggerBuilder
+            .Create()
+            .StartNow()
+            .Build();
+        await scheduler.ScheduleJob(certSync2, certSyncTrigger2, cancellationToken);
 
         cancellationToken.WaitHandle.WaitOne();
     }

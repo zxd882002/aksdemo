@@ -19,11 +19,8 @@ spec:
     tls:
       httpsRedirect: true # redirect http request to https
     hosts:
-    - zyxhome.top
-    - www.zyxhome.top
-    - www.4.zyxhome.top
-    - www.6.zyxhome.top
-    - i.p.v.6.zyxhome.top
+    - ipv4.zyxhome.top
+    - ipv6.zyxhome.top
   - port:
       number: 443
       name: https
@@ -32,8 +29,5 @@ spec:
       mode: SIMPLE
       credentialName: istio-ingressgateway-cert
     hosts:
-    - zyxhome.top
-    - www.zyxhome.top
-    - www.4.zyxhome.top
-    - www.6.zyxhome.top
-    - i.p.v.6.zyxhome.top
+    - ipv4.zyxhome.top
+    - ipv6.zyxhome.top

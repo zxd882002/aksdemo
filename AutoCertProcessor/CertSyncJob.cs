@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Channels;
 using k8s;
 using k8s.Models;
 using Quartz;
@@ -8,7 +10,7 @@ namespace AutoCertProcessor;
 [DisallowConcurrentExecution]
 public class CertSyncJob : IJob
 {
-    public const string ScheduleJobCron = "0 0 0 * * ?";
+    public const string ScheduleJobCron = "0 0 */1 * * ?";
     private const string KubeConfigFileName = "demo.yaml";
     private const string CertKeyFileName = "zyxhome.top.key";
     private const string CertFileName = "zyxhome.top.cert";
@@ -21,18 +23,34 @@ public class CertSyncJob : IJob
 
         try
         {
+            var md5 = new MD5CryptoServiceProvider();
+
             string lastCert = File.Exists(CertFileName) ? await File.ReadAllTextAsync(CertFileName) : "";
-            string key = await File.ReadAllTextAsync(CertKeyFileName);
-            string cert = await GetCertAsync();
+            DateTime lastCertCreateDate = new FileInfo(CertFileName).LastWriteTime;
+            string lastCertMd5 = String.IsNullOrWhiteSpace(lastCert)
+                ? "<NULL>"
+                : BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(lastCert)), 4, 8);
 
-            if (String.IsNullOrWhiteSpace(cert))
+            Console.WriteLine($"[{DateTime.Now}] [Info] Last Cert MD5: {lastCertMd5}");
+
+            string newCert = await GetCertAsync();
+
+            if (String.IsNullOrWhiteSpace(newCert))
+            {
+                Console.WriteLine($"[{DateTime.Now}] [Error] Cert not found");
                 return;
+            }
 
-            if (lastCert == cert)
+            string newCertMd5 = BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(newCert)), 4, 8);
+            Console.WriteLine($"[{DateTime.Now}] [Info] New Cert MD5: {newCertMd5}");
+
+            if (lastCertMd5 == newCertMd5 && DateTime.Now.Subtract(lastCertCreateDate).TotalDays < 30)
             {
                 Console.WriteLine($"[{DateTime.Now}] [Info] Cert is the same. Skip");
                 return;
             }
+
+            Console.WriteLine($"[{DateTime.Now}] [Info] Replacing new cert");
 
             Kubernetes? client = GetKubernetesClient(KubeConfigFileName);
             if (client == null)
@@ -42,8 +60,9 @@ public class CertSyncJob : IJob
             if (certSecret != null)
                 await DeleteCertSecretAsync(client, SecretNameSpace, SecretName);
 
-            await NewCertSecretAsync(client, SecretNameSpace, SecretName, key, cert);
-            await File.WriteAllTextAsync(CertFileName, cert);
+            string key = await File.ReadAllTextAsync(CertKeyFileName);
+            await NewCertSecretAsync(client, SecretNameSpace, SecretName, key, newCert);
+            await File.WriteAllTextAsync(CertFileName, newCert);
 
             Console.WriteLine($"[{DateTime.Now}] [Info] End Cert Sync Job");
         }
@@ -51,6 +70,9 @@ public class CertSyncJob : IJob
         {
             Console.WriteLine($"[{DateTime.Now}] [Error] Unhandled Exception");
             Console.WriteLine(e);
+            
+            if (File.Exists(CertFileName))
+                File.Delete(CertFileName);
         }
     }
 
